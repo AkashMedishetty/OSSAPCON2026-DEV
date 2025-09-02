@@ -419,7 +419,7 @@ export function ConfigManager() {
                     <Button
                       onClick={() => saveConfiguration('pricing', pricingConfig)}
                       disabled={isSaving}
-                      className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
+                      className="bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800"
                     >
                       {isSaving ? (
                         <>
@@ -582,7 +582,7 @@ export function ConfigManager() {
                     <Button
                       onClick={() => saveConfiguration('discounts', discountConfig)}
                       disabled={isSaving}
-                      className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
+                      className="bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800"
                     >
                       {isSaving ? (
                         <>
@@ -614,7 +614,7 @@ export function ConfigManager() {
                         <Input
                           value={emailConfig.fromName}
                           onChange={(e) => setEmailConfig(prev => ({ ...prev!, fromName: e.target.value }))}
-                          placeholder="NeuroTrauma 2026"
+                          placeholder="OSSAPCON 2026"
                         />
                       </div>
                       <div className="space-y-2">
@@ -716,7 +716,7 @@ export function ConfigManager() {
                     <Button
                       onClick={() => saveConfiguration('email', emailConfig)}
                       disabled={isSaving}
-                      className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
+                      className="bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800"
                     >
                       {isSaving ? (
                         <>

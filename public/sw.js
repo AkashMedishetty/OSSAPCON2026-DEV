@@ -1,7 +1,7 @@
-// Service Worker for NeuroTrauma 2026 PWA - Updated to fix auth issues
-const CACHE_NAME = 'neurotrauma-2026-v2';
-const STATIC_CACHE_NAME = 'neurotrauma-2026-static-v2';
-const DYNAMIC_CACHE_NAME = 'neurotrauma-2026-dynamic-v2';
+// Service Worker for OSSAPCON 2026 PWA - Updated to fix auth issues
+const CACHE_NAME = 'ossapcon-2026-v2';
+const STATIC_CACHE_NAME = 'ossapcon-2026-static-v2';
+const DYNAMIC_CACHE_NAME = 'ossapcon-2026-dynamic-v2';
 
 // Static assets to cache immediately (only essential ones)
 const STATIC_ASSETS = [
@@ -12,8 +12,7 @@ const STATIC_ASSETS = [
 // Optional assets to cache (don't fail if they don't exist)
 const OPTIONAL_ASSETS = [
   '/Favicons/site.webmanifest',
-  '/NTSILOGO.png',
-  '/brainandspinesociety.png',
+  '/ossapcon-logo.png',
   '/KIMS.png',
 ];
 
@@ -245,10 +244,10 @@ self.addEventListener('push', (event) => {
   console.log('Push notification received');
   
   const options = {
-    body: event.data ? event.data.text() : 'New update from NeuroTrauma 2026',
+    body: event.data ? event.data.text() : 'New update from OSSAPCON 2026',
     icon: '/Favicons/favicon-192x192.png',
     badge: '/Favicons/favicon-96x96.png',
-    tag: 'neurotrauma-notification',
+    tag: 'ossapcon-notification',
     data: {
       url: '/'
     },
@@ -267,7 +266,7 @@ self.addEventListener('push', (event) => {
   };
 
   event.waitUntil(
-    self.registration.showNotification('NeuroTrauma 2026', options)
+    self.registration.showNotification('OSSAPCON 2026', options)
   );
 });
 
@@ -284,7 +283,7 @@ self.addEventListener('notificationclick', (event) => {
   }
 });
 
-console.log('NeuroTrauma 2026 Service Worker v2 loaded successfully - Auth issues fixed');
+console.log('OSSAPCON 2026 Service Worker v2 loaded successfully - Auth issues fixed');
 
 // Force update if user has old version
 self.addEventListener('message', (event) => {

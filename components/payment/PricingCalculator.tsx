@@ -233,7 +233,7 @@ export function PricingCalculator() {
                           id={workshop.id}
                           checked={selectedWorkshops.includes(workshop.name)}
                           onChange={() => handleWorkshopToggle(workshop.name)}
-                          className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"
+                          className="rounded border-gray-300 text-ossapcon-700 focus:ring-ossapcon-600"
                         />
                         <label htmlFor={workshop.id} className="text-sm font-medium cursor-pointer">
                           {workshop.name}
@@ -374,12 +374,12 @@ export function PricingCalculator() {
               </div>
 
               {/* Active Discounts Info */}
-              <div className="bg-orange-50 dark:bg-orange-900/20 p-4 rounded-lg">
-                <h4 className="font-semibold text-orange-800 dark:text-orange-200 mb-2 flex items-center gap-2">
+              <div className="bg-ossapcon-50 dark:bg-ossapcon-900/20 p-4 rounded-lg">
+                <h4 className="font-semibold text-ossapcon-800 dark:text-ossapcon-200 mb-2 flex items-center gap-2">
                   <Info className="h-4 w-4" />
                   Available Discounts
                 </h4>
-                <div className="space-y-1 text-sm text-orange-700 dark:text-orange-300">
+                <div className="space-y-1 text-sm text-ossapcon-700 dark:text-ossapcon-300">
                   <div className="flex items-center gap-2">
                     <CheckCircle className="h-3 w-3" />
                     <span>Early Bird: 10% off (Code: EARLY2026)</span>

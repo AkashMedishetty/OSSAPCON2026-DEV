@@ -51,8 +51,8 @@ export async function GET(request: NextRequest) {
     // Get workshop registration summary
     const workshops = [
       {
-        id: "brain-surgery",
-        name: "Advanced Brain Surgery Techniques",
+        id: "joint-replacement",
+        name: "Advanced Joint Replacement Techniques",
         instructor: "Dr. Sarah Johnson",
         maxSeats: 30
       },
@@ -63,8 +63,8 @@ export async function GET(request: NextRequest) {
         maxSeats: 25
       },
       {
-        id: "pediatric-neurotrauma",
-        name: "Pediatric Neurotrauma",
+        id: "pediatric-orthopedics",
+        name: "Pediatric Orthopedics",
         instructor: "Dr. Emily Rodriguez",
         maxSeats: 20
       },
@@ -75,14 +75,14 @@ export async function GET(request: NextRequest) {
         maxSeats: 35
       },
       {
-        id: "neurotrauma-rehab",
-        name: "Neurotrauma Rehabilitation",
+        id: "orthopedic-rehab",
+        name: "Orthopedic Rehabilitation",
         instructor: "Dr. Lisa Thompson",
         maxSeats: 40
       },
       {
-        id: "emergency-neurosurgery",
-        name: "Emergency Neurosurgery",
+        id: "trauma-surgery",
+        name: "Orthopedic Trauma Surgery",
         instructor: "Dr. Robert Davis",
         maxSeats: 30
       }

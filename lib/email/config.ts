@@ -4,39 +4,39 @@ export const emailTemplateConfig = {
   templates: {
     registration: {
       enabled: true,
-      subject: "Welcome to NeuroTrauma 2026 - Registration Confirmed"
+      subject: "Welcome to OSSAPCON 2026 - Registration Confirmed"
     },
     payment: {
       enabled: true,
-      subject: "Payment Confirmation - NeuroTrauma 2026"
+      subject: "Payment Confirmation - OSSAPCON 2026"
     },
     paymentReminder: {
       enabled: true,
-      subject: "Payment Reminder - NeuroTrauma 2026"
+      subject: "Payment Reminder - OSSAPCON 2026"
     },
     customMessage: {
       enabled: true,
-      subject: "Message from NeuroTrauma 2026 Team"
+      subject: "Message from OSSAPCON 2026 Team"
     },
     test: {
       enabled: true, 
-      subject: "Test Email - NeuroTrauma 2026"
+      subject: "Test Email - OSSAPCON 2026"
     },
     passwordReset: {
       enabled: true,
-      subject: "Password Reset - NeuroTrauma 2026"
+      subject: "Password Reset - OSSAPCON 2026"
     },
     bulkEmail: {
       enabled: true,
-      subject: "Important Update - NeuroTrauma 2026"
+      subject: "Important Update - OSSAPCON 2026"
     }
   },
 
   // Global email settings
   settings: {
-    fromName: "NeuroTrauma 2026 Conference",
-    fromEmail: "hello@violetvoyage.in", // This should match your SMTP username
-    replyTo: "info@neurotraumacon2026.com",
+    fromName: "OSSAPCON 2026",
+    fromEmail: "contact@ossapcon2026.com", // This should match your SMTP username
+    replyTo: "contact@ossapcon2026.com",
     enableTracking: true,
     enableAutoResponder: true
   }
@@ -47,5 +47,5 @@ export function isTemplateEnabled(templateType: string): boolean {
 }
 
 export function getTemplateSubject(templateType: string): string {
-  return emailTemplateConfig.templates[templateType as keyof typeof emailTemplateConfig.templates]?.subject || "NeuroTrauma 2026"
+  return emailTemplateConfig.templates[templateType as keyof typeof emailTemplateConfig.templates]?.subject || "OSSAPCON 2026"
 }

@@ -146,7 +146,7 @@ export function LoginForm({ callbackUrl = "/dashboard" }: LoginFormProps) {
             Welcome Back
           </CardTitle>
           <CardDescription className="text-center">
-            Sign in to your NeuroTrauma 2026 account
+            Sign in to your OSSAPCON 2026 account
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -214,7 +214,7 @@ export function LoginForm({ callbackUrl = "/dashboard" }: LoginFormProps) {
             <div className="flex items-center justify-between">
               <Link
                 href="/auth/forgot-password"
-                className="text-sm text-orange-600 hover:text-orange-700 hover:underline"
+                className="text-sm text-blue-600 hover:text-blue-700 hover:underline"
               >
                 Forgot password?
               </Link>
@@ -222,7 +222,7 @@ export function LoginForm({ callbackUrl = "/dashboard" }: LoginFormProps) {
 
             <Button
               type="submit"
-              className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
+              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
               disabled={isLoading}
             >
               {isLoading ? (
@@ -239,7 +239,7 @@ export function LoginForm({ callbackUrl = "/dashboard" }: LoginFormProps) {
               Don&apos;t have an account?{" "}
               <Link
                 href="/register"
-                className="font-medium text-orange-600 hover:text-orange-700 hover:underline"
+                className="font-medium text-blue-600 hover:text-blue-700 hover:underline"
               >
                 Create account
               </Link>

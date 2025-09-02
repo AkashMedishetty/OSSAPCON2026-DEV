@@ -88,9 +88,9 @@ export function RegistrationCard({ userData, onUpdate }: RegistrationCardProps) 
   const workshops = [
     "Advanced Brain Surgery Techniques",
     "Spinal Cord Injury Management", 
-    "Pediatric Neurotrauma",
+    "Pediatric Orthopedics",
     "Minimally Invasive Neurosurgery",
-    "Neurotrauma Rehabilitation",
+    "Orthopedic Rehabilitation",
     "Emergency Neurosurgery"
   ]
 
@@ -241,7 +241,7 @@ export function RegistrationCard({ userData, onUpdate }: RegistrationCardProps) 
           <div className="flex items-center justify-between">
             <div>
               <CardTitle className="flex items-center gap-2">
-                <FileText className="h-5 w-5 text-orange-500" />
+                <FileText className="h-5 w-5 text-blue-600" />
                 Registration Details
               </CardTitle>
               <CardDescription>
@@ -358,7 +358,7 @@ export function RegistrationCard({ userData, onUpdate }: RegistrationCardProps) 
                     checked={isEditing ? editData.workshopSelections.includes(workshop) : userData.registration.workshopSelections.includes(workshop)}
                     onChange={() => handleWorkshopToggle(workshop)}
                     disabled={!isEditing || !canEdit}
-                    className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"
+                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-600"
                   />
                   <label 
                     htmlFor={workshop} 
@@ -532,7 +532,7 @@ export function RegistrationCard({ userData, onUpdate }: RegistrationCardProps) 
               <Button
                 onClick={handleSave}
                 disabled={isLoading}
-                className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
+                className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
               >
                 <Save className="h-4 w-4 mr-1" />
                 {isLoading ? "Saving..." : "Save Changes"}

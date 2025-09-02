@@ -96,7 +96,7 @@ const emailTemplates: EmailTemplate[] = [
     name: "Registration Confirmation",
     description: "Send a registration confirmation email with all details",
     icon: <FileText className="h-4 w-4" />,
-    defaultSubject: "Registration Confirmation - NeuroTrauma 2026",
+    defaultSubject: "Registration Confirmation - OSSAPCON 2026",
     fields: []
   },
   {
@@ -104,7 +104,7 @@ const emailTemplates: EmailTemplate[] = [
     name: "Payment Reminder",
     description: "Send a payment reminder with due amount and deadline",
     icon: <Clock className="h-4 w-4" />,
-    defaultSubject: "Payment Reminder - NeuroTrauma 2026",
+    defaultSubject: "Payment Reminder - OSSAPCON 2026",
     fields: ["amount", "currency", "daysOverdue"]
   },
   {
@@ -112,7 +112,7 @@ const emailTemplates: EmailTemplate[] = [
     name: "Custom Message",
     description: "Send a personalized message to the participant",
     icon: <MessageSquare className="h-4 w-4" />,
-    defaultSubject: "Message from NeuroTrauma 2026 Team",
+    defaultSubject: "Message from OSSAPCON 2026 Team",
     fields: ["message", "senderName"]
   }
 ]
@@ -124,7 +124,7 @@ export function EmailDialog({ isOpen, onClose, registration, onEmailSent }: Emai
   const [amount, setAmount] = useState<string>("")
   const [currency, setCurrency] = useState<string>("INR")
   const [daysOverdue, setDaysOverdue] = useState<string>("")
-  const [senderName, setSenderName] = useState<string>("NeuroTrauma 2026 Team")
+  const [senderName, setSenderName] = useState<string>("OSSAPCON 2026 Team")
   const [isSending, setIsSending] = useState(false)
   
   const { toast } = useToast()
@@ -138,7 +138,7 @@ export function EmailDialog({ isOpen, onClose, registration, onEmailSent }: Emai
       setMessage("")
       setAmount("")
       setDaysOverdue("")
-      setSenderName("NeuroTrauma 2026 Team")
+      setSenderName("OSSAPCON 2026 Team")
     }
   }
 
@@ -326,7 +326,7 @@ export function EmailDialog({ isOpen, onClose, registration, onEmailSent }: Emai
                         id="senderName"
                         value={senderName}
                         onChange={(e) => setSenderName(e.target.value)}
-                        placeholder="NeuroTrauma 2026 Team"
+                        placeholder="OSSAPCON 2026 Team"
                       />
                     </div>
                   </>
@@ -355,7 +355,7 @@ export function EmailDialog({ isOpen, onClose, registration, onEmailSent }: Emai
           <Button 
             onClick={handleSendEmail} 
             disabled={!isFormValid || isSending}
-            className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
+            className="bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800"
           >
             {isSending ? (
               <>

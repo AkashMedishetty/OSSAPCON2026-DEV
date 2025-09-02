@@ -1,7 +1,7 @@
 {
-  "name": "NeuroTrauma 2026 - Annual Conference of Neurotrauma Society of India",
-  "short_name": "NeuroTrauma 2026",
-  "description": "Annual Conference of Neurotrauma Society of India - Science, Sports & Spiritually in Hyderabad",
+  "name": "OSSAPCON 2026 - Annual Conference of Orthopedic Surgeons Society of Andhra Pradesh",
+  "short_name": "OSSAPCON 2026",
+  "description": "Annual Conference of Orthopedic Surgeons Society of Andhra Pradesh - Excellence in Orthopedic Care in Kurnool",
   "icons": [
     {
       "src": "/Favicons/android-chrome-192x192.png",
@@ -14,7 +14,7 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#ff6b35",
+  "theme_color": "#015189",
   "background_color": "#ffffff",
   "display": "standalone",
   "start_url": "/",

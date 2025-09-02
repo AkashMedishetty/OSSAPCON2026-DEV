@@ -79,7 +79,7 @@ export default function ReviewerAbstractsPage() {
                   const rec = (document.getElementById(`rec-${a.abstractId}`) as HTMLSelectElement).value
                   const com = (document.getElementById(`com-${a.abstractId}`) as HTMLInputElement).value
                   submitReviewWith(a.abstractId, { originality: o, methodology: m, relevance: r, clarity: c }, rec as any, com)
-                }} className="px-3 py-1 bg-orange-600 text-white rounded">
+                }} className="px-3 py-1 bg-ossapcon-700 text-white rounded">
                   {submitting === a.abstractId ? 'Submitting...' : 'Submit Review'}
                 </button>
               </div>

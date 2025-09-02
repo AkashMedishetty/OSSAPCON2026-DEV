@@ -34,7 +34,7 @@ export class EmailService {
       
       return await sendEmail({
         to: userData.email,
-        subject: template.subject || 'Registration Confirmation - NeuroTrauma 2026',
+        subject: template.subject || 'Registration Confirmation - OSSAPCON 2026',
         html,
         text: `Registration confirmation for ${userData.name}. Registration ID: ${userData.registrationId}`
       })
@@ -70,7 +70,7 @@ export class EmailService {
       
       return await sendEmail({
         to: paymentData.email,
-        subject: template.subject || 'Payment Confirmation & Invoice - NeuroTrauma 2026',
+        subject: template.subject || 'Payment Confirmation & Invoice - OSSAPCON 2026',
         html,
         text: `Payment confirmation for ${paymentData.name}. Amount: ${paymentData.currency} ${paymentData.amount}`
       })
@@ -102,7 +102,7 @@ export class EmailService {
       
       return await sendEmail({
         to: resetData.email,
-        subject: template.subject || 'Password Reset - NeuroTrauma 2026',
+        subject: template.subject || 'Password Reset - OSSAPCON 2026',
         html,
         text: `Password reset request for ${resetData.name}. Reset link: ${resetData.resetLink}`
       })
@@ -172,7 +172,7 @@ export class EmailService {
       
       return await sendEmail({
         to: userData.email,
-        subject: template.subject || 'Payment Reminder - NeuroTrauma 2026',
+        subject: template.subject || 'Payment Reminder - OSSAPCON 2026',
         html,
         text: `Payment reminder for ${userData.name}. Registration ID: ${userData.registrationId}`
       })
@@ -237,18 +237,18 @@ export class EmailService {
         <h2>Conference Reminder</h2>
         <p>Dear ${userData.name},</p>
         
-        <p>This is a friendly reminder that <strong>NeuroTrauma 2026</strong> is just ${userData.daysUntilConference} days away!</p>
+        <p>This is a friendly reminder that <strong>OSSAPCON 2026</strong> is just ${userData.daysUntilConference} days away!</p>
         
         <div class="highlight">
           <h3>Your Registration Details:</h3>
           <p><strong>Registration ID:</strong> ${userData.registrationId}</p>
           <p><strong>Conference Dates:</strong> August 7-9, 2026</p>
-          <p><strong>Venue:</strong> The Park Hotel, Somajiguda, Hyderabad</p>
+          <p><strong>Venue:</strong> Kurnool Medical College, Kurnool, Andhra Pradesh</p>
         </div>
         
         <p><strong>What to expect:</strong></p>
         <ul>
-          <li>Cutting-edge presentations on neurotrauma care</li>
+          <li>Cutting-edge presentations on orthopedic care</li>
           <li>Hands-on workshops and training sessions</li>
           <li>Networking opportunities with leading experts</li>
           <li>Latest research and clinical innovations</li>
@@ -261,20 +261,20 @@ export class EmailService {
         <p>We look forward to seeing you at the conference!</p>
         
         <p>Best regards,<br>
-        <strong>NeuroTrauma 2026 Organizing Committee</strong></p>
+        <strong>OSSAPCON 2026 Organizing Committee</strong></p>
       `
 
       const html = getBulkEmailTemplate({
         subject: 'Conference Reminder',
         content,
-        senderName: 'NeuroTrauma 2026 Team'
+        senderName: 'OSSAPCON 2026 Team'
       })
       
       return await sendEmail({
         to: userData.email,
-        subject: template.subject || 'Conference Reminder - NeuroTrauma 2026',
+        subject: template.subject || 'Conference Reminder - OSSAPCON 2026',
         html,
-        text: `Conference reminder for ${userData.name}. ${userData.daysUntilConference} days until NeuroTrauma 2026!`
+        text: `Conference reminder for ${userData.name}. ${userData.daysUntilConference} days until OSSAPCON 2026!`
       })
     } catch (error) {
       console.error('Error sending conference reminder:', error)

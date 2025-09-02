@@ -147,7 +147,7 @@ export default function ContactPage() {
           <CheckCircle className="w-12 h-12 lg:w-16 lg:h-16 text-green-500 mx-auto mb-4 lg:mb-6" />
           <h2 className="text-xl lg:text-2xl font-bold text-gray-800 dark:text-gray-100 mb-3 lg:mb-4">Message Sent Successfully!</h2>
           <p className="text-gray-600 dark:text-gray-300 mb-4 lg:mb-6 text-sm lg:text-base">Thank you for contacting us. We will get back to you shortly.</p>
-          <Button onClick={() => setIsSubmitted(false)} className="bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600">
+          <Button onClick={() => setIsSubmitted(false)} className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">
             Send Another Message
           </Button>
         </motion.div>
@@ -156,12 +156,12 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-800">
       <Navigation currentPage="contact" />
 
       <div className="pt-20 lg:pt-24 pb-12">
         {/* Header */}
-        <section className="py-12 lg:py-16 bg-gradient-to-r from-orange-600 to-orange-700 text-white">
+        <section className="py-12 lg:py-16 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
           <div className="container mx-auto px-4 text-center">
             <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 lg:mb-6">Contact Us</h1>
@@ -184,8 +184,8 @@ export default function ContactPage() {
                 <h2 className="text-2xl lg:text-3xl font-bold mb-6 lg:mb-8 text-gray-800 dark:text-gray-100">Get In Touch</h2>
                 <div className="space-y-6 lg:space-y-8">
                   <div className="flex items-start">
-                    <div className="bg-orange-100 dark:bg-orange-900/30 p-3 rounded-full mr-4">
-                      <MapPin className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+                    <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-full mr-4">
+                      <MapPin className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-1">Conference Manager</h3>
@@ -194,13 +194,13 @@ export default function ContactPage() {
                         <br />
                         Conference Manager
                         <br />
-                        Hyderabad, India
+                        Kurnool, Andhra Pradesh
                       </p>
                     </div>
                   </div>
                   <div className="flex items-start">
-                    <div className="bg-orange-100 dark:bg-orange-900/30 p-3 rounded-full mr-4">
-                      <Phone className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+                    <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-full mr-4">
+                      <Phone className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-1">Phone</h3>
@@ -210,8 +210,8 @@ export default function ContactPage() {
                     </div>
                   </div>
                   <div className="flex items-start">
-                    <div className="bg-orange-100 dark:bg-orange-900/30 p-3 rounded-full mr-4">
-                      <Mail className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+                    <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-full mr-4">
+                      <Mail className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-1">Email</h3>
@@ -221,8 +221,8 @@ export default function ContactPage() {
                     </div>
                   </div>
                   <div className="flex items-start">
-                    <div className="bg-orange-100 dark:bg-orange-900/30 p-3 rounded-full mr-4">
-                      <Clock className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+                    <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-full mr-4">
+                      <Clock className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-1">Working Hours</h3>
@@ -328,7 +328,7 @@ export default function ContactPage() {
                     <Button 
                       type="submit" 
                       disabled={isSubmitting}
-                      className="w-full bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 disabled:opacity-50"
+                      className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 disabled:opacity-50"
                     >
                       <Send className="w-4 h-4 mr-2" />
                       {isSubmitting ? 'Sending...' : 'Send Message'}
@@ -342,7 +342,7 @@ export default function ContactPage() {
 
         {/* FAQ Section - Commented out as requested */}
         {/*
-        <section className="py-12 md:py-16 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-gray-800 dark:to-gray-900">
+        <section className="py-12 md:py-16 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-800 dark:to-gray-900">
           <div className="container mx-auto px-4">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -379,7 +379,7 @@ export default function ContactPage() {
                 {
                   question: "How can I become a sponsor or exhibitor?",
                   answer:
-                    "We offer various sponsorship and exhibition opportunities. Please contact our sponsorship team at sponsors@neurotraumacon2026.com for more information.",
+                    "We offer various sponsorship and exhibition opportunities. Please contact our sponsorship team at contact@ossapcon2026.com for more information.",
                 },
               ].map((faq, index) => (
                 <motion.div
@@ -411,7 +411,7 @@ export default function ContactPage() {
             >
               <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-800 dark:text-white">Find Us</h2>
               <p className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto text-sm md:text-base">
-                The conference will be held at The Park Hotel, Somajiguda, Hyderabad.
+                The conference will be held at Kurnool Medical College, Kurnool, Andhra Pradesh.
               </p>
             </motion.div>
 
@@ -419,9 +419,9 @@ export default function ContactPage() {
               {/* Placeholder for map - in a real implementation, you would use Google Maps or similar */}
               <div className="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-700">
                 <div className="text-center">
-                  <MapPin className="w-10 h-10 md:w-12 md:h-12 text-orange-600 dark:text-orange-400 mx-auto mb-4" />
+                  <MapPin className="w-10 h-10 md:w-12 md:h-12 text-blue-600 dark:text-blue-400 mx-auto mb-4" />
                   <p className="text-gray-700 dark:text-gray-200 font-semibold text-sm md:text-base">Interactive Map Placeholder</p>
-                  <p className="text-gray-500 dark:text-gray-400 text-xs md:text-sm">The Park Hotel, Somajiguda, Hyderabad</p>
+                  <p className="text-gray-500 dark:text-gray-400 text-xs md:text-sm">Kurnool Medical College, Kurnool, Andhra Pradesh</p>
                 </div>
               </div>
             </div>
@@ -429,7 +429,7 @@ export default function ContactPage() {
         </section>
 
         {/* Newsletter Section */}
-        <section className="py-12 md:py-16 bg-gradient-to-r from-orange-600 to-orange-700 text-white">
+        <section className="py-12 md:py-16 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
           <div className="container mx-auto px-4 text-center">
             <motion.div
               initial={{ opacity: 0, y: 50 }}
@@ -448,7 +448,7 @@ export default function ContactPage() {
                     className="bg-white text-gray-800 flex-1"
                     required
                   />
-                  <Button type="submit" className="bg-white text-orange-600 hover:bg-gray-100 px-6 py-2">
+                  <Button type="submit" className="bg-white text-blue-600 hover:bg-gray-100 px-6 py-2">
                     Subscribe
                   </Button>
                 </form>

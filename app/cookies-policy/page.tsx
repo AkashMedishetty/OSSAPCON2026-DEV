@@ -7,7 +7,7 @@ import { Cookie, Settings, Eye, Shield, Trash2, Mail } from "lucide-react"
 export default function CookiesPolicyPage() {
   return (
     <MainLayout>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-orange-50 py-20">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-20">
         <div className="container mx-auto px-6 max-w-4xl">
           {/* Header */}
           <motion.div
@@ -17,11 +17,11 @@ export default function CookiesPolicyPage() {
             className="text-center mb-12"
           >
             <div className="flex justify-center mb-6">
-              <div className="bg-orange-100 p-4 rounded-full">
-                <Cookie className="w-12 h-12 text-orange-600" />
+              <div className="bg-blue-100 p-4 rounded-full">
+                <Cookie className="w-12 h-12 text-blue-600" />
               </div>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent">
               Cookies Policy
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -38,7 +38,7 @@ export default function CookiesPolicyPage() {
           >
             <div className="space-y-8">
               {/* Last Updated */}
-              <div className="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-500">
+              <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
                 <p className="text-sm text-gray-600">
                   <strong>Last Updated:</strong> December 2024
                 </p>
@@ -47,7 +47,7 @@ export default function CookiesPolicyPage() {
               {/* What Are Cookies */}
               <section>
                 <div className="flex items-center mb-4">
-                  <Cookie className="w-6 h-6 text-orange-600 mr-3" />
+                  <Cookie className="w-6 h-6 text-blue-600 mr-3" />
                   <h2 className="text-2xl font-bold text-gray-800">What Are Cookies?</h2>
                 </div>
                 <div className="space-y-4 text-gray-600">
@@ -62,7 +62,7 @@ export default function CookiesPolicyPage() {
               {/* Types of Cookies */}
               <section>
                 <div className="flex items-center mb-4">
-                  <Settings className="w-6 h-6 text-orange-600 mr-3" />
+                  <Settings className="w-6 h-6 text-blue-600 mr-3" />
                   <h2 className="text-2xl font-bold text-gray-800">Types of Cookies We Use</h2>
                 </div>
                 <div className="space-y-6">
@@ -109,12 +109,12 @@ export default function CookiesPolicyPage() {
                   </div>
 
                   {/* Marketing Cookies */}
-                  <div className="bg-orange-50 p-4 rounded-lg">
-                    <h3 className="text-lg font-semibold text-orange-800 mb-2">Marketing Cookies</h3>
-                    <p className="text-orange-700 text-sm mb-2">
+                  <div className="bg-blue-50 p-4 rounded-lg">
+                    <h3 className="text-lg font-semibold text-blue-800 mb-2">Marketing Cookies</h3>
+                    <p className="text-blue-700 text-sm mb-2">
                       These cookies are used to deliver relevant advertisements and track campaign effectiveness.
                     </p>
-                    <ul className="list-disc list-inside text-orange-600 text-sm space-y-1">
+                    <ul className="list-disc list-inside text-blue-600 text-sm space-y-1">
                       <li>Social media integration</li>
                       <li>Advertising personalization</li>
                       <li>Campaign tracking</li>
@@ -127,7 +127,7 @@ export default function CookiesPolicyPage() {
               {/* Third-Party Cookies */}
               <section>
                 <div className="flex items-center mb-4">
-                  <Eye className="w-6 h-6 text-orange-600 mr-3" />
+                  <Eye className="w-6 h-6 text-blue-600 mr-3" />
                   <h2 className="text-2xl font-bold text-gray-800">Third-Party Cookies</h2>
                 </div>
                 <div className="space-y-4 text-gray-600">
@@ -147,7 +147,7 @@ export default function CookiesPolicyPage() {
               {/* Managing Cookies */}
               <section>
                 <div className="flex items-center mb-4">
-                  <Settings className="w-6 h-6 text-orange-600 mr-3" />
+                  <Settings className="w-6 h-6 text-blue-600 mr-3" />
                   <h2 className="text-2xl font-bold text-gray-800">Managing Your Cookie Preferences</h2>
                 </div>
                 <div className="space-y-4 text-gray-600">
@@ -179,7 +179,7 @@ export default function CookiesPolicyPage() {
               {/* Impact of Disabling Cookies */}
               <section>
                 <div className="flex items-center mb-4">
-                  <Trash2 className="w-6 h-6 text-orange-600 mr-3" />
+                  <Trash2 className="w-6 h-6 text-blue-600 mr-3" />
                   <h2 className="text-2xl font-bold text-gray-800">Impact of Disabling Cookies</h2>
                 </div>
                 <div className="space-y-4 text-gray-600">
@@ -199,7 +199,7 @@ export default function CookiesPolicyPage() {
               {/* Data Retention */}
               <section>
                 <div className="flex items-center mb-4">
-                  <Shield className="w-6 h-6 text-orange-600 mr-3" />
+                  <Shield className="w-6 h-6 text-blue-600 mr-3" />
                   <h2 className="text-2xl font-bold text-gray-800">Data Retention</h2>
                 </div>
                 <div className="space-y-4 text-gray-600">
@@ -216,7 +216,7 @@ export default function CookiesPolicyPage() {
               {/* Contact Information */}
               <section>
                 <div className="flex items-center mb-4">
-                  <Mail className="w-6 h-6 text-orange-600 mr-3" />
+                  <Mail className="w-6 h-6 text-blue-600 mr-3" />
                   <h2 className="text-2xl font-bold text-gray-800">Contact Us</h2>
                 </div>
                 <div className="space-y-4 text-gray-600">
@@ -232,7 +232,7 @@ export default function CookiesPolicyPage() {
               </section>
 
               {/* Updates to Policy */}
-              <section className="bg-orange-50 p-6 rounded-lg">
+              <section className="bg-blue-50 p-6 rounded-lg">
                 <h2 className="text-xl font-bold text-gray-800 mb-3">Updates to This Policy</h2>
                 <p className="text-gray-600">
                   We may update this Cookies Policy from time to time to reflect changes in our practices 

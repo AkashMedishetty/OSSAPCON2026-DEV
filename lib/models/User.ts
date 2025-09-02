@@ -28,7 +28,7 @@ export interface IUser extends Document {
   }
   registration: {
     registrationId: string
-    type: 'ntsi-member' | 'non-member' | 'pg-student' | 'complimentary' | 'sponsored'
+    type: 'ossap-member' | 'non-member' | 'pg-student' | 'complimentary' | 'sponsored'
     status: 'pending' | 'confirmed' | 'paid' | 'cancelled'
     membershipNumber?: string
     workshopSelections: string[]
@@ -130,7 +130,7 @@ const UserSchema = new Schema<IUser>({
     type: {
       type: String,
       required: true,
-      enum: ['ntsi-member', 'non-member', 'pg-student', 'complimentary', 'sponsored']
+      enum: ['ossap-member', 'non-member', 'pg-student', 'complimentary', 'sponsored']
     },
     status: {
       type: String,

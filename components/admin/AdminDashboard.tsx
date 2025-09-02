@@ -245,7 +245,7 @@ export function AdminDashboard() {
               {Object.entries(stats.registrationsByType).map(([type, count]) => (
                 <div key={type} className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+                    <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
                     <span className="text-sm font-medium">{getTypeLabel(type)}</span>
                   </div>
                   <div className="flex items-center space-x-2">
@@ -310,8 +310,8 @@ export function AdminDashboard() {
               <div key={registration._id} className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                 <div className="flex items-center space-x-4">
                   <div className="flex-shrink-0">
-                    <div className="w-10 h-10 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center">
-                      <User className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+                    <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
+                      <User className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                     </div>
                   </div>
                   <div className="min-w-0 flex-1">

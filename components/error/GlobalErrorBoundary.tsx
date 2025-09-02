@@ -107,7 +107,7 @@ class GlobalErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50 dark:from-gray-900 dark:to-red-900 flex items-center justify-center p-4">
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-900 dark:to-blue-900 flex items-center justify-center p-4">
           <Card className="max-w-lg w-full">
             <CardHeader className="text-center">
               <div className="w-16 h-16 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -145,7 +145,7 @@ class GlobalErrorBoundary extends Component<Props, State> {
               <div className="flex flex-col sm:flex-row gap-3">
                 <Button
                   onClick={this.handleRetry}
-                  className="flex-1 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
+                  className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
                 >
                   <RefreshCw className="h-4 w-4 mr-2" />
                   Try Again
@@ -162,10 +162,10 @@ class GlobalErrorBoundary extends Component<Props, State> {
                 <p>If this problem persists, please contact support with the Error ID above.</p>
                 <p className="mt-1">
                   <a 
-                    href="mailto:support@neurotrauma2026.com" 
-                    className="text-orange-600 hover:underline"
+                    href="mailto:contact@ossapcon2026.com" 
+                    className="text-blue-600 hover:underline"
                   >
-                    support@neurotrauma2026.com
+                    contact@ossapcon2026.com
                   </a>
                 </p>
               </div>

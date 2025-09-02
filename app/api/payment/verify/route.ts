@@ -37,12 +37,12 @@ async function recalculatePaymentBreakdown(user: any, totalAmount: number, curre
     }
 
     let workshops = [
-      { id: 'brain-surgery', name: 'Advanced Brain Surgery Techniques', amount: 2000 },
-      { id: 'spinal-injury', name: 'Spinal Cord Injury Management', amount: 2500 },
-      { id: 'pediatric-neurotrauma', name: 'Pediatric Neurotrauma', amount: 2000 },
-      { id: 'minimally-invasive', name: 'Minimally Invasive Neurosurgery', amount: 1500 },
-      { id: 'neurotrauma-rehab', name: 'Neurotrauma Rehabilitation', amount: 1800 },
-      { id: 'emergency-neurosurgery', name: 'Emergency Neurosurgery', amount: 2200 }
+      { id: 'joint-replacement', name: 'Advanced Joint Replacement Techniques', amount: 2000 },
+      { id: 'spinal-surgery', name: 'Spine Surgery and Instrumentation', amount: 2500 },
+      { id: 'pediatric-orthopedics', name: 'Pediatric Orthopedics', amount: 2000 },
+      { id: 'arthroscopy', name: 'Arthroscopic Surgery Techniques', amount: 1500 },
+      { id: 'orthopedic-rehab', name: 'Orthopedic Rehabilitation', amount: 1800 },
+      { id: 'trauma-surgery', name: 'Orthopedic Trauma Surgery', amount: 2200 }
     ]
 
     // Override with configured values if available

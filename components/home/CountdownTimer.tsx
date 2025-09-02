@@ -52,12 +52,12 @@ export function CountdownTimer() {
           transition={{ delay: index * 0.1, duration: 0.4, ease: "easeOut" }}
           whileHover={{ scale: 1.05, rotateY: 5 }}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-red-600/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
-          <div className="relative bg-white backdrop-blur-xl border border-orange-100 p-8 rounded-3xl hover:border-orange-300 transition-all duration-300 shadow-lg hover:shadow-orange-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:border-gray-600 dark:hover:shadow-gray-900">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-blue-700/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
+          <div className="relative bg-white backdrop-blur-xl border border-blue-100 p-8 rounded-3xl hover:border-blue-300 transition-all duration-300 shadow-lg hover:shadow-blue-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:border-gray-600 dark:hover:shadow-gray-900">
             <div className="text-6xl font-black bg-gradient-to-b from-gray-800 to-gray-900 bg-clip-text text-transparent dark:from-gray-100 dark:to-gray-300 mb-2">
               {item.value.toString().padStart(2, "0")}
             </div>
-            <div className="text-sm uppercase tracking-[0.2em] text-orange-600 dark:text-orange-400 font-medium">{item.label}</div>
+            <div className="text-sm uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400 font-medium">{item.label}</div>
           </div>
         </motion.div>
       ))}

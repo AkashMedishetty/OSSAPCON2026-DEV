@@ -105,7 +105,7 @@ export function InvoiceViewer({ invoiceData, onDownload }: InvoiceViewerProps) {
         const a = document.createElement('a')
         a.style.display = 'none'
         a.href = url
-        a.download = `NeuroTrauma2026-Invoice-${invoiceData.registrationId}.pdf`
+        a.download = `OSSAPCON2026-Invoice-${invoiceData.registrationId}.pdf`
         document.body.appendChild(a)
         a.click()
         window.URL.revokeObjectURL(url)
@@ -176,11 +176,11 @@ export function InvoiceViewer({ invoiceData, onDownload }: InvoiceViewerProps) {
           <div className="flex items-center justify-between">
             <div>
               <CardTitle className="flex items-center gap-2">
-                <FileText className="h-5 w-5 text-orange-500" />
+                <FileText className="h-5 w-5 text-ossapcon-600" />
                 Invoice #{invoiceData.registrationId}
               </CardTitle>
               <CardDescription>
-                Payment receipt for NeuroTrauma 2026 Conference
+                Payment receipt for OSSAPCON 2026 Conference
               </CardDescription>
             </div>
             <div className="flex items-center gap-2">
@@ -210,7 +210,7 @@ export function InvoiceViewer({ invoiceData, onDownload }: InvoiceViewerProps) {
                 id="download-button"
                 onClick={handleDownload}
                 disabled={isDownloading}
-                className="flex items-center gap-2 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
+                className="flex items-center gap-2 bg-gradient-to-r from-ossapcon-950 to-ossapcon-800 hover:from-ossapcon-800 hover:to-ossapcon-700"
               >
                 {isDownloading ? (
                   <RefreshCw className="h-4 w-4 animate-spin" />
@@ -224,9 +224,9 @@ export function InvoiceViewer({ invoiceData, onDownload }: InvoiceViewerProps) {
 
           {/* Invoice Header */}
           <div className="text-center space-y-2 print:block hidden">
-            <h1 className="text-2xl font-bold">NeuroTrauma 2026 Conference</h1>
-            <p className="text-gray-600">Annual Conference of the Neurotrauma Society of India</p>
-            <p className="text-sm text-gray-500">August 7-9, 2026 | Hyderabad, Telangana</p>
+            <h1 className="text-2xl font-bold">OSSAPCON 2026 Conference</h1>
+            <p className="text-gray-600">Annual Conference of Orthopedic Surgeons Society of Andhra Pradesh</p>
+            <p className="text-sm text-gray-500">February 4-6, 2026 | Kurnool, Andhra Pradesh</p>
           </div>
 
           {/* Invoice Details */}
@@ -308,7 +308,7 @@ export function InvoiceViewer({ invoiceData, onDownload }: InvoiceViewerProps) {
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Venue:</span>
-                <span>Hyderabad, Telangana</span>
+                <span>Kurnool, Andhra Pradesh</span>
               </div>
             </div>
           </div>
@@ -408,8 +408,8 @@ export function InvoiceViewer({ invoiceData, onDownload }: InvoiceViewerProps) {
 
           {/* Footer */}
           <div className="text-center text-xs text-gray-500 space-y-1 pt-6 border-t">
-            <p>Thank you for registering for NeuroTrauma 2026 Conference!</p>
-            <p>For any queries, please contact us at info@neurotraumacon2026.com</p>
+            <p>Thank you for registering for OSSAPCON 2026 Conference!</p>
+            <p>For any queries, please contact us at contact@ossapcon2026.com</p>
             <p className="print:block hidden">Generated on {new Date().toLocaleDateString()}</p>
           </div>
         </CardContent>

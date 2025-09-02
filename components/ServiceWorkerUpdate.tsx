@@ -39,7 +39,7 @@ export function ServiceWorkerUpdate() {
           try {
             // Clear localStorage items related to app state
             const localStorageKeys = Object.keys(localStorage).filter(key => 
-              key.includes('neurotrauma') || 
+              key.includes('ossapcon') || 
               key.includes('auth') || 
               key.includes('session') ||
               key.includes('nextauth') ||
@@ -52,7 +52,7 @@ export function ServiceWorkerUpdate() {
             
             // Clear sessionStorage
             const sessionStorageKeys = Object.keys(sessionStorage).filter(key => 
-              key.includes('neurotrauma') || 
+              key.includes('ossapcon') || 
               key.includes('auth') || 
               key.includes('session') ||
               key.includes('cache')
@@ -190,12 +190,12 @@ export function FooterPWAInstallButton() {
     <div className="bg-white/10 border border-white/20 rounded-xl p-4">
       <div className="flex items-center justify-between">
         <div>
-          <div className="font-semibold">Install the NeuroTrauma 2026 App</div>
+          <div className="font-semibold">Install the OSSAPCON 2026 App</div>
           <div className="text-sm text-white/80">Get quick access and offline support</div>
         </div>
         <div className="flex gap-2">
           <button
-            className="px-3 py-2 rounded-lg bg-white text-orange-600 font-semibold hover:bg-gray-100"
+            className="px-3 py-2 rounded-lg bg-white text-ossapcon-700 font-semibold hover:bg-gray-100"
             onClick={onInstall}
             title={deferredPrompt ? 'Install App' : 'How to Install'}
           >
@@ -217,7 +217,7 @@ export function FooterPWAInstallButton() {
               <ol className="list-decimal list-inside space-y-1 text-white/80">
                 <li>Open the browser menu (⋮)</li>
                 <li>Tap “Install app” or “Add to Home screen”</li>
-                <li>Confirm to add NeuroTrauma 2026 to your home screen</li>
+                <li>Confirm to add OSSAPCON 2026 to your home screen</li>
               </ol>
             </>
           )}

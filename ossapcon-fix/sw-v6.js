@@ -1,13 +1,12 @@
-// Service Worker for NeuroTrauma 2026 PWA - v6 (Complete Auth & Cache Fix) 
-const CACHE_VERSION = 'neurotrauma-2026-v6'; 
-const STATIC_CACHE_NAME = 'neurotrauma-2026-static-v6'; 
-const DYNAMIC_CACHE_NAME = 'neurotrauma-2026-dynamic-v6'; 
+// Service Worker for OSSAPCON 2026 PWA - v6 (Complete Auth & Cache Fix) 
+const CACHE_VERSION = 'ossapcon-2026-v6'; 
+const STATIC_CACHE_NAME = 'ossapcon-2026-static-v6'; 
+const DYNAMIC_CACHE_NAME = 'ossapcon-2026-dynamic-v6'; 
 
 // Only cache truly static public assets 
 const STATIC_ASSETS = [ 
   '/offline.html', 
-  '/NTSILOGO.png', 
-  '/brainandspinesociety.png', 
+  '/ossapcon-logo.png', 
   '/KIMS.png', 
 ]; 
 
@@ -47,7 +46,7 @@ self.addEventListener('activate', (event) => {
         return Promise.all( 
           cacheNames.map((cacheName) => { 
             // Delete ALL old cache versions 
-            if (cacheName.startsWith('neurotrauma') && 
+            if ((cacheName.startsWith('ossapcon')) && 
                 cacheName !== STATIC_CACHE_NAME && 
                 cacheName !== DYNAMIC_CACHE_NAME) { 
               console.log('Deleting old cache:', cacheName); 
@@ -161,7 +160,7 @@ self.addEventListener('fetch', (event) => {
   ); 
 }); 
 
-console.log('NeuroTrauma 2026 Service Worker v6 loaded - Complete auth isolation'); 
+console.log('OSSAPCON 2026 Service Worker v6 loaded - Complete auth isolation'); 
 
 // Force update message handler 
 self.addEventListener('message', (event) => { 

@@ -156,8 +156,8 @@ export function Navigation({ currentPage }: NavigationProps = {}) {
             >
               {/* Logo Image */}
               <OptimizedImage 
-                src="/NueroTraumalogo.png" 
-                alt="NeuroTrauma 2026 Logo" 
+                src="/OSSAPLOGO.png" 
+                alt="OSSAPCON 2026 Logo" 
                 width={200}
                 height={80}
                 className="h-16 lg:h-20 w-auto object-contain"
@@ -174,8 +174,8 @@ export function Navigation({ currentPage }: NavigationProps = {}) {
                   variant="ghost"
                   className={`text-sm font-medium transition-colors ${
                     isActivePage(item.href)
-                      ? "bg-gradient-to-r from-orange-500 to-red-600 text-white hover:from-orange-600 hover:to-red-700"
-                      : "hover:bg-orange-50 hover:text-orange-600 dark:hover:bg-orange-900/20 dark:hover:text-orange-400"
+                      ? "bg-gradient-to-r from-ossapcon-950 to-ossapcon-800 text-white hover:from-ossapcon-800 hover:to-ossapcon-700"
+                      : "hover:bg-ossapcon-50 hover:text-ossapcon-700 dark:hover:bg-ossapcon-900/20 dark:hover:text-ossapcon-400"
                   }`}
                 >
                   {item.name}
@@ -194,12 +194,12 @@ export function Navigation({ currentPage }: NavigationProps = {}) {
             ) : (
               <>
                 <Link href="/auth/login">
-                  <Button variant="outline" className="border-orange-500 text-orange-600 hover:bg-orange-50">
+                  <Button variant="outline" className="border-ossapcon-600 text-ossapcon-700 hover:bg-ossapcon-50">
                     Sign In
                   </Button>
                 </Link>
                 <Link href="/register">
-                  <Button className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white shadow-lg">
+                  <Button className="bg-gradient-to-r from-ossapcon-950 to-ossapcon-800 hover:from-ossapcon-800 hover:to-ossapcon-700 text-white shadow-lg">
                     Register Now
                   </Button>
                 </Link>
@@ -251,8 +251,8 @@ export function Navigation({ currentPage }: NavigationProps = {}) {
                         variant="ghost"
                         className={`w-full justify-start text-left h-12 touch-target transition-colors ${
                           isActivePage(item.href)
-                            ? "bg-gradient-to-r from-orange-500 to-red-600 text-white"
-                            : "hover:bg-orange-50 hover:text-orange-600 dark:hover:bg-orange-900/20 dark:hover:text-orange-400"
+                            ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white"
+                            : "hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/20 dark:hover:text-blue-400"
                         }`}
                       >
                         {item.name}
@@ -297,12 +297,12 @@ export function Navigation({ currentPage }: NavigationProps = {}) {
                   ) : (
                     <>
                       <Link href="/auth/login" onClick={() => setIsMenuOpen(false)}>
-                        <Button variant="outline" className="w-full h-12 touch-target border-orange-500 text-orange-600 hover:bg-orange-50">
+                        <Button variant="outline" className="w-full h-12 touch-target border-blue-600 text-blue-600 hover:bg-blue-50">
                           Sign In
                         </Button>
                       </Link>
                       <Link href="/register" onClick={() => setIsMenuOpen(false)}>
-                        <Button className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white h-12 touch-target shadow-lg">
+                        <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white h-12 touch-target shadow-lg">
                           Register Now
                         </Button>
                       </Link>

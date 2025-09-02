@@ -34,9 +34,9 @@ export async function GET(request: NextRequest) {
 
     // Default email configuration
     const defaultEmailConfig = {
-      fromName: process.env.APP_NAME || 'NeuroTrauma 2026',
-      fromEmail: process.env.SMTP_USER || 'noreply@neurotrauma2026.com',
-      replyTo: process.env.SMTP_USER || 'support@neurotrauma2026.com',
+      fromName: process.env.APP_NAME || 'OSSAPCON 2026',
+      fromEmail: process.env.SMTP_USER || 'noreply@ossapcon2026.com',
+      replyTo: process.env.SMTP_USER || 'support@ossapcon2026.com',
       templates: {
         registration: {
           enabled: true,

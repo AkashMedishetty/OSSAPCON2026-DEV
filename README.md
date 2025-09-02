@@ -1,6 +1,6 @@
-# NeuroTrauma 2026 Conference Platform
+# OSSAPCON 2026 Conference Platform
 
-A comprehensive conference management platform built with Next.js 14, featuring user registration, payment processing, admin management, and email communications.
+A comprehensive conference management platform built with Next.js 14, featuring user registration, payment processing, admin management, and email communications for the Annual Conference of Orthopedic Surgeons Society of Andhra Pradesh.
 
 ## 🚀 Features
 
@@ -71,7 +71,7 @@ A comprehensive conference management platform built with Next.js 14, featuring 
 
 ```bash
 git clone <repository-url>
-cd neurotrauma-2026
+cd ossapcon-2026
 npm install
 ```
 
@@ -85,7 +85,7 @@ Edit `.env.local` with your configuration:
 
 ```env
 # Database
-MONGODB_URI=mongodb://localhost:27017/neurotrauma2026
+MONGODB_URI=mongodb://localhost:27017/ossapcon2026
 
 # Authentication
 NEXTAUTH_SECRET=your-secret-key
@@ -101,7 +101,7 @@ SMTP_USER=your-email@gmail.com
 SMTP_PASS=your-app-password
 
 # App
-APP_NAME="NeuroTrauma 2026"
+APP_NAME="OSSAPCON 2026"
 APP_URL=http://localhost:3000
 ```
 
@@ -148,8 +148,8 @@ npm run type-check
 docker-compose up -d
 
 # Or build manually
-docker build -t neurotrauma-2026 .
-docker run -p 3000:3000 neurotrauma-2026
+docker build -t ossapcon-2026 .
+docker run -p 3000:3000 ossapcon-2026
 ```
 
 ### VPS Deployment
@@ -223,18 +223,19 @@ API routes:
 
 ### Payment Categories
 
-- **Regular Delegate**: ₹15,000
-- **Student/Resident**: ₹8,000  
-- **International**: $300
-- **Faculty**: ₹12,000
+- **OSSAP Member**: ₹12,000
+- **Non Member**: ₹17,000  
+- **PG Student**: ₹10,000
 - **Accompanying Person**: ₹3,000
 
 ### Workshop Add-ons
 
-- Advanced Joint Replacement: ₹2,000
-- Arthroscopic Surgery: ₹2,500
-- Spine Surgery Innovations: ₹2,000
-- Trauma Management: ₹1,500
+- Advanced Joint Replacement Techniques: ₹2,000
+- Arthroscopic Surgery Techniques: ₹1,500
+- Spine Surgery and Instrumentation: ₹2,500
+- Orthopedic Trauma Surgery: ₹2,200
+- Pediatric Orthopedics: ₹2,000
+- Orthopedic Rehabilitation: ₹1,800
 
 ### Discount System
 
@@ -367,10 +368,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Support
 
 For support and questions:
-- **Email**: support@neurotrauma2026.com
+- **Email**: contact@ossapcon2026.com
 - **Documentation**: [Project Wiki](link-to-wiki)
 - **Issues**: [GitHub Issues](link-to-issues)
 
 ---
 
-**NeuroTrauma 2026 Conference Platform** - Built with ❤️ for the medical community
+**OSSAPCON 2026 Conference Platform** - Built with ❤️ for the orthopedic surgery community

@@ -30,9 +30,9 @@ export class ModelErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return this.props.fallback || (
-        <div className="flex items-center justify-center h-full bg-gradient-to-br from-orange-100/60 via-orange-50/40 to-red-100/30 rounded-3xl">
+        <div className="flex items-center justify-center h-full bg-gradient-to-br from-blue-100/60 via-blue-50/40 to-blue-200/30 rounded-3xl">
           <div className="text-center p-8">
-            <AlertTriangle className="w-12 h-12 text-orange-500 mx-auto mb-4" />
+            <AlertTriangle className="w-12 h-12 text-blue-500 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-gray-800 mb-2">3D Model Unavailable</h3>
             <p className="text-gray-600 text-sm">The 3D model couldn't be loaded. Please refresh the page.</p>
           </div>

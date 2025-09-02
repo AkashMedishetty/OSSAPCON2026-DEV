@@ -90,7 +90,7 @@ export function PageError({
         
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           {onRetry && (
-            <Button onClick={onRetry} className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700">
+            <Button onClick={onRetry} className="bg-gradient-to-r from-ossapcon-950 to-ossapcon-800 hover:from-ossapcon-800 hover:to-ossapcon-700">
               <RefreshCw className="h-4 w-4 mr-2" />
               Try Again
             </Button>

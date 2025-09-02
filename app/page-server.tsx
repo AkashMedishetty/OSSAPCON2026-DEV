@@ -12,8 +12,8 @@ import { InteractiveElements } from "@/components/home/InteractiveElements"
 const BrainModel = dynamic(() => import("@/components/3d/BrainModel"), {
   ssr: false,
   loading: () => (
-    <div className="flex items-center justify-center h-full bg-gradient-to-br from-orange-100/60 via-orange-50/40 to-red-100/30 rounded-3xl">
-      <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-orange-500"></div>
+    <div className="flex items-center justify-center h-full bg-gradient-to-br from-blue-100/60 via-blue-50/40 to-blue-200/30 rounded-3xl">
+      <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500"></div>
     </div>
   )
 })
@@ -21,8 +21,8 @@ const BrainModel = dynamic(() => import("@/components/3d/BrainModel"), {
 const SpineModel = dynamic(() => import("@/components/3d/SpineModel"), {
   ssr: false,
   loading: () => (
-    <div className="flex items-center justify-center h-full bg-gradient-to-br from-orange-100/60 via-orange-50/40 to-red-100/30 rounded-3xl">
-      <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-orange-500"></div>
+    <div className="flex items-center justify-center h-full bg-gradient-to-br from-blue-100/60 via-blue-50/40 to-blue-200/30 rounded-3xl">
+      <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500"></div>
     </div>
   )
 })
@@ -30,14 +30,14 @@ const SpineModel = dynamic(() => import("@/components/3d/SpineModel"), {
 // Static data that can be pre-rendered
 const organizers = [
   {
-    src: "/NTSILOGO.png",
-    alt: "Neurotrauma Society of India",
-    name: "Neurotrauma Society of India"
+    src: "/ossapcon-logo.png",
+    alt: "Orthopedic Surgeons Society of Andhra Pradesh",
+    name: "Orthopedic Surgeons Society of Andhra Pradesh"
   },
   {
-    src: "/brainandspinesociety.png",
-    alt: "Brain and Spine Society(BASS)",
-    name: "Brain and Spine Society(BASS)"
+    src: "/ossapcon-logo.png",
+    alt: "Department of Orthopedics, Kurnool Medical College",
+    name: "Department of Orthopedics, Kurnool Medical College"
   },
   {
     src: "/KIMS.png",
@@ -61,12 +61,12 @@ const committeeMembers = [
   }
 ]
 
-const hyderabadPlaces = [
+const kurnoolPlaces = [
   {
-    name: "Charminar",
-    description: "Iconic 16th-century monument and symbol of Hyderabad",
+    name: "Kurnool Fort",
+    description: "Historic fort and symbol of Kurnool's rich heritage",
     category: "Heritage",
-    rating: "4.8",
+    rating: "4.5",
     time: "1-2 hours",
     bestTime: "Evening",
     highlights: ["Historic Architecture", "Night Illumination", "Local Markets"],
@@ -144,7 +144,7 @@ const hyderabadPlaces = [
 export default function HomePage() {
   return (
     <InteractiveElements>
-      <div className="min-h-screen bg-gradient-to-b from-white to-orange-50 text-gray-800 overflow-hidden dark:from-gray-900 dark:to-gray-900 dark:text-gray-100">
+      <div className="min-h-screen bg-gradient-to-b from-white to-blue-50 text-gray-800 overflow-hidden dark:from-gray-900 dark:to-gray-900 dark:text-gray-100">
         <Navigation currentPage="home" />
 
         {/* Revolutionary Hero Section */}
@@ -157,16 +157,16 @@ export default function HomePage() {
               <div className="space-y-8">
                 {/* Conference Details Badge */}
                 <div className="inline-block">
-                  <div className="px-6 py-3 bg-white/90 backdrop-blur-md rounded-full shadow-lg border border-orange-100 dark:bg-gray-800/90 dark:border-gray-700">
+                  <div className="px-6 py-3 bg-white/90 backdrop-blur-md rounded-full shadow-lg border border-blue-100 dark:bg-gray-800/90 dark:border-gray-700">
                     <div className="flex items-center space-x-4 text-sm font-medium text-gray-700 dark:text-gray-300">
                       <div className="flex items-center">
-                        <Calendar className="w-4 h-4 mr-2 text-orange-500" />
+                        <Calendar className="w-4 h-4 mr-2 text-blue-500" />
                         August 7-9, 2026
                       </div>
                       <div className="h-4 w-px bg-gray-300 dark:bg-gray-600"></div>
                       <div className="flex items-center">
-                        <MapPin className="w-4 h-4 mr-2 text-orange-500" />
-                        Hyderabad, India
+                        <MapPin className="w-4 h-4 mr-2 text-blue-500" />
+                        Kurnool, Andhra Pradesh
                       </div>
                     </div>
                   </div>
@@ -178,11 +178,11 @@ export default function HomePage() {
                     <span className="bg-gradient-to-r from-gray-800 via-gray-700 to-gray-900 bg-clip-text text-transparent">
                       NEURO
                     </span>
-                    <span className="bg-gradient-to-r from-orange-500 via-orange-600 to-red-600 bg-clip-text text-transparent">
+                    <span className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 bg-clip-text text-transparent">
                       TRAUMA
                     </span>
                     <br />
-                    <span className="text-4xl lg:text-5xl xl:text-6xl bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
+                    <span className="text-4xl lg:text-5xl xl:text-6xl bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent">
                       2026
                     </span>
                   </h1>
@@ -191,9 +191,9 @@ export default function HomePage() {
                 {/* Subtitle */}
                 <div>
                   <p className="text-xl lg:text-2xl text-gray-700 dark:text-gray-300 font-light leading-relaxed">
-                    Annual Conference of Neurotrauma Society of India
+                    Annual Conference of Orthopedic Surgeons Society of Andhra Pradesh
                     <br />
-                    <span className="text-lg text-orange-600">Science, Sports & Spiritually</span>
+                    <span className="text-lg text-blue-600">Excellence in Orthopedic Care</span>
                   </p>
                 </div>
 
@@ -201,7 +201,7 @@ export default function HomePage() {
                 <div>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
                     <Link href="/register">
-                      <Button className="px-8 py-4 text-lg bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white rounded-full shadow-lg hover:shadow-orange-200/50 transition-all duration-300 border-0">
+                      <Button className="px-8 py-4 text-lg bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white rounded-full shadow-lg hover:shadow-blue-200/50 transition-all duration-300 border-0">
                         <Sparkles className="mr-2 h-5 w-5" />
                         Register Now
                       </Button>
@@ -219,7 +219,7 @@ export default function HomePage() {
                     {organizers.map((org, index) => (
                       <div
                         key={index}
-                        className="flex flex-col items-center space-y-4 p-6 rounded-xl bg-white/80 backdrop-blur-xl border border-orange-100 hover:bg-white hover:shadow-lg transition-all duration-300 dark:bg-gray-800/80 dark:border-gray-700 dark:hover:bg-gray-800 w-full max-w-xs"
+                        className="flex flex-col items-center space-y-4 p-6 rounded-xl bg-white/80 backdrop-blur-xl border border-blue-100 hover:bg-white hover:shadow-lg transition-all duration-300 dark:bg-gray-800/80 dark:border-gray-700 dark:hover:bg-gray-800 w-full max-w-xs"
                       >
                         <Image
                           src={org.src}
@@ -242,8 +242,8 @@ export default function HomePage() {
               <div className="relative h-[500px] md:h-[800px] lg:h-[900px] three-canvas-container mobile-3d-model">
                 <Suspense
                   fallback={
-                    <div className="flex items-center justify-center h-full bg-gradient-to-br from-orange-100/60 via-orange-50/40 to-red-100/30 rounded-3xl">
-                      <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-orange-500"></div>
+                    <div className="flex items-center justify-center h-full bg-gradient-to-br from-blue-100/60 via-blue-50/40 to-blue-200/30 rounded-3xl">
+                      <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500"></div>
                     </div>
                   }
                 >
@@ -259,7 +259,7 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-gradient-to-b from-white via-white to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-900"></div>
           <div className="relative z-10">
             <div className="container mx-auto px-6 text-center">
-              <h2 className="text-5xl font-bold mb-16 bg-gradient-to-r from-orange-500 to-red-600 bg-clip-text text-transparent">
+              <h2 className="text-5xl font-bold mb-16 bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent">
                 Conference Countdown
               </h2>
               <CountdownTimer />

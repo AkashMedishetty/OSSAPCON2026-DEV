@@ -169,12 +169,12 @@ export default function RegistrationsPage() {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="all">All Workshops</SelectItem>
-                        <SelectItem value="brain-surgery">Advanced Brain Surgery</SelectItem>
-                        <SelectItem value="spinal-injury">Spinal Cord Injury</SelectItem>
-                        <SelectItem value="pediatric-neurotrauma">Pediatric Neurotrauma</SelectItem>
-                        <SelectItem value="minimally-invasive">Minimally Invasive</SelectItem>
-                        <SelectItem value="neurotrauma-rehab">Neurotrauma Rehabilitation</SelectItem>
-                        <SelectItem value="emergency-neurosurgery">Emergency Neurosurgery</SelectItem>
+                        <SelectItem value="joint-replacement">Joint Replacement</SelectItem>
+                        <SelectItem value="spinal-surgery">Spine Surgery</SelectItem>
+                        <SelectItem value="pediatric-orthopedics">Pediatric Orthopedics</SelectItem>
+                        <SelectItem value="arthroscopy">Arthroscopy</SelectItem>
+                        <SelectItem value="orthopedic-rehab">Orthopedic Rehabilitation</SelectItem>
+                        <SelectItem value="trauma-surgery">Trauma Surgery</SelectItem>
                         <SelectItem value="no-workshop">No Workshop Selected</SelectItem>
                       </SelectContent>
                     </Select>

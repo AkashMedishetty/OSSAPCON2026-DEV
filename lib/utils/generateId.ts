@@ -3,10 +3,10 @@ import User from '../models/User'
 
 /**
  * Generate a unique registration ID
- * Format: NTSI-001, NTSI-002, etc.
+ * Format: OSSAP-001, OSSAP-002, etc.
  */
 export async function generateRegistrationId(): Promise<string> {
-  const prefix = 'NTSI'
+  const prefix = 'OSSAP'
   
   try {
     await connectDB()
@@ -45,10 +45,10 @@ export async function generateRegistrationId(): Promise<string> {
 
 /**
  * Generate a simple registration ID synchronously (fallback)
- * Format: NTSI-XXX (where XXX is random 3-digit number)
+ * Format: OSSAP-XXX (where XXX is random 3-digit number)
  */
 export function generateSimpleRegistrationId(): string {
-  const prefix = 'NTSI'
+  const prefix = 'OSSAP'
   const number = Math.floor(Math.random() * 900) + 100 // 100-999
   
   return `${prefix}-${number.toString().padStart(3, '0')}`
@@ -61,10 +61,10 @@ export function generateSimpleRegistrationId(): string {
  
 /**
  * Generate a unique Abstract ID
- * Format: ABS-NTI-XXX
+ * Format: ABS-OSSAP-XXX
  */
 export async function generateAbstractId(): Promise<string> {
-  const prefix = 'ABS-NTI'
+  const prefix = 'ABS-OSSAP'
   try {
     const { default: connectDB } = await import('../mongodb')
     const { default: Abstract } = await import('../models/Abstract')

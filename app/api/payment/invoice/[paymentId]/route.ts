@@ -139,9 +139,9 @@ export async function GET(
     </head>
     <body>
         <div class="header">
-            <h1>NeuroTrauma 2026 Conference</h1>
-            <p>Annual Conference of the Neurotrauma Society of India</p>
-            <p>August 7-9, 2026 | Hyderabad, Telangana</p>
+            <h1>OSSAPCON 2026 Conference</h1>
+            <p>Annual Conference of Orthopedic Surgeons Society of Andhra Pradesh</p>
+            <p>August 7-9, 2026 | Kurnool, Andhra Pradesh</p>
             <h2 style="margin-top: 20px; color: #333;">INVOICE</h2>
         </div>
 
@@ -213,7 +213,7 @@ export async function GET(
 
         <div class="footer">
             <p><strong>Thank you for your registration!</strong></p>
-            <p>For any queries, please contact us at hello@violetvoyage.in</p>
+            <p>For any queries, please contact us at contact@ossapcon2026.com</p>
             <p>This is a computer-generated invoice and does not require a signature.</p>
         </div>
 
@@ -228,7 +228,7 @@ export async function GET(
     return new NextResponse(invoiceHtml, {
       headers: {
         'Content-Type': 'text/html',
-        'Content-Disposition': `inline; filename="NeuroTrauma2026-Invoice-${payment.registrationId}.html"`,
+        'Content-Disposition': `inline; filename="OSSAPCON2026-Invoice-${payment.registrationId}.html"`,
       },
     })
 

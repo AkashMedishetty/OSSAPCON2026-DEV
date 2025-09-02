@@ -55,7 +55,7 @@ export default function RegisterPage() {
             
             // Update registration types with current pricing
             const updatedTypes = [
-              { value: "ntsi-member", label: "NTSI Member", price: 12000, currency: "INR" },
+              { value: "ossap-member", label: "OSSAP Member", price: 12000, currency: "INR" },
               { value: "non-member", label: "Non Member", price: 17000, currency: "INR" },
               { value: "pg-student", label: "PG Student", price: 10000, currency: "INR" }
             ].map(type => ({
@@ -138,7 +138,7 @@ export default function RegisterPage() {
 
   // State for dynamic data
   const [registrationTypes, setRegistrationTypes] = useState([
-    { value: "ntsi-member", label: "NTSI Member", price: 12000, currency: "INR" },
+    { value: "ossap-member", label: "OSSAP Member", price: 12000, currency: "INR" },
     { value: "non-member", label: "Non Member", price: 17000, currency: "INR" },
     { value: "pg-student", label: "PG Student", price: 10000, currency: "INR" }
   ])
@@ -150,12 +150,12 @@ export default function RegisterPage() {
     availableSeats?: number
     canRegister?: boolean
   }>>([
-    { id: "brain-surgery", label: "Advanced Brain Surgery Techniques", price: 2000, canRegister: true },
-    { id: "spinal-injury", label: "Spinal Cord Injury Management", price: 2500, canRegister: true },
-    { id: "pediatric-neurotrauma", label: "Pediatric Neurotrauma", price: 2000, canRegister: true },
-    { id: "minimally-invasive", label: "Minimally Invasive Neurosurgery", price: 1500, canRegister: true },
-    { id: "neurotrauma-rehab", label: "Neurotrauma Rehabilitation", price: 1800, canRegister: true },
-    { id: "emergency-neurosurgery", label: "Emergency Neurosurgery", price: 2200, canRegister: true }
+    { id: "joint-replacement", label: "Advanced Joint Replacement Techniques", price: 2000, canRegister: true },
+    { id: "spinal-surgery", label: "Spine Surgery and Instrumentation", price: 2500, canRegister: true },
+    { id: "pediatric-orthopedics", label: "Pediatric Orthopedics", price: 2000, canRegister: true },
+    { id: "arthroscopy", label: "Arthroscopic Surgery Techniques", price: 1500, canRegister: true },
+    { id: "orthopedic-rehab", label: "Orthopedic Rehabilitation", price: 1800, canRegister: true },
+    { id: "trauma-surgery", label: "Orthopedic Trauma Surgery", price: 2200, canRegister: true }
   ])
   const [currentTier, setCurrentTier] = useState<any>(null)
   const [nextTier, setNextTier] = useState<any>(null)
@@ -692,9 +692,9 @@ export default function RegisterPage() {
     if (missingFields.length === 0) return null
     
     return (
-      <Alert className="mb-4 border-orange-200 bg-orange-50">
-        <AlertCircle className="h-4 w-4 text-orange-600" />
-        <AlertDescription className="text-orange-800">
+      <Alert className="mb-4 border-ossapcon-200 bg-ossapcon-50">
+        <AlertCircle className="h-4 w-4 text-ossapcon-700" />
+        <AlertDescription className="text-ossapcon-800">
           <strong>Please complete the following required fields:</strong>
           <ul className="mt-2 list-disc list-inside space-y-1">
             {missingFields.map(field => (
@@ -901,7 +901,7 @@ export default function RegisterPage() {
             <ValidationSummary currentStep={1} />
             
             <div className="flex justify-end">
-              <Button type="submit" className="bg-orange-600 hover:bg-orange-700">
+              <Button type="submit" className="bg-ossapcon-700 hover:bg-ossapcon-800">
                 Next Step
               </Button>
             </div>
@@ -921,7 +921,7 @@ export default function RegisterPage() {
               <label className="block text-sm font-medium text-gray-700 mb-2">Registration Type *</label>
               {/* Special Offer Banner */}
               {currentTier && (
-                <div className="bg-gradient-to-r from-orange-500 to-red-600 text-white p-4 rounded-lg mb-4">
+                <div className="bg-gradient-to-r from-ossapcon-600 to-ossapcon-800 text-white p-4 rounded-lg mb-4">
                   <div className="flex items-start justify-between">
                     <div>
                       <h3 className="font-bold text-lg">{currentTier.name}</h3>
@@ -1167,7 +1167,7 @@ export default function RegisterPage() {
               <Button type="button" variant="outline" onClick={() => setStep(1)}>
                 Previous
               </Button>
-              <Button type="submit" className="bg-orange-600 hover:bg-orange-700">
+              <Button type="submit" className="bg-ossapcon-700 hover:bg-ossapcon-800">
                 Next Step
               </Button>
             </div>
@@ -1186,7 +1186,7 @@ export default function RegisterPage() {
             
             {/* Price Summary */}
             {priceCalculation && (
-              <div className="bg-orange-50 p-6 rounded-lg mb-6">
+              <div className="bg-ossapcon-50 p-6 rounded-lg mb-6">
                 <h3 className="text-lg font-semibold text-gray-800 mb-4">Registration Summary</h3>
                 <div className="space-y-2">
                   <div className="flex justify-between">
@@ -1222,7 +1222,7 @@ export default function RegisterPage() {
                   <div className="border-t pt-2 mt-2">
                     <div className="flex justify-between font-bold text-lg">
                       <span>Total Amount:</span>
-                      <span className="text-orange-600">
+                      <span className="text-ossapcon-700">
                         {formatCurrency(priceCalculation.total, priceCalculation.currency)}
                       </span>
                     </div>
@@ -1241,7 +1241,7 @@ export default function RegisterPage() {
                 <div className="flex items-center space-x-2 p-3 border rounded-lg dark:border-gray-600">
                   <RadioGroupItem value="pay-later" id="pay-later" />
                   <Label htmlFor="pay-later" className="flex items-center space-x-2 cursor-pointer">
-                    <CreditCard className="w-4 h-4 text-orange-500" />
+                    <CreditCard className="w-4 h-4 text-ossapcon-600" />
                     <span className="text-gray-700 dark:text-gray-300">Register Now, Pay Later (Recommended)</span>
                   </Label>
                 </div>
@@ -1269,11 +1269,11 @@ export default function RegisterPage() {
               />
               <label htmlFor="terms" className="text-sm text-gray-700">
                 I agree to the{" "}
-                <Link href="#" className="text-orange-600 hover:underline">
+                <Link href="#" className="text-ossapcon-700 hover:underline">
                   Terms and Conditions
                 </Link>{" "}
                 and{" "}
-                <Link href="#" className="text-orange-600 hover:underline">
+                <Link href="#" className="text-ossapcon-700 hover:underline">
                   Privacy Policy
                 </Link>
               </label>
@@ -1284,7 +1284,7 @@ export default function RegisterPage() {
               </Button>
               <Button
                 type="submit"
-                className="bg-orange-600 hover:bg-orange-700"
+                className="bg-ossapcon-700 hover:bg-ossapcon-800"
                 disabled={!formData.agreeTerms || loading}
               >
                 {loading ? (
@@ -1310,13 +1310,13 @@ export default function RegisterPage() {
             <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-6" />
             <h2 className="text-2xl font-bold text-gray-800 mb-4">Registration Successful!</h2>
             <p className="text-gray-600 mb-6">
-              Thank you for registering for NeuroTrauma Conference 2026. Your account has been created successfully.
+              Thank you for registering for OSSAPCON 2026. Your account has been created successfully.
             </p>
             <p className="text-gray-600 mb-8">
               A confirmation email has been sent to <span className="font-semibold">{formData.email}</span> with your
               registration details and login instructions.
             </p>
-            <div className="bg-orange-50 p-6 rounded-lg mb-6 text-left">
+            <div className="bg-ossapcon-50 p-6 rounded-lg mb-6 text-left">
               <h3 className="text-lg font-semibold text-gray-800 mb-4">What's Next?</h3>
               <div className="space-y-2 text-sm">
                 <p>• Check your email for confirmation and login instructions</p>
@@ -1327,7 +1327,7 @@ export default function RegisterPage() {
             </div>
             <div className="space-x-4">
               <Link href="/auth/login">
-                <Button className="bg-orange-600 hover:bg-orange-700">
+                <Button className="bg-ossapcon-700 hover:bg-ossapcon-800">
                   Sign In Now
                 </Button>
               </Link>
@@ -1343,17 +1343,17 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-ossapcon-50 to-white dark:from-gray-900 dark:to-gray-800">
       <Navigation currentPage="register" />
 
       <div className="pt-20 pb-12 px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <section className="py-12 sm:py-16 bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-lg mx-4 sm:mx-6 lg:mx-8">
+        <section className="py-12 sm:py-16 bg-gradient-to-r from-ossapcon-800 to-ossapcon-900 text-white rounded-lg mx-4 sm:mx-6 lg:mx-8">
           <div className="container mx-auto px-4 sm:px-6 text-center">
             <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6">Conference Registration</h1>
               <p className="text-lg sm:text-xl max-w-3xl mx-auto px-4">
-                Join us for the premier neurotrauma conference - August 7-9, 2026 in Hyderabad, India
+                Join us for the premier orthopedic conference - February 4-6, 2026 in Kurnool, Andhra Pradesh
               </p>
             </motion.div>
           </div>
@@ -1377,7 +1377,7 @@ export default function RegisterPage() {
                       <div 
                         className="absolute top-0 left-0 w-full h-1/3 transform -skew-y-2 origin-top-left"
                         style={{
-                          background: 'linear-gradient(135deg, #ff9933 0%, #ff6b35 50%, #ff9933 100%)',
+                          background: 'linear-gradient(135deg, #0066b3 0%, #015189 50%, #0066b3 100%)',
                           backgroundSize: '200% 200%',
                           animation: 'gradientShift 4s ease-in-out infinite, wave 3s ease-in-out infinite'
                         }}
@@ -1464,7 +1464,7 @@ export default function RegisterPage() {
         <div className="text-center py-4">
           <p className="text-gray-600">
             Already have an account?{" "}
-            <Link href="/auth/login" className="text-orange-600 hover:text-orange-700 font-medium hover:underline">
+            <Link href="/auth/login" className="text-ossapcon-700 hover:text-ossapcon-800 font-medium hover:underline">
               Sign in here
             </Link>
           </p>
@@ -1479,7 +1479,7 @@ export default function RegisterPage() {
                   <div key={stepNumber} className="flex items-center flex-shrink-0">
                     <div
                       className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm sm:text-base ${
-                        step >= stepNumber ? "bg-orange-600 text-white" : "bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+                        step >= stepNumber ? "bg-blue-600 text-white" : "bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
                       }`}
                     >
                       {stepNumber}
@@ -1490,7 +1490,7 @@ export default function RegisterPage() {
                       {stepNumber === 3 && "Payment"}
                     </span>
                     {stepNumber < 3 && (
-                      <div className={`w-8 sm:w-16 h-1 mx-2 sm:mx-4 ${step > stepNumber ? "bg-orange-600" : "bg-gray-200 dark:bg-gray-700"}`} />
+                      <div className={`w-8 sm:w-16 h-1 mx-2 sm:mx-4 ${step > stepNumber ? "bg-blue-600" : "bg-gray-200 dark:bg-gray-700"}`} />
                     )}
                   </div>
                 ))}
@@ -1514,7 +1514,7 @@ export default function RegisterPage() {
 
         {/* Registration Benefits */}
         {step < 4 && (
-          <section className="py-12 sm:py-16 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-gray-800 dark:to-gray-700 mx-4 sm:mx-6 lg:mx-8 rounded-lg">
+          <section className="py-12 sm:py-16 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-800 dark:to-gray-700 mx-4 sm:mx-6 lg:mx-8 rounded-lg">
             <div className="container mx-auto px-4 sm:px-6">
               <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12 text-gray-800 dark:text-white">Registration Benefits</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
@@ -1531,7 +1531,7 @@ export default function RegisterPage() {
                     transition={{ duration: 0.6, delay: index * 0.1 }}
                     className="text-center p-4 sm:p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border dark:border-gray-600"
                   >
-                    <benefit.icon className="w-10 h-10 sm:w-12 sm:h-12 text-orange-500 mx-auto mb-3 sm:mb-4" />
+                    <benefit.icon className="w-10 h-10 sm:w-12 sm:h-12 text-blue-600 mx-auto mb-3 sm:mb-4" />
                     <h3 className="text-base sm:text-lg font-bold text-gray-800 dark:text-white mb-2">{benefit.title}</h3>
                     <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">{benefit.desc}</p>
                   </motion.div>

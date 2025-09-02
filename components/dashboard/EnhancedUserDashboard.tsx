@@ -305,7 +305,7 @@ export function EnhancedUserDashboard() {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="flex flex-col items-center space-y-4">
-          <RefreshCw className="h-8 w-8 animate-spin text-orange-500" />
+          <RefreshCw className="h-8 w-8 animate-spin text-blue-600" />
           <p className="text-muted-foreground">Loading your dashboard...</p>
         </div>
       </div>
@@ -335,7 +335,7 @@ export function EnhancedUserDashboard() {
         className="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
       >
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-500 to-red-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent">
             Welcome back, {userData.profile.title} {userData.profile.firstName} {userData.profile.lastName}!
           </h1>
           <p className="text-muted-foreground mt-1">
@@ -369,14 +369,14 @@ export function EnhancedUserDashboard() {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.1 }}
       >
-        <Card className="border-2 border-orange-200 dark:border-orange-800">
+        <Card className="border-2 border-blue-200 dark:border-blue-800">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Award className="h-5 w-5 text-orange-500" />
+              <Award className="h-5 w-5 text-blue-600" />
               Registration Progress
             </CardTitle>
             <CardDescription>
-              Your journey to NeuroTrauma 2026 Conference
+              Your journey to OSSAPCON 2026 Conference
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -399,7 +399,7 @@ export function EnhancedUserDashboard() {
                   {isRegistrationComplete ? (
                     <CheckCircle className="h-4 w-4 text-green-500" />
                   ) : (
-                    <Clock className="h-4 w-4 text-orange-500" />
+                    <Clock className="h-4 w-4 text-blue-600" />
                   )}
                   <span className="text-sm">
                     {isRegistrationComplete ? 'Payment Complete' : 'Payment Pending'}
@@ -496,7 +496,7 @@ export function EnhancedUserDashboard() {
                     <div className="space-y-2">
                       <div className="text-2xl font-bold text-muted-foreground">Pending</div>
                       <Link href="/dashboard/payment">
-                        <Button size="sm" className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700">
+                        <Button size="sm" className="w-full bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800">
                           Complete Payment
                         </Button>
                       </Link>
@@ -507,10 +507,10 @@ export function EnhancedUserDashboard() {
 
               {/* Quick Actions */}
               <Card className="relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-red-100 dark:from-orange-950 dark:to-red-950" />
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-950" />
                 <CardHeader className="relative">
                   <CardTitle className="flex items-center gap-2">
-                    <Star className="h-5 w-5 text-orange-500" />
+                    <Star className="h-5 w-5 text-blue-600" />
                     Quick Actions
                   </CardTitle>
                 </CardHeader>
@@ -547,31 +547,31 @@ export function EnhancedUserDashboard() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Calendar className="h-5 w-5 text-orange-500" />
+                  <Calendar className="h-5 w-5 text-blue-600" />
                   Conference Information
                 </CardTitle>
                 <CardDescription>
-                  NeuroTrauma 2026 - Annual Conference of the Neurotrauma Society of India
+                  OSSAPCON 2026 - Annual Conference of Orthopedic Surgeons Society of Andhra Pradesh
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="flex items-center gap-3">
-                    <Calendar className="h-8 w-8 text-orange-500" />
+                    <Calendar className="h-8 w-8 text-blue-600" />
                     <div>
                       <p className="font-semibold">Dates</p>
                       <p className="text-sm text-muted-foreground">August 7-9, 2026</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <MapPin className="h-8 w-8 text-orange-500" />
+                    <MapPin className="h-8 w-8 text-blue-600" />
                     <div>
                       <p className="font-semibold">Location</p>
-                      <p className="text-sm text-muted-foreground">Hyderabad, Telangana</p>
+                      <p className="text-sm text-muted-foreground">Kurnool, Andhra Pradesh</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Users className="h-8 w-8 text-orange-500" />
+                    <Users className="h-8 w-8 text-blue-600" />
                     <div>
                       <p className="font-semibold">Expected Attendees</p>
                       <p className="text-sm text-muted-foreground">500+ Delegates</p>
@@ -635,7 +635,7 @@ export function EnhancedUserDashboard() {
                     <div className="mt-2 space-y-2">
                       {userData.registration.workshopSelections.map((workshop, index) => (
                         <div key={index} className="flex items-center gap-2 p-2 bg-muted rounded">
-                          <BookOpen className="h-4 w-4 text-orange-500" />
+                          <BookOpen className="h-4 w-4 text-blue-600" />
                           <span>{workshop}</span>
                         </div>
                       ))}
@@ -650,7 +650,7 @@ export function EnhancedUserDashboard() {
                     <div className="mt-2 space-y-2">
                       {userData.registration.accompanyingPersons.map((person, index) => (
                         <div key={index} className="flex items-center gap-2 p-2 bg-muted rounded">
-                          <User className="h-4 w-4 text-orange-500" />
+                          <User className="h-4 w-4 text-blue-600" />
                           <span>{person.name} ({person.age} years, {person.relationship})</span>
                         </div>
                       ))}
@@ -781,7 +781,7 @@ export function EnhancedUserDashboard() {
                           <Button
                             onClick={() => handleDownloadInvoice(payment._id, userData.registration.registrationId)}
                             disabled={isDownloading}
-                            className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
+                            className="bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800"
                           >
                             <Download className="h-4 w-4 mr-2" />
                             {isDownloading ? 'Opening...' : 'View Invoice'}

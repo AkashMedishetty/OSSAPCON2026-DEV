@@ -72,7 +72,7 @@ export default function SubmitInitialAbstractPage() {
           </select>
         )}
         <input type="file" accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" onChange={e => setFile(e.target.files?.[0] || null)} />
-        <button disabled={loading} onClick={submit} className="px-4 py-2 bg-orange-600 text-white rounded">
+        <button disabled={loading} onClick={submit} className="px-4 py-2 bg-blue-600 text-white rounded">
           {loading ? 'Submitting...' : 'Submit'}
         </button>
         {message && <p className="text-sm text-gray-600">{message}</p>}

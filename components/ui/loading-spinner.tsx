@@ -32,18 +32,18 @@ export function LoadingSpinner({
 
 export function PageLoader({ text = "Loading..." }: { text?: string }) {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-white dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-ossapcon-50 to-white dark:from-gray-900 dark:to-gray-800">
       <div className="text-center space-y-4">
-        <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-600 rounded-full flex items-center justify-center mx-auto">
+        <div className="w-16 h-16 bg-gradient-to-r from-ossapcon-950 to-ossapcon-800 rounded-full flex items-center justify-center mx-auto">
           <Loader2 className="h-8 w-8 animate-spin text-white" />
         </div>
         <p className="text-lg font-medium text-gray-900 dark:text-gray-100">
           {text}
         </p>
         <div className="flex space-x-1 justify-center">
-          <div className="w-2 h-2 bg-orange-400 rounded-full animate-bounce"></div>
-          <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-          <div className="w-2 h-2 bg-orange-600 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+          <div className="w-2 h-2 bg-ossapcon-400 rounded-full animate-bounce"></div>
+          <div className="w-2 h-2 bg-ossapcon-600 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+          <div className="w-2 h-2 bg-ossapcon-800 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
         </div>
       </div>
     </div>

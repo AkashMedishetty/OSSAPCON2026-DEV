@@ -65,7 +65,7 @@ export function InteractiveElements({ children }: InteractiveElementsProps) {
   }
 
   const handleGetDirections = (placeName: string) => {
-    const query = encodeURIComponent(`${placeName} Hyderabad India`)
+    const query = encodeURIComponent(`${placeName} Kurnool Andhra Pradesh`)
     window.open(`https://www.google.com/maps/search/${query}`, '_blank')
   }
 
@@ -109,7 +109,7 @@ export function InteractiveElements({ children }: InteractiveElementsProps) {
                 <div className="space-y-4">
                   <div>
                     <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">Category</h3>
-                    <div className="inline-block px-3 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 rounded-full text-sm font-medium">
+                    <div className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full text-sm font-medium">
                       {selectedLocation.category}
                     </div>
                   </div>
@@ -117,7 +117,7 @@ export function InteractiveElements({ children }: InteractiveElementsProps) {
                   <div>
                     <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">Visit Duration</h3>
                     <div className="flex items-center text-gray-600 dark:text-gray-400">
-                      <span className="text-orange-500 mr-2">⏰</span>
+                      <span className="text-blue-600 mr-2">⏰</span>
                       {selectedLocation.time}
                     </div>
                   </div>
@@ -125,7 +125,7 @@ export function InteractiveElements({ children }: InteractiveElementsProps) {
                   <div>
                     <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">Best Time to Visit</h3>
                     <div className="flex items-center text-gray-600 dark:text-gray-400">
-                      <span className="text-orange-500 mr-2">🌅</span>
+                      <span className="text-blue-600 mr-2">🌅</span>
                       {selectedLocation.bestTime}
                     </div>
                   </div>
@@ -144,7 +144,7 @@ export function InteractiveElements({ children }: InteractiveElementsProps) {
                   <div className="space-y-2">
                     {selectedLocation.highlights?.map((highlight: string, idx: number) => (
                       <div key={idx} className="flex items-center text-gray-600 dark:text-gray-400">
-                        <span className="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
+                        <span className="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>
                         {highlight}
                       </div>
                     ))}
@@ -156,7 +156,7 @@ export function InteractiveElements({ children }: InteractiveElementsProps) {
               <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
                 <Button 
                   onClick={() => handleGetDirections(selectedLocation.name)}
-                  className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
                 >
                   <NavigationIcon className="w-4 h-4 mr-2" />
                   Get Directions
@@ -164,11 +164,11 @@ export function InteractiveElements({ children }: InteractiveElementsProps) {
                 
                 <Button 
                   onClick={() => {
-                    const searchQuery = encodeURIComponent(`${selectedLocation.name} Hyderabad tourism`)
+                    const searchQuery = encodeURIComponent(`${selectedLocation.name} Kurnool tourism`)
                     window.open(`https://www.google.com/search?q=${searchQuery}`, '_blank')
                   }}
                   variant="outline"
-                  className="flex-1 border-orange-500 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-900/20"
+                  className="flex-1 border-blue-600 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20"
                 >
                   <ExternalLink className="w-4 h-4 mr-2" />
                   Learn More Online

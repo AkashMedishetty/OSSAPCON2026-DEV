@@ -37,8 +37,8 @@ const nextConfig = {
     // Add your domains here
     domains: [
       'localhost',
-      'neurotrauma2026.vercel.app',
-      'neurotrauma2026.in',
+      'ossapcon2026.vercel.app',
+      'ossapcon2026.com',
       'images.unsplash.com',
       'via.placeholder.com'
     ],

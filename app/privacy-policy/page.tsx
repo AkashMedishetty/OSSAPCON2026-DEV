@@ -7,7 +7,7 @@ import { Shield, Eye, Lock, Users, FileText, Mail } from "lucide-react"
 export default function PrivacyPolicyPage() {
   return (
     <MainLayout>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-orange-50 py-20">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-20">
         <div className="container mx-auto px-6 max-w-4xl">
           {/* Header */}
           <motion.div
@@ -17,11 +17,11 @@ export default function PrivacyPolicyPage() {
             className="text-center mb-12"
           >
             <div className="flex justify-center mb-6">
-              <div className="bg-orange-100 p-4 rounded-full">
-                <Shield className="w-12 h-12 text-orange-600" />
+              <div className="bg-blue-100 p-4 rounded-full">
+                <Shield className="w-12 h-12 text-blue-600" />
               </div>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent">
               Privacy Policy
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -38,7 +38,7 @@ export default function PrivacyPolicyPage() {
           >
             <div className="space-y-8">
               {/* Last Updated */}
-              <div className="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-500">
+              <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
                 <p className="text-sm text-gray-600">
                   <strong>Last Updated:</strong> December 2024
                 </p>
@@ -47,7 +47,7 @@ export default function PrivacyPolicyPage() {
               {/* Information We Collect */}
               <section>
                 <div className="flex items-center mb-4">
-                  <Eye className="w-6 h-6 text-orange-600 mr-3" />
+                  <Eye className="w-6 h-6 text-blue-600 mr-3" />
                   <h2 className="text-2xl font-bold text-gray-800">Information We Collect</h2>
                 </div>
                 <div className="space-y-4 text-gray-600">
@@ -68,7 +68,7 @@ export default function PrivacyPolicyPage() {
               {/* How We Use Information */}
               <section>
                 <div className="flex items-center mb-4">
-                  <Users className="w-6 h-6 text-orange-600 mr-3" />
+                  <Users className="w-6 h-6 text-blue-600 mr-3" />
                   <h2 className="text-2xl font-bold text-gray-800">How We Use Your Information</h2>
                 </div>
                 <div className="space-y-4 text-gray-600">
@@ -87,7 +87,7 @@ export default function PrivacyPolicyPage() {
               {/* Information Sharing */}
               <section>
                 <div className="flex items-center mb-4">
-                  <Lock className="w-6 h-6 text-orange-600 mr-3" />
+                  <Lock className="w-6 h-6 text-blue-600 mr-3" />
                   <h2 className="text-2xl font-bold text-gray-800">Information Sharing</h2>
                 </div>
                 <div className="space-y-4 text-gray-600">
@@ -107,7 +107,7 @@ export default function PrivacyPolicyPage() {
               {/* Data Security */}
               <section>
                 <div className="flex items-center mb-4">
-                  <Shield className="w-6 h-6 text-orange-600 mr-3" />
+                  <Shield className="w-6 h-6 text-blue-600 mr-3" />
                   <h2 className="text-2xl font-bold text-gray-800">Data Security</h2>
                 </div>
                 <div className="space-y-4 text-gray-600">
@@ -122,7 +122,7 @@ export default function PrivacyPolicyPage() {
               {/* Your Rights */}
               <section>
                 <div className="flex items-center mb-4">
-                  <FileText className="w-6 h-6 text-orange-600 mr-3" />
+                  <FileText className="w-6 h-6 text-blue-600 mr-3" />
                   <h2 className="text-2xl font-bold text-gray-800">Your Rights</h2>
                 </div>
                 <div className="space-y-4 text-gray-600">
@@ -140,7 +140,7 @@ export default function PrivacyPolicyPage() {
               {/* Contact Information */}
               <section>
                 <div className="flex items-center mb-4">
-                  <Mail className="w-6 h-6 text-orange-600 mr-3" />
+                  <Mail className="w-6 h-6 text-blue-600 mr-3" />
                   <h2 className="text-2xl font-bold text-gray-800">Contact Us</h2>
                 </div>
                 <div className="space-y-4 text-gray-600">
@@ -156,7 +156,7 @@ export default function PrivacyPolicyPage() {
               </section>
 
               {/* Changes to Policy */}
-              <section className="bg-orange-50 p-6 rounded-lg">
+              <section className="bg-blue-50 p-6 rounded-lg">
                 <h2 className="text-xl font-bold text-gray-800 mb-3">Changes to This Policy</h2>
                 <p className="text-gray-600">
                   We may update this Privacy Policy from time to time. We will notify you of any changes by 

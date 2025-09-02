@@ -2,7 +2,7 @@
 module.exports = {
   apps: [
     {
-      name: 'neurotrauma-2026',
+      name: 'ossapcon-2026',
       script: './server.js',
       cwd: './',
       instances: 'max', // Use all available CPU cores
@@ -64,8 +64,8 @@ module.exports = {
       user: 'ubuntu',
       host: ['your-server-ip'], // Replace with your server IP
       ref: 'origin/main',
-      repo: 'https://github.com/your-username/neurotrauma-2026.git', // Replace with your repo
-      path: '/var/www/neurotrauma-2026',
+      repo: 'https://github.com/your-username/ossapcon-2026.git', // Replace with your repo
+      path: '/var/www/ossapcon-2026',
       'pre-deploy-local': '',
       'post-deploy':
         'npm install && npm run build && pm2 reload ecosystem.config.js --env production',
@@ -79,8 +79,8 @@ module.exports = {
       user: 'ubuntu',
       host: ['staging-server-ip'], // Replace with staging server IP
       ref: 'origin/develop',
-      repo: 'https://github.com/your-username/neurotrauma-2026.git',
-      path: '/var/www/neurotrauma-2026-staging',
+      repo: 'https://github.com/your-username/ossapcon-2026.git',
+      path: '/var/www/ossapcon-2026-staging',
       'post-deploy':
         'npm install && npm run build && pm2 reload ecosystem.config.js --env staging',
       env: {

@@ -1001,7 +1001,7 @@ export function ComprehensiveAdminPanel() {
                       {currentTier ? (
                         <>
                           <p className="font-bold text-green-600">{currentTier.name}</p>
-                          <Badge variant="secondary" className="mt-1">₹{currentTier.categories?.['ntsi-member']?.amount || 'N/A'}</Badge>
+                          <Badge variant="secondary" className="mt-1">₹{currentTier.categories?.['ossap-member']?.amount || 'N/A'}</Badge>
                         </>
                       ) : (
                         <Badge variant="outline">Loading...</Badge>
@@ -1056,7 +1056,7 @@ export function ComprehensiveAdminPanel() {
                     </div>
                     <div>
                       <Label className="text-sm">From Email</Label>
-                      <Input value="hello@violetvoyage.in" disabled />
+                      <Input value="contact@ossapcon2026.com" disabled />
                     </div>
                     <div className="flex items-center space-x-2">
                       <div className="w-3 h-3 bg-green-500 rounded-full"></div>
@@ -1476,7 +1476,7 @@ export function ComprehensiveAdminPanel() {
                 </p>
                 <Button
                   onClick={() => window.open('/admin/notifications', '_blank')}
-                  className="bg-orange-600 hover:bg-orange-700"
+                  className="bg-blue-600 hover:bg-blue-700"
                 >
                   <Bell className="mr-2 h-4 w-4" />
                   Open Notifications Manager

@@ -39,7 +39,7 @@ const futuristicProgram = {
       description: "Nano-scale joint reconstruction using quantum mechanics",
       speakers: ["Dr. Elena Vasquez - MIT Quantum Lab"],
       icon: Cpu,
-      color: "from-orange-500 to-red-600",
+      color: "from-blue-600 to-blue-700",
       tech: "Quantum Computing",
     },
     {
@@ -81,7 +81,7 @@ const futuristicProgram = {
       venue: "Quantum Dining",
       description: "Personalized nutrition based on genetic analysis",
       icon: Zap,
-      color: "from-yellow-500 to-orange-600",
+      color: "from-yellow-500 to-blue-600",
       tech: "Personalized Medicine",
     },
     {
@@ -167,7 +167,7 @@ const futuristicProgram = {
       description: "Microscopic robots for cellular repair",
       speakers: ["Dr. Nano Expert", "Dr. Micro Surgeon", "Dr. Cellular Pro"],
       icon: Cpu,
-      color: "from-orange-500 to-red-600",
+      color: "from-blue-600 to-blue-700",
       tech: "Nanotechnology",
     },
     {
@@ -178,7 +178,7 @@ const futuristicProgram = {
       description: "Quantum-enhanced athletic performance",
       speakers: ["Dr. Quantum Athlete", "Dr. Performance Plus", "Dr. Speed Force"],
       icon: Zap,
-      color: "from-yellow-500 to-orange-600",
+      color: "from-yellow-500 to-blue-600",
       tech: "Quantum Enhancement",
     },
     {
@@ -250,13 +250,13 @@ const futuristicProgram = {
 
 const getTypeColor = (type: string) => {
   const colors = {
-    keynote: "from-orange-500 to-red-600",
+    keynote: "from-blue-500 to-blue-700",
     session: "from-blue-500 to-purple-600",
     workshop: "from-green-500 to-teal-600",
     panel: "from-purple-500 to-pink-600",
     ceremony: "from-red-500 to-pink-600",
     break: "from-gray-500 to-gray-600",
-    registration: "from-yellow-500 to-orange-600",
+    registration: "from-yellow-500 to-blue-600",
     social: "from-pink-500 to-purple-600",
     forum: "from-indigo-500 to-blue-600",
     presentation: "from-teal-500 to-cyan-600",
@@ -306,40 +306,40 @@ export default function ProgramPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-orange-50 text-gray-800 overflow-hidden dark:from-gray-900 dark:to-gray-800 dark:text-gray-100">
+    <div className="min-h-screen bg-gradient-to-b from-white to-blue-50 text-gray-800 overflow-hidden dark:from-gray-900 dark:to-gray-800 dark:text-gray-100">
       <Navigation currentPage="program" />
 
       <div className="pt-20 lg:pt-24">
         {/* Interactive Coming Soon Section */}
-        <section className="relative py-32 overflow-hidden bg-gradient-to-b from-orange-100 via-white to-orange-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        <section className="relative py-32 overflow-hidden bg-gradient-to-b from-blue-100 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
 
           <div className="container mx-auto px-6 text-center">
             <motion.div initial={{ opacity: 0, y: 100 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-8 leading-none">
-                <span className="bg-gradient-to-r from-gray-800 via-orange-600 to-red-600 bg-clip-text text-transparent dark:from-white dark:via-orange-400 dark:to-red-400">
+                <span className="bg-gradient-to-r from-gray-800 via-blue-600 to-blue-700 bg-clip-text text-transparent dark:from-white dark:via-blue-400 dark:to-blue-500">
                   CONFERENCE
                 </span>
                 <br />
-                <span className="bg-gradient-to-r from-orange-500 via-red-500 to-red-600 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 bg-clip-text text-transparent">
                   PROGRAM
                 </span>
               </h1>
 
               <div className="mb-8">
                 <motion.div 
-                  className="inline-flex items-center px-6 py-3 bg-orange-100 dark:bg-orange-900/30 rounded-full mb-6"
+                  className="inline-flex items-center px-6 py-3 bg-blue-100 dark:bg-blue-900/30 rounded-full mb-6"
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ delay: 0.5, duration: 0.5 }}
                 >
-                  <Zap className="w-5 h-5 mr-2 text-orange-600 dark:text-orange-400" />
-                  <span className="text-orange-600 dark:text-orange-400 font-semibold">Coming Soon</span>
+                  <Zap className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" />
+                  <span className="text-blue-600 dark:text-blue-400 font-semibold">Coming Soon</span>
                 </motion.div>
                 
                 <p className="text-xl lg:text-2xl text-gray-700 dark:text-gray-300 mb-6 max-w-4xl mx-auto leading-relaxed">
                   Our expert committee is crafting an extraordinary program featuring cutting-edge research,
                   <br />
-                  <span className="text-lg text-orange-600 dark:text-orange-400">interactive workshops, and world-renowned speakers.</span>
+                  <span className="text-lg text-blue-600 dark:text-blue-400">interactive workshops, and world-renowned speakers.</span>
                 </p>
               </div>
 
@@ -347,7 +347,7 @@ export default function ProgramPage() {
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button 
                     onClick={() => setIsNotifyOpen(true)}
-                    className="px-8 py-4 text-lg bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white rounded-full shadow-2xl"
+                    className="px-8 py-4 text-lg bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white rounded-full shadow-2xl"
                   >
                     <Bell className="w-5 h-5 mr-2" />
                     Notify Me When Available
@@ -358,7 +358,7 @@ export default function ProgramPage() {
                   <Link href="/register">
                     <Button 
                       variant="outline"
-                      className="px-8 py-4 text-lg border-2 border-orange-500 text-orange-600 hover:bg-orange-50 rounded-full dark:border-orange-400 dark:text-orange-400 dark:hover:bg-orange-900/20"
+                      className="px-8 py-4 text-lg border-2 border-blue-500 text-blue-600 hover:bg-blue-50 rounded-full dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-900/20"
                     >
                       <Calendar className="w-5 h-5 mr-2" />
                       Register Now
@@ -380,7 +380,7 @@ export default function ProgramPage() {
               transition={{ duration: 0.8 }}
               className="text-center mb-16"
             >
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-800 via-orange-600 to-red-600 bg-clip-text text-transparent">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-800 via-blue-600 to-blue-700 bg-clip-text text-transparent">
                 What to Expect
               </h2>
               <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
@@ -405,8 +405,8 @@ export default function ProgramPage() {
                 {
                   icon: Cpu,
                   title: "Technical Sessions",
-                  desc: "Latest innovations in neurotrauma care",
-                  color: "from-orange-500 to-red-600",
+                  desc: "Latest innovations in orthopedic care",
+                  color: "from-blue-500 to-blue-700",
                 },
                 {
                   icon: Award,
@@ -418,7 +418,7 @@ export default function ProgramPage() {
                   icon: MapPin,
                   title: "Networking Events",
                   desc: "Connect with peers and industry leaders",
-                  color: "from-yellow-500 to-orange-600",
+                  color: "from-yellow-500 to-blue-600",
                 },
                 {
                   icon: Download,
@@ -437,7 +437,7 @@ export default function ProgramPage() {
                   whileHover={{ scale: 1.05, y: -5 }}
                 >
                   <div className={`absolute inset-0 bg-gradient-to-r ${item.color} opacity-10 rounded-2xl blur-xl group-hover:opacity-20 transition-all duration-300`}></div>
-                  <div className="relative text-center p-8 bg-white dark:bg-gray-800 backdrop-blur-xl border border-orange-100 dark:border-gray-700 rounded-2xl hover:border-orange-200 dark:hover:border-gray-600 transition-all duration-300 shadow-lg hover:shadow-xl">
+                  <div className="relative text-center p-8 bg-white dark:bg-gray-800 backdrop-blur-xl border border-blue-100 dark:border-gray-700 rounded-2xl hover:border-blue-200 dark:hover:border-gray-600 transition-all duration-300 shadow-lg hover:shadow-xl">
                     <div className={`w-16 h-16 bg-gradient-to-r ${item.color} rounded-2xl flex items-center justify-center mx-auto mb-6`}>
                       <item.icon className="w-8 h-8 text-white" />
                     </div>
@@ -469,7 +469,7 @@ export default function ProgramPage() {
 
         {/* Spectacular CTA */}
         <section className="py-16 md:py-24 lg:py-32 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-orange-500 via-orange-600 to-red-600"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700"></div>
           <div className="absolute inset-0 bg-white/10"></div>
 
           <motion.div
@@ -481,19 +481,19 @@ export default function ProgramPage() {
             <h2 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 md:mb-8 text-white">
               Ready to Join
               <br />
-              <span className="bg-gradient-to-r from-white to-orange-100 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
                 The Future?
               </span>
             </h2>
 
             <p className="text-lg md:text-xl lg:text-2xl text-white/90 mb-8 md:mb-12 max-w-3xl mx-auto leading-relaxed px-4">
-              Don't just attend a conference—experience the future of neurotrauma medicine.
+              Don't just attend a conference—experience the future of orthopedic medicine.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-6 md:gap-8 justify-center px-4">
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Link href="/register">
-                  <Button className="w-full sm:w-auto px-8 md:px-12 py-4 md:py-6 text-lg md:text-xl bg-white text-orange-600 hover:bg-gray-100 rounded-full shadow-2xl font-bold">
+                  <Button className="w-full sm:w-auto px-8 md:px-12 py-4 md:py-6 text-lg md:text-xl bg-white text-blue-600 hover:bg-gray-100 rounded-full shadow-2xl font-bold">
                     <Play className="mr-2 md:mr-3 h-5 w-5 md:h-6 md:w-6" />
                     Register Now
                   </Button>
@@ -531,7 +531,7 @@ export default function ProgramPage() {
               </button>
 
               <div className="text-center mb-6">
-                <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Mail className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">
@@ -550,7 +550,7 @@ export default function ProgramPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-gray-700 dark:text-gray-100"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-gray-100"
                   />
                 </div>
 
@@ -565,7 +565,7 @@ export default function ProgramPage() {
                   </Button>
                   <Button
                     type="submit"
-                    className="flex-1 py-3 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white"
+                    className="flex-1 py-3 bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white"
                   >
                     <Bell className="w-4 h-4 mr-2" />
                     Notify Me

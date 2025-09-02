@@ -7,7 +7,7 @@ import { FileText, Users, CreditCard, AlertTriangle, Scale, Mail } from "lucide-
 export default function TermsConditionsPage() {
   return (
     <MainLayout>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-orange-50 py-20">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-ossapcon-50 py-20">
         <div className="container mx-auto px-6 max-w-4xl">
           {/* Header */}
           <motion.div
@@ -17,15 +17,15 @@ export default function TermsConditionsPage() {
             className="text-center mb-12"
           >
             <div className="flex justify-center mb-6">
-              <div className="bg-orange-100 p-4 rounded-full">
-                <Scale className="w-12 h-12 text-orange-600" />
+              <div className="bg-ossapcon-100 p-4 rounded-full">
+                <Scale className="w-12 h-12 text-ossapcon-700" />
               </div>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-ossapcon-700 to-ossapcon-900 bg-clip-text text-transparent">
               Terms & Conditions
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Please read these terms and conditions carefully before registering for the NeuroTrauma 2026 Conference.
+              Please read these terms and conditions carefully before registering for the OSSAPCON 2026 Conference.
             </p>
           </motion.div>
 
@@ -38,7 +38,7 @@ export default function TermsConditionsPage() {
           >
             <div className="space-y-8">
               {/* Last Updated */}
-              <div className="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-500">
+              <div className="bg-ossapcon-50 p-4 rounded-lg border-l-4 border-ossapcon-600">
                 <p className="text-sm text-gray-600">
                   <strong>Last Updated:</strong> December 2024
                 </p>
@@ -47,12 +47,12 @@ export default function TermsConditionsPage() {
               {/* Acceptance of Terms */}
               <section>
                 <div className="flex items-center mb-4">
-                  <FileText className="w-6 h-6 text-orange-600 mr-3" />
+                  <FileText className="w-6 h-6 text-ossapcon-700 mr-3" />
                   <h2 className="text-2xl font-bold text-gray-800">Acceptance of Terms</h2>
                 </div>
                 <div className="space-y-4 text-gray-600">
                   <p>
-                    By registering for the NeuroTrauma 2026 Conference, you agree to be bound by these Terms and Conditions. 
+                    By registering for the OSSAPCON 2026 Conference, you agree to be bound by these Terms and Conditions. 
                     If you do not agree to these terms, please do not register for the conference.
                   </p>
                 </div>
@@ -61,7 +61,7 @@ export default function TermsConditionsPage() {
               {/* Registration and Payment */}
               <section>
                 <div className="flex items-center mb-4">
-                  <CreditCard className="w-6 h-6 text-orange-600 mr-3" />
+                  <CreditCard className="w-6 h-6 text-ossapcon-700 mr-3" />
                   <h2 className="text-2xl font-bold text-gray-800">Registration and Payment</h2>
                 </div>
                 <div className="space-y-4 text-gray-600">
@@ -79,7 +79,7 @@ export default function TermsConditionsPage() {
               {/* Cancellation and Refund Policy */}
               <section>
                 <div className="flex items-center mb-4">
-                  <AlertTriangle className="w-6 h-6 text-orange-600 mr-3" />
+                  <AlertTriangle className="w-6 h-6 text-ossapcon-700 mr-3" />
                   <h2 className="text-2xl font-bold text-gray-800">Cancellation and Refund Policy</h2>
                 </div>
                 <div className="space-y-4 text-gray-600">
@@ -100,7 +100,7 @@ export default function TermsConditionsPage() {
               {/* Conference Changes */}
               <section>
                 <div className="flex items-center mb-4">
-                  <Users className="w-6 h-6 text-orange-600 mr-3" />
+                  <Users className="w-6 h-6 text-ossapcon-700 mr-3" />
                   <h2 className="text-2xl font-bold text-gray-800">Conference Changes and Cancellation</h2>
                 </div>
                 <div className="space-y-4 text-gray-600">
@@ -123,7 +123,7 @@ export default function TermsConditionsPage() {
               {/* Code of Conduct */}
               <section>
                 <div className="flex items-center mb-4">
-                  <Users className="w-6 h-6 text-orange-600 mr-3" />
+                  <Users className="w-6 h-6 text-ossapcon-700 mr-3" />
                   <h2 className="text-2xl font-bold text-gray-800">Code of Conduct</h2>
                 </div>
                 <div className="space-y-4 text-gray-600">
@@ -145,7 +145,7 @@ export default function TermsConditionsPage() {
               {/* Intellectual Property */}
               <section>
                 <div className="flex items-center mb-4">
-                  <FileText className="w-6 h-6 text-orange-600 mr-3" />
+                  <FileText className="w-6 h-6 text-ossapcon-700 mr-3" />
                   <h2 className="text-2xl font-bold text-gray-800">Intellectual Property</h2>
                 </div>
                 <div className="space-y-4 text-gray-600">
@@ -162,7 +162,7 @@ export default function TermsConditionsPage() {
               {/* Liability Limitation */}
               <section>
                 <div className="flex items-center mb-4">
-                  <AlertTriangle className="w-6 h-6 text-orange-600 mr-3" />
+                  <AlertTriangle className="w-6 h-6 text-ossapcon-700 mr-3" />
                   <h2 className="text-2xl font-bold text-gray-800">Limitation of Liability</h2>
                 </div>
                 <div className="space-y-4 text-gray-600">
@@ -185,7 +185,7 @@ export default function TermsConditionsPage() {
               {/* Contact Information */}
               <section>
                 <div className="flex items-center mb-4">
-                  <Mail className="w-6 h-6 text-orange-600 mr-3" />
+                  <Mail className="w-6 h-6 text-ossapcon-700 mr-3" />
                   <h2 className="text-2xl font-bold text-gray-800">Contact Information</h2>
                 </div>
                 <div className="space-y-4 text-gray-600">
@@ -201,11 +201,11 @@ export default function TermsConditionsPage() {
               </section>
 
               {/* Governing Law */}
-              <section className="bg-orange-50 p-6 rounded-lg">
+              <section className="bg-ossapcon-50 p-6 rounded-lg">
                 <h2 className="text-xl font-bold text-gray-800 mb-3">Governing Law</h2>
                 <p className="text-gray-600">
                   These terms and conditions are governed by the laws of India. Any disputes arising from 
-                  these terms will be subject to the jurisdiction of the courts in Hyderabad, India.
+                  these terms will be subject to the jurisdiction of the courts in Kurnool, Andhra Pradesh.
                 </p>
               </section>
             </div>

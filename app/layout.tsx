@@ -28,42 +28,43 @@ const orbitron = Orbitron({
 
 export const metadata: Metadata = {
   title: {
-    default: "NeuroTrauma 2026 - Annual Conference of Neurotrauma Society of India",
-    template: "%s | NeuroTrauma 2026"
+    default: "OSSAPCON 2026 - Annual Conference of Orthopedic Surgeons Society of Andhra Pradesh",
+    template: "%s | OSSAPCON 2026"
   },
-  description: "Join the premier neurotrauma conference in Hyderabad, India from August 7-9, 2026. Advancing Neurotrauma Care & Research through innovation, collaboration, and clinical excellence. Register now for early bird pricing.",
+  description: "Join the premier orthopedic conference in Kurnool, Andhra Pradesh from February 4-6, 2026. Excellence in Orthopedic Care through innovation, collaboration, and clinical excellence. Register now for early bird pricing.",
   keywords: [
-    "neurotrauma",
+    "orthopedic",
     "conference", 
     "medical conference",
-    "neurosurgery",
-    "brain injury",
-    "spinal injury",
+    "orthopedic surgery",
+    "bone surgery",
+    "joint surgery",
+    "spine surgery",
     "trauma care",
-    "Hyderabad",
+    "Kurnool",
+    "Andhra Pradesh",
     "India",
     "medical education",
     "CME",
-    "neuroscience",
-    "emergency medicine",
+    "orthopedics",
+    "sports medicine",
     "rehabilitation",
-    "Neurotrauma Society of India",
-    "NTSI",
+    "Orthopedic Surgeons Society of Andhra Pradesh",
+    "OSSAP",
     "2026"
   ],
   authors: [
-    { name: "Neurotrauma Society of India" },
-    { name: "Dr. Manas Panigrahi" },
-    { name: "Dr. Raghavendra H" }
+    { name: "Orthopedic Surgeons Society of Andhra Pradesh" },
+    { name: "LAXMI PRABHA" }
   ],
-  creator: "Neurotrauma Society of India",
-  publisher: "Neurotrauma Society of India",
+  creator: "Orthopedic Surgeons Society of Andhra Pradesh",
+  publisher: "Orthopedic Surgeons Society of Andhra Pradesh",
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://neurotrauma2026.in'),
+  metadataBase: new URL('https://ossapcon2026.com'),
   alternates: {
     canonical: '/',
     languages: {
@@ -97,7 +98,7 @@ export const metadata: Metadata = {
       {
         rel: 'mask-icon',
         url: '/Favicons/favicon.ico',
-        color: '#ff6b35'
+        color: '#015189'
       }
     ]
   },
@@ -105,31 +106,31 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_IN',
-    url: 'https://neurotrauma2026.in',
-    siteName: 'NeuroTrauma 2026',
-    title: 'NeuroTrauma 2026 - Annual Conference of Neurotrauma Society of India',
-    description: 'Join the premier neurotrauma conference in Hyderabad, India from August 7-9, 2026. Advancing Neurotrauma Care & Research through innovation and clinical excellence.',
+    url: 'https://ossapcon2026.com',
+    siteName: 'OSSAPCON 2026',
+    title: 'OSSAPCON 2026 - Annual Conference of Orthopedic Surgeons Society of Andhra Pradesh',
+    description: 'Join the premier orthopedic conference in Kurnool, Andhra Pradesh from February 4-6, 2026. Excellence in Orthopedic Care through innovation and clinical excellence.',
     images: [
       {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'NeuroTrauma 2026 Conference - Hyderabad, India',
+        alt: 'OSSAPCON 2026 Conference - Kurnool, Andhra Pradesh',
       },
       {
         url: '/og-image-square.jpg',
         width: 1200,
         height: 1200,
-        alt: 'NeuroTrauma 2026 Conference Logo',
+        alt: 'OSSAPCON 2026 Conference Logo',
       }
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    site: '@NeuroTrauma2026',
-    creator: '@NTSI_India',
-    title: 'NeuroTrauma 2026 - Annual Conference of Neurotrauma Society of India',
-    description: 'Join the premier neurotrauma conference in Hyderabad, India from August 7-9, 2026. Early bird registration now open!',
+    site: '@OSSAPCON2026',
+    creator: '@OSSAP_India',
+    title: 'OSSAPCON 2026 - Annual Conference of Orthopedic Surgeons Society of Andhra Pradesh',
+    description: 'Join the premier orthopedic conference in Kurnool, Andhra Pradesh from February 4-6, 2026. Early bird registration now open!',
     images: ['/og-image.jpg'],
   },
   verification: {
@@ -140,10 +141,10 @@ export const metadata: Metadata = {
   category: 'Medical Conference',
   classification: 'Medical Education, Healthcare, Neuroscience',
   referrer: 'origin-when-cross-origin',
-  bookmarks: ['https://neurotrauma2026.in'],
-  applicationName: 'NeuroTrauma 2026',
+  bookmarks: ['https://ossapcon2026.com'],
+  applicationName: 'OSSAPCON 2026',
   generator: 'Next.js',
-  abstract: 'Annual Conference of Neurotrauma Society of India focusing on advancing neurotrauma care through research, innovation, and clinical excellence.',
+  abstract: 'Annual Conference of Orthopedic Surgeons Society of Andhra Pradesh focusing on excellence in orthopedic care through research, innovation, and clinical excellence.',
 }
 
 export const viewport = {
@@ -167,35 +168,35 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "MedicalEvent",
-              "name": "NeuroTrauma 2026 - Annual Conference of Neurotrauma Society of India",
-              "description": "Premier neurotrauma conference advancing care and research through innovation, collaboration, and clinical excellence in Hyderabad, India.",
-              "startDate": "2026-08-07T09:00:00+05:30",
-              "endDate": "2026-08-09T18:00:00+05:30",
+              "name": "OSSAPCON 2026 - Annual Conference of Orthopedic Surgeons Society of Andhra Pradesh",
+              "description": "Premier orthopedic conference advancing care and research through innovation, collaboration, and clinical excellence in Kurnool, Andhra Pradesh.",
+              "startDate": "2026-02-04T09:00:00+05:30",
+              "endDate": "2026-02-06T18:00:00+05:30",
               "eventStatus": "https://schema.org/EventScheduled",
               "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
               "location": {
                 "@type": "Place",
-                "name": "Hyderabad, Telangana, India",
+                "name": "Kurnool, Andhra Pradesh, India",
                 "address": {
                   "@type": "PostalAddress",
-                  "addressLocality": "Hyderabad",
-                  "addressRegion": "Telangana",
+                  "addressLocality": "Kurnool",
+                  "addressRegion": "Andhra Pradesh",
                   "addressCountry": "IN"
                 }
               },
               "organizer": {
                 "@type": "Organization",
-                "name": "Neurotrauma Society of India",
-                "url": "https://neurotrauma2026.in"
+                "name": "Orthopedic Surgeons Society of Andhra Pradesh",
+                "url": "https://ossapcon2026.com"
               },
               "sponsor": [
                 {
                   "@type": "Organization",
-                  "name": "KIMS Hospitals"
+                  "name": "Kurnool Medical College"
                 },
                 {
                   "@type": "Organization", 
-                  "name": "Brain and Spine Society"
+                  "name": "Department of Orthopedics"
                 }
               ],
               "offers": {
@@ -204,68 +205,63 @@ export default function RootLayout({
                 "priceCurrency": "INR",
                 "availability": "https://schema.org/InStock",
                 "validFrom": "2024-01-01T00:00:00+05:30",
-                "url": "https://neurotrauma2026.in/register"
+                "url": "https://ossapcon2026.com/register"
               },
               "performer": [
                 {
                   "@type": "Person",
-                  "name": "Dr. Manas Panigrahi",
-                  "jobTitle": "Organising Chairman"
-                },
-                {
-                  "@type": "Person",
-                  "name": "Dr. Raghavendra H",
-                  "jobTitle": "Organising Secretary"
+                  "name": "LAXMI PRABHA",
+                  "jobTitle": "Conference Coordinator"
                 }
               ],
               "audience": {
                 "@type": "MedicalAudience",
-                "audienceType": "Medical Professionals, Neurosurgeons, Emergency Physicians, Researchers"
+                "audienceType": "Medical Professionals, Orthopedic Surgeons, Sports Medicine Physicians, Researchers"
               },
               "image": [
-                "https://neurotrauma2026.in/og-image.jpg",
-                "https://neurotrauma2026.in/conference-banner.jpg"
+                "https://ossapcon2026.com/og-image.jpg",
+                "https://ossapcon2026.com/conference-banner.jpg"
               ],
-              "url": "https://neurotrauma2026.in",
+              "url": "https://ossapcon2026.com",
               "workFeatured": {
                 "@type": "CreativeWork",
-                "name": "Advancing Neurotrauma Care & Research",
-                "description": "Conference theme focusing on innovation in neurotrauma treatment and research"
+                "name": "Excellence in Orthopedic Care",
+                "description": "Conference theme focusing on innovation in orthopedic treatment and research"
               }
             })
           }}
         />
         
         {/* Additional Meta Tags for Enhanced SEO */}
-        <meta name="theme-color" content="#ff6b35" />
-        <meta name="msapplication-TileColor" content="#ff6b35" />
+        <meta name="theme-color" content="#015189" />
+        <meta name="msapplication-TileColor" content="#015189" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
         
         {/* Geo Tags */}
-        <meta name="geo.region" content="IN-TG" />
-        <meta name="geo.placename" content="Hyderabad" />
-        <meta name="geo.position" content="17.3850;78.4867" />
-        <meta name="ICBM" content="17.3850, 78.4867" />
+        <meta name="geo.region" content="IN-AP" />
+        <meta name="geo.placename" content="Kurnool" />
+        <meta name="geo.position" content="15.8281;78.0373" />
+        <meta name="ICBM" content="15.8281, 78.0373" />
         
         {/* Medical Conference Specific Tags */}
-        <meta name="medical.specialty" content="Neurosurgery, Trauma Care, Emergency Medicine" />
-        <meta name="event.date" content="2026-08-07/2026-08-09" />
-        <meta name="event.location" content="Hyderabad, India" />
+        <meta name="medical.specialty" content="Orthopedic Surgery, Trauma Care, Sports Medicine" />
+        <meta name="event.date" content="2026-02-04/2026-02-06" />
+        <meta name="event.location" content="Kurnool, Andhra Pradesh" />
         <meta name="conference.registration" content="Open" />
         <meta name="conference.pricing" content="₹5,000 Early Bird" />
         
         {/* Dublin Core Metadata */}
-        <meta name="DC.title" content="NeuroTrauma 2026 - Annual Conference" />
-        <meta name="DC.creator" content="Neurotrauma Society of India" />
-        <meta name="DC.subject" content="Neurotrauma, Medical Conference, Neurosurgery" />
-        <meta name="DC.description" content="Premier neurotrauma conference in Hyderabad, India" />
-        <meta name="DC.publisher" content="Neurotrauma Society of India" />
-        <meta name="DC.date" content="2026-08-07" />
+        <meta name="DC.title" content="OSSAPCON 2026 - Annual Conference" />
+        <meta name="DC.creator" content="Orthopedic Surgeons Society of Andhra Pradesh" />
+        <meta name="DC.subject" content="Orthopedics, Medical Conference, Orthopedic Surgery" />
+        <meta name="DC.description" content="Premier orthopedic conference in Kurnool, Andhra Pradesh" />
+        <meta name="DC.publisher" content="Orthopedic Surgeons Society of Andhra Pradesh" />
+        <meta name="DC.date" content="2026-02-04" />
         <meta name="DC.type" content="Event" />
         <meta name="DC.format" content="text/html" />
-        <meta name="DC.identifier" content="https://neurotrauma2026.in" />
+        <meta name="DC.identifier" content="https://ossapcon2026.com" />
         <meta name="DC.language" content="en" />
-        <meta name="DC.coverage" content="Hyderabad, India" />
+        <meta name="DC.coverage" content="Kurnool, Andhra Pradesh" />
         
         {/* Preconnect for Performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -402,14 +398,14 @@ export default function RootLayout({
 
               {/* Background particles - Fixed positions to prevent memory leaks */}
               <div className="fixed inset-0 pointer-events-none z-0 opacity-60 dark:opacity-30">
-                <div className="particle animate-pulse" style={{ left: '10%', top: '20%', width: '2px', height: '2px', background: 'hsl(25, 70%, 60%)', animationDelay: '0s', animationDuration: '8s' }} />
-                <div className="particle animate-pulse" style={{ left: '80%', top: '10%', width: '3px', height: '3px', background: 'hsl(35, 70%, 60%)', animationDelay: '2s', animationDuration: '10s' }} />
-                <div className="particle animate-pulse" style={{ left: '60%', top: '70%', width: '2px', height: '2px', background: 'hsl(20, 70%, 60%)', animationDelay: '4s', animationDuration: '12s' }} />
-                <div className="particle animate-pulse" style={{ left: '30%', top: '80%', width: '4px', height: '4px', background: 'hsl(40, 70%, 60%)', animationDelay: '1s', animationDuration: '9s' }} />
-                <div className="particle animate-pulse" style={{ left: '90%', top: '50%', width: '2px', height: '2px', background: 'hsl(30, 70%, 60%)', animationDelay: '3s', animationDuration: '11s' }} />
-                <div className="particle animate-pulse" style={{ left: '20%', top: '40%', width: '3px', height: '3px', background: 'hsl(25, 70%, 60%)', animationDelay: '5s', animationDuration: '7s' }} />
-                <div className="particle animate-pulse" style={{ left: '70%', top: '30%', width: '2px', height: '2px', background: 'hsl(35, 70%, 60%)', animationDelay: '6s', animationDuration: '13s' }} />
-                <div className="particle animate-pulse" style={{ left: '50%', top: '90%', width: '3px', height: '3px', background: 'hsl(20, 70%, 60%)', animationDelay: '2s', animationDuration: '8s' }} />
+                <div className="particle animate-pulse" style={{ left: '10%', top: '20%', width: '2px', height: '2px', background: 'hsl(204, 70%, 60%)', animationDelay: '0s', animationDuration: '8s' }} />
+                <div className="particle animate-pulse" style={{ left: '80%', top: '10%', width: '3px', height: '3px', background: 'hsl(210, 70%, 60%)', animationDelay: '2s', animationDuration: '10s' }} />
+                <div className="particle animate-pulse" style={{ left: '60%', top: '70%', width: '2px', height: '2px', background: 'hsl(200, 70%, 60%)', animationDelay: '4s', animationDuration: '12s' }} />
+                <div className="particle animate-pulse" style={{ left: '30%', top: '80%', width: '4px', height: '4px', background: 'hsl(215, 70%, 60%)', animationDelay: '1s', animationDuration: '9s' }} />
+                <div className="particle animate-pulse" style={{ left: '90%', top: '50%', width: '2px', height: '2px', background: 'hsl(205, 70%, 60%)', animationDelay: '3s', animationDuration: '11s' }} />
+                <div className="particle animate-pulse" style={{ left: '20%', top: '40%', width: '3px', height: '3px', background: 'hsl(204, 70%, 60%)', animationDelay: '5s', animationDuration: '7s' }} />
+                <div className="particle animate-pulse" style={{ left: '70%', top: '30%', width: '2px', height: '2px', background: 'hsl(210, 70%, 60%)', animationDelay: '6s', animationDuration: '13s' }} />
+                <div className="particle animate-pulse" style={{ left: '50%', top: '90%', width: '3px', height: '3px', background: 'hsl(200, 70%, 60%)', animationDelay: '2s', animationDuration: '8s' }} />
               </div>
                 </div>
               </ThemeProvider>

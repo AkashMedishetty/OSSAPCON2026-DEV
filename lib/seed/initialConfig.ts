@@ -9,13 +9,13 @@ export async function seedInitialConfiguration() {
     await connectDB()
 
     // Create admin user if it doesn't exist
-    const adminExists = await User.findOne({ email: 'admin@neurotrauma2026.com' })
+    const adminExists = await User.findOne({ email: 'admin@ossapcon2026.com' })
     
     let adminUser
     if (!adminExists) {
       const hashedPassword = await bcrypt.hash('admin123!@#', 12)
       adminUser = await User.create({
-        email: 'admin@neurotrauma2026.com',
+        email: 'admin@ossapcon2026.com',
         password: hashedPassword,
         profile: {
           title: 'Dr.',
@@ -23,18 +23,18 @@ export async function seedInitialConfiguration() {
           lastName: 'User',
           phone: '+91-9999999999',
           designation: 'Consultant',
-          institution: 'Neurotrauma Society of India',
+          institution: 'Orthopedic Surgeons Society of Andhra Pradesh',
           address: {
             street: 'Conference Admin',
-            city: 'Hyderabad',
-            state: 'Telangana',
+            city: 'Kurnool',
+            state: 'Andhra Pradesh',
             country: 'India',
-            pincode: '500001'
+            pincode: '518002'
           }
         },
         registration: {
-          registrationId: 'NTSI-ADMIN',
-          type: 'ntsi-member',
+          registrationId: 'OSSAP-ADMIN',
+          type: 'ossap-member',
           status: 'paid'
         },
         role: 'admin'
@@ -58,7 +58,7 @@ export async function seedInitialConfiguration() {
             endDate: '2025-08-15',
             isActive: true,
             categories: {
-              'ntsi-member': { amount: 5000, currency: 'INR', label: 'NTSI Member' },
+              'ossap-member': { amount: 5000, currency: 'INR', label: 'OSSAP Member' },
               'non-member': { amount: 5000, currency: 'INR', label: 'Non Member' },
               'pg-student': { amount: 5000, currency: 'INR', label: 'PG Student' }
             }
@@ -71,7 +71,7 @@ export async function seedInitialConfiguration() {
           endDate: '2026-06-30',
           isActive: true,
           categories: {
-            'ntsi-member': { amount: 10000, currency: 'INR', label: 'NTSI Member' },
+            'ossap-member': { amount: 10000, currency: 'INR', label: 'OSSAP Member' },
             'non-member': { amount: 14000, currency: 'INR', label: 'Non Member' },
             'pg-student': { amount: 8000, currency: 'INR', label: 'PG Student' },
             
@@ -84,7 +84,7 @@ export async function seedInitialConfiguration() {
           endDate: '2026-08-05',
           isActive: true,
           categories: {
-            'ntsi-member': { amount: 12000, currency: 'INR', label: 'NTSI Member' },
+            'ossap-member': { amount: 12000, currency: 'INR', label: 'OSSAP Member' },
             'non-member': { amount: 17000, currency: 'INR', label: 'Non Member' },
             'pg-student': { amount: 10000, currency: 'INR', label: 'PG Student' },
             
@@ -97,7 +97,7 @@ export async function seedInitialConfiguration() {
           endDate: '2026-08-09',
           isActive: true,
           categories: {
-            'ntsi-member': { amount: 15000, currency: 'INR', label: 'NTSI Member' },
+            'ossap-member': { amount: 15000, currency: 'INR', label: 'OSSAP Member' },
             'non-member': { amount: 20000, currency: 'INR', label: 'Non Member' },
             'pg-student': { amount: 12000, currency: 'INR', label: 'PG Student' },
             
@@ -113,7 +113,7 @@ export async function seedInitialConfiguration() {
       type: 'pricing',
       key: 'registration_categories',
       value: {
-        'ntsi-member': { amount: 12000, currency: 'INR', label: 'NTSI Member' },
+        'ossap-member': { amount: 12000, currency: 'INR', label: 'OSSAP Member' },
         'non-member': { amount: 17000, currency: 'INR', label: 'Non Member' },
         'pg-student': { amount: 10000, currency: 'INR', label: 'PG Student' },
         
@@ -127,12 +127,12 @@ export async function seedInitialConfiguration() {
       type: 'pricing',
       key: 'workshops',
       value: [
-        { id: 'brain-surgery', name: 'Advanced Brain Surgery Techniques', amount: 2000 },
-        { id: 'spinal-injury', name: 'Spinal Cord Injury Management', amount: 2500 },
-        { id: 'pediatric-neurotrauma', name: 'Pediatric Neurotrauma', amount: 2000 },
-        { id: 'minimally-invasive', name: 'Minimally Invasive Neurosurgery', amount: 1500 },
-        { id: 'neurotrauma-rehab', name: 'Neurotrauma Rehabilitation', amount: 1800 },
-        { id: 'emergency-neurosurgery', name: 'Emergency Neurosurgery', amount: 2200 }
+        { id: 'joint-replacement', name: 'Advanced Joint Replacement Techniques', amount: 2000 },
+        { id: 'spinal-surgery', name: 'Spine Surgery and Instrumentation', amount: 2500 },
+        { id: 'pediatric-orthopedics', name: 'Pediatric Orthopedics', amount: 2000 },
+        { id: 'arthroscopy', name: 'Arthroscopic Surgery Techniques', amount: 1500 },
+        { id: 'orthopedic-rehab', name: 'Orthopedic Rehabilitation', amount: 1800 },
+        { id: 'trauma-surgery', name: 'Orthopedic Trauma Surgery', amount: 2200 }
       ],
       isActive: true,
       createdBy: adminUser._id
@@ -172,23 +172,24 @@ export async function seedInitialConfiguration() {
       type: 'content',
       key: 'conference_details',
       value: {
-        name: 'NeuroTrauma 2026',
-        fullName: 'Annual Conference of Neurotrauma Society of India',
-        theme: 'Science, Sports & Spiritually',
+        name: 'OSSAPCON 2026',
+        fullName: 'Annual Conference of Orthopedic Surgeons Society of Andhra Pradesh',
+        theme: 'Excellence in Orthopedic Care',
         dates: {
           start: '2026-08-07',
           end: '2026-08-09'
         },
         venue: {
-          name: 'The Park Hotel, Somajiguda, Hyderabad',
-          city: 'Hyderabad',
-          state: 'Telangana',
+          name: 'Kurnool Medical College',
+          city: 'Kurnool',
+          state: 'Andhra Pradesh',
           country: 'India'
         },
         contact: {
-          email: 'info@neurotrauma2026.com',
-          phone: '+91-9676541985',
-          website: 'https://neurotrauma2026.com'
+          email: 'contact@ossapcon2026.com',
+          phone: '+91 9052192744',
+          contactPerson: 'LAXMI PRABHA',
+          website: 'https://ossapcon2026.com'
         }
       },
       isActive: true,
@@ -200,9 +201,9 @@ export async function seedInitialConfiguration() {
       type: 'settings',
       key: 'email_settings',
       value: {
-        fromName: 'NeuroTrauma 2026',
-        fromEmail: 'hello@violetvoyage.in',
-        replyTo: 'hello@violetvoyage.in',
+        fromName: 'OSSAPCON 2026',
+        fromEmail: 'contact@ossapcon2026.com',
+        replyTo: 'contact@ossapcon2026.com',
         smtp: {
           host: 'smtpout.secureserver.net',
           port: 465,
@@ -211,23 +212,23 @@ export async function seedInitialConfiguration() {
         },
         templates: {
           registration: {
-            subject: 'Registration Confirmation - NeuroTrauma 2026',
+            subject: 'Registration Confirmation - OSSAPCON 2026',
             enabled: true
           },
           payment: {
-            subject: 'Payment Confirmation & Invoice - NeuroTrauma 2026',
+            subject: 'Payment Confirmation & Invoice - OSSAPCON 2026',
             enabled: true
           },
           reminder: {
-            subject: 'Conference Reminder - NeuroTrauma 2026',
+            subject: 'Conference Reminder - OSSAPCON 2026',
             enabled: true
           },
           passwordReset: {
-            subject: 'Password Reset - NeuroTrauma 2026',
+            subject: 'Password Reset - OSSAPCON 2026',
             enabled: true
           },
           bulkEmail: {
-            subject: 'Important Update - NeuroTrauma 2026',
+            subject: 'Important Update - OSSAPCON 2026',
             enabled: true
           }
         },
@@ -245,9 +246,9 @@ export async function seedInitialConfiguration() {
     // Seed workshops
     const workshops = [
       {
-        id: 'brain-surgery',
-        name: 'Advanced Brain Surgery Techniques',
-        description: 'Learn cutting-edge techniques in neurosurgical procedures for brain trauma cases.',
+        id: 'joint-replacement',
+        name: 'Advanced Joint Replacement Techniques',
+        description: 'Learn cutting-edge techniques in hip and knee replacement procedures.',
         instructor: 'Dr. Rajesh Kumar',
         duration: '4 hours',
         price: 2000,
@@ -259,14 +260,14 @@ export async function seedInitialConfiguration() {
         workshopDate: new Date('2026-08-07'),
         workshopTime: '09:00 AM - 01:00 PM',
         venue: 'Workshop Hall A',
-        prerequisites: 'Basic neurosurgery knowledge required',
+        prerequisites: 'Basic orthopedic surgery knowledge required',
         materials: 'Surgical instruments will be provided',
         isActive: true
       },
       {
-        id: 'spinal-injury',
-        name: 'Spinal Cord Injury Management',
-        description: 'Comprehensive approach to spinal cord injury assessment and treatment.',
+        id: 'spinal-surgery',
+        name: 'Spine Surgery and Instrumentation',
+        description: 'Comprehensive approach to spinal surgery and instrumentation techniques.',
         instructor: 'Dr. Priya Sharma',
         duration: '6 hours',
         price: 2500,
@@ -283,9 +284,9 @@ export async function seedInitialConfiguration() {
         isActive: true
       },
       {
-        id: 'pediatric-neurotrauma',
-        name: 'Pediatric Neurotrauma',
-        description: 'Specialized care for pediatric neurological trauma cases.',
+        id: 'pediatric-orthopedics',
+        name: 'Pediatric Orthopedics',
+        description: 'Specialized care for pediatric orthopedic conditions and deformities.',
         instructor: 'Dr. Anita Reddy',
         duration: '4 hours',
         price: 2000,
@@ -302,9 +303,9 @@ export async function seedInitialConfiguration() {
         isActive: true
       },
       {
-        id: 'minimally-invasive',
-        name: 'Minimally Invasive Neurosurgery',
-        description: 'Modern minimally invasive techniques for neurological procedures.',
+        id: 'arthroscopy',
+        name: 'Arthroscopic Surgery Techniques',
+        description: 'Modern arthroscopic techniques for joint procedures.',
         instructor: 'Dr. Suresh Patel',
         duration: '3 hours',
         price: 1500,
@@ -317,13 +318,13 @@ export async function seedInitialConfiguration() {
         workshopTime: '10:00 AM - 01:00 PM',
         venue: 'Workshop Hall D',
         prerequisites: 'Surgical experience required',
-        materials: 'Endoscopic equipment for demonstration',
+        materials: 'Arthroscopic equipment for demonstration',
         isActive: true
       },
       {
-        id: 'neurotrauma-rehab',
-        name: 'Neurotrauma Rehabilitation',
-        description: 'Comprehensive rehabilitation strategies for neurotrauma patients.',
+        id: 'orthopedic-rehab',
+        name: 'Orthopedic Rehabilitation',
+        description: 'Comprehensive rehabilitation strategies for orthopedic patients.',
         instructor: 'Dr. Meera Joshi',
         duration: '5 hours',
         price: 1800,
@@ -340,9 +341,9 @@ export async function seedInitialConfiguration() {
         isActive: true
       },
       {
-        id: 'emergency-neurosurgery',
-        name: 'Emergency Neurosurgery',
-        description: 'Critical decision making in emergency neurosurgical situations.',
+        id: 'trauma-surgery',
+        name: 'Orthopedic Trauma Surgery',
+        description: 'Critical decision making in orthopedic trauma situations.',
         instructor: 'Dr. Vikram Singh',
         duration: '4 hours',
         price: 2200,
@@ -355,7 +356,7 @@ export async function seedInitialConfiguration() {
         workshopTime: '04:00 PM - 08:00 PM',
         venue: 'Emergency Simulation Lab',
         prerequisites: 'Emergency medicine experience',
-        materials: 'Emergency surgical kits and simulators',
+        materials: 'Trauma surgical kits and simulators',
         isActive: true
       }
     ]

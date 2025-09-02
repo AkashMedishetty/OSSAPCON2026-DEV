@@ -52,12 +52,12 @@ export default function VenuePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-ossapcon-50 to-white dark:from-gray-900 dark:to-gray-800">
       <Navigation currentPage="venue" />
 
       <div className="pt-20 pb-8 lg:pt-24 lg:pb-12">
         {/* Hero Section */}
-        <section className="relative h-[50vh] lg:h-[60vh] overflow-hidden bg-gradient-to-r from-orange-600 to-orange-700">
+        <section className="relative h-[50vh] lg:h-[60vh] overflow-hidden bg-gradient-to-r from-ossapcon-800 to-ossapcon-900">
           <div className="absolute inset-0 flex items-center justify-center text-center">
             <motion.div
               initial={{ opacity: 0, y: 50 }}
@@ -81,7 +81,7 @@ export default function VenuePage() {
                 <p className="text-base md:text-lg lg:text-xl max-w-3xl mx-auto mb-6">
                   We're finalizing the perfect venue for our prestigious conference.
                   <br />
-                  <span className="text-orange-200">Get notified when venue details are announced!</span>
+                  <span className="text-ossapcon-200">Get notified when venue details are announced!</span>
                 </p>
               </div>
 
@@ -89,7 +89,7 @@ export default function VenuePage() {
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button 
                     onClick={() => setIsNotifyOpen(true)}
-                    className="px-8 py-4 text-lg bg-white text-orange-600 hover:bg-orange-50 rounded-full shadow-2xl font-bold"
+                    className="px-8 py-4 text-lg bg-white text-ossapcon-700 hover:bg-ossapcon-50 rounded-full shadow-2xl font-bold"
                   >
                     <Bell className="w-5 h-5 mr-2" />
                     Notify Me
@@ -110,7 +110,7 @@ export default function VenuePage() {
 
               <div className="flex items-center justify-center space-x-2 text-sm md:text-base lg:text-lg">
                 <MapPin className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" />
-                <span>Hyderabad, India</span>
+                <span>Kurnool, Andhra Pradesh</span>
               </div>
             </motion.div>
           </div>
@@ -126,7 +126,7 @@ export default function VenuePage() {
               transition={{ duration: 0.8 }}
               className="text-center mb-16"
             >
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-800 via-orange-600 to-red-600 bg-clip-text text-transparent">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-800 via-ossapcon-700 to-ossapcon-900 bg-clip-text text-transparent">
                 What to Expect
               </h2>
               <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
@@ -152,7 +152,7 @@ export default function VenuePage() {
                   icon: MapPin,
                   title: "Multiple Venues",
                   desc: "Large auditorium, breakout rooms, and exhibition spaces",
-                  color: "from-orange-500 to-red-600",
+                  color: "from-ossapcon-600 to-ossapcon-800",
                 },
                 {
                   icon: Car,
@@ -164,7 +164,7 @@ export default function VenuePage() {
                   icon: Phone,
                   title: "Full Support",
                   desc: "Dedicated event staff and technical support throughout",
-                  color: "from-yellow-500 to-orange-600",
+                  color: "from-ossapcon-400 to-ossapcon-700",
                 },
                 {
                   icon: Clock,
@@ -183,7 +183,7 @@ export default function VenuePage() {
                   whileHover={{ scale: 1.05, y: -5 }}
                 >
                   <div className={`absolute inset-0 bg-gradient-to-r ${item.color} opacity-10 rounded-2xl blur-xl group-hover:opacity-20 transition-all duration-300`}></div>
-                  <div className="relative text-center p-8 bg-white dark:bg-gray-800 backdrop-blur-xl border border-orange-100 dark:border-gray-700 rounded-2xl hover:border-orange-200 dark:hover:border-gray-600 transition-all duration-300 shadow-lg hover:shadow-xl">
+                  <div className="relative text-center p-8 bg-white dark:bg-gray-800 backdrop-blur-xl border border-ossapcon-100 dark:border-gray-700 rounded-2xl hover:border-ossapcon-200 dark:hover:border-gray-600 transition-all duration-300 shadow-lg hover:shadow-xl">
                     <div className={`w-16 h-16 bg-gradient-to-r ${item.color} rounded-2xl flex items-center justify-center mx-auto mb-6`}>
                       <item.icon className="w-8 h-8 text-white" />
                     </div>
@@ -198,25 +198,25 @@ export default function VenuePage() {
         */}
 
         {/* COMMENTED OUT - Detailed Venue Information 
-        <section className="py-8 lg:py-16 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-gray-800 dark:to-gray-700">
+        <section className="py-8 lg:py-16 bg-gradient-to-br from-ossapcon-50 to-ossapcon-100 dark:from-gray-800 dark:to-gray-700">
           ... (all existing venue facilities, map, accommodation, transportation, and local attractions content remains here, commented out)
         </section>
         */}
 
         {/* CTA Section */}
-        <section className="py-12 md:py-16 bg-gradient-to-r from-orange-600 to-orange-700 text-white">
+        <section className="py-12 md:py-16 bg-gradient-to-r from-ossapcon-800 to-ossapcon-900 text-white">
           <div className="container mx-auto px-4 text-center">
             <motion.div
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <h2 className="text-2xl md:text-4xl font-bold mb-4 md:mb-6">Ready to Join Us in Hyderabad?</h2>
+              <h2 className="text-2xl md:text-4xl font-bold mb-4 md:mb-6">Ready to Join Us in Kurnool?</h2>
               <p className="text-lg md:text-xl mb-6 md:mb-8 max-w-2xl mx-auto">
-                Register now to secure your spot at this premier neurotrauma conference.
+                Register now to secure your spot at this premier orthopedic conference.
               </p>
               <Link href="/register">
-                <Button className="bg-white text-orange-600 hover:bg-orange-50 hover:text-orange-700 px-6 md:px-8 py-3 md:py-4 text-base md:text-lg rounded-full font-bold shadow-lg border-2 border-white">
+                <Button className="bg-white text-ossapcon-700 hover:bg-ossapcon-50 hover:text-ossapcon-800 px-6 md:px-8 py-3 md:py-4 text-base md:text-lg rounded-full font-bold shadow-lg border-2 border-white">
                   Register Now
                 </Button>
               </Link>
@@ -241,7 +241,7 @@ export default function VenuePage() {
               </button>
 
               <div className="text-center mb-6">
-                <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-gradient-to-r from-ossapcon-600 to-ossapcon-800 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Mail className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">
@@ -260,7 +260,7 @@ export default function VenuePage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-gray-700 dark:text-gray-100"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-ossapcon-600 focus:border-transparent dark:bg-gray-700 dark:text-gray-100"
                   />
                 </div>
 
@@ -275,7 +275,7 @@ export default function VenuePage() {
                   </Button>
                   <Button
                     type="submit"
-                    className="flex-1 py-3 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white"
+                    className="flex-1 py-3 bg-gradient-to-r from-ossapcon-600 to-ossapcon-800 hover:from-ossapcon-700 hover:to-ossapcon-900 text-white"
                   >
                     <Bell className="w-4 h-4 mr-2" />
                     Notify Me

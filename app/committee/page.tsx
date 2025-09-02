@@ -15,7 +15,7 @@ const committeeMembers = [
     // institution: "AIIMS Hyderabad",
     // specialty: "Brain & Spinal Injury Surgery",
     image: "/Dr. Manas P.jpg",
-    bio: "Dr. Manas Panigrahi is a distinguished neurotrauma surgeon with extensive experience in brain and spinal injury treatment.",
+    bio: "Dr. Manas Panigrahi is a distinguished orthopedic surgeon with extensive experience in spine and trauma treatment.",
     // achievements: ["Padma Shri Awardee", "500+ Research Papers", "AI Surgery Pioneer", "Global Innovation Leader"],
     email: "manas.panigrahi@hospital.edu",
     color: "#ff6b35",
@@ -28,7 +28,7 @@ const committeeMembers = [
     // institution: "NIMS Hyderabad",
     // specialty: "Spine Surgery & Robotics",
     image: "/Dr. R H.jpg",
-    bio: "Dr. Raghavendra H is an experienced neurosurgeon specializing in advanced neurotrauma care and surgical techniques.",
+    bio: "Dr. Raghavendra H is an experienced orthopedic surgeon specializing in advanced trauma care and surgical techniques.",
     // achievements: ["Robotics Pioneer", "300+ Publications", "Innovation Excellence", "Future Medicine Award"],
     email: "raghavendra.h@hospital.edu",
     color: "#ff8c42",
@@ -41,7 +41,7 @@ const committeeMembers = [
     // institution: "Hyderabad Medical College",
     // specialty: "Sports Medicine & VR Therapy",
     image: "/Dr S P.jpg",
-    bio: "Dr. Swetha P is a dedicated medical professional with expertise in neurotrauma management and administrative excellence.",
+    bio: "Dr. Swetha P is a dedicated medical professional with expertise in orthopedic trauma management and administrative excellence.",
     // achievements: ["VR Therapy Creator", "Olympic Innovation", "Biometric Expert", "Future Sports Medicine"],
     email: "swetha.p@hospital.edu",
     color: "#ffa726",
@@ -116,12 +116,12 @@ export default function CommitteePage() {
   const shouldReduceMotion = useReducedMotion()
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-orange-50 text-gray-800 overflow-hidden dark:from-gray-900 dark:to-gray-800 dark:text-gray-100">
+    <div className="min-h-screen bg-gradient-to-b from-white to-blue-50 text-gray-800 overflow-hidden dark:from-gray-900 dark:to-gray-800 dark:text-gray-100">
       <Navigation currentPage="committee" />
 
       <div className="pt-16 md:pt-20 lg:pt-24">
         {/* Header Section */}
-        <section className="relative py-12 md:py-16 lg:py-32 overflow-hidden bg-gradient-to-b from-orange-100 via-white to-orange-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        <section className="relative py-12 md:py-16 lg:py-32 overflow-hidden bg-gradient-to-b from-blue-100 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
           <div className="container mx-auto px-4 md:px-6 text-center">
             <motion.div
               initial={shouldReduceMotion ? undefined : { opacity: 0, y: 60 }}
@@ -130,19 +130,19 @@ export default function CommitteePage() {
               transition={{ duration: 0.6 }}
             >
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-4 md:mb-6 lg:mb-8 leading-none px-2 md:px-4">
-                <span className="bg-gradient-to-r from-gray-800 via-orange-600 to-red-600 bg-clip-text text-transparent dark:from-white dark:via-orange-400 dark:to-red-400">
+                <span className="bg-gradient-to-r from-gray-800 via-blue-600 to-blue-700 bg-clip-text text-transparent dark:from-white dark:via-blue-400 dark:to-blue-500">
                   ORGANIZING
                 </span>
                 <br />
-                <span className="bg-gradient-to-r from-orange-500 via-red-500 to-red-600 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 bg-clip-text text-transparent">
                   COMMITTEE
                 </span>
               </h1>
 
               <p className="text-base md:text-lg lg:text-xl xl:text-2xl text-gray-700 dark:text-gray-300 mb-6 md:mb-8 lg:mb-12 max-w-4xl mx-auto leading-relaxed px-2 md:px-4">
-                Meet the extraordinary minds shaping the future of neurotrauma medicine.
+                Meet the extraordinary minds shaping the future of orthopedic medicine.
                 <br />
-                <span className="text-base md:text-lg text-orange-600 dark:text-orange-400">Where innovation meets excellence.</span>
+                <span className="text-base md:text-lg text-blue-600 dark:text-blue-400">Where innovation meets excellence.</span>
               </p>
 
               {/* Stats Overview */}
@@ -155,14 +155,14 @@ export default function CommitteePage() {
                 ].map((stat, index) => (
                   <motion.div
                     key={index}
-                    className="text-center p-2 md:p-3 lg:p-6 rounded-lg md:rounded-xl lg:rounded-2xl bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl border border-orange-100 dark:border-gray-700 shadow-lg hover:shadow-orange-100/50 dark:hover:shadow-gray-700/50"
+                    className="text-center p-2 md:p-3 lg:p-6 rounded-lg md:rounded-xl lg:rounded-2xl bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl border border-blue-100 dark:border-gray-700 shadow-lg hover:shadow-blue-100/50 dark:hover:shadow-gray-700/50"
                     initial={shouldReduceMotion ? undefined : { opacity: 0, scale: 0.97 }}
                     whileInView={shouldReduceMotion ? undefined : { opacity: 1, scale: 1 }}
                     viewport={{ once: true, amount: 0.2 }}
                     transition={{ delay: 0.1 + index * 0.05, duration: 0.4 }}
                   >
-                    <stat.icon className="w-5 h-5 md:w-6 md:h-6 lg:w-8 lg:h-8 text-orange-500 mx-auto mb-1 md:mb-2 lg:mb-3" />
-                    <div className="text-lg md:text-xl lg:text-3xl font-bold bg-gradient-to-r from-gray-800 via-orange-600 to-red-600 bg-clip-text text-transparent dark:from-white dark:via-orange-400 dark:to-red-400">
+                    <stat.icon className="w-5 h-5 md:w-6 md:h-6 lg:w-8 lg:h-8 text-blue-500 mx-auto mb-1 md:mb-2 lg:mb-3" />
+                    <div className="text-lg md:text-xl lg:text-3xl font-bold bg-gradient-to-r from-gray-800 via-blue-600 to-blue-700 bg-clip-text text-transparent dark:from-white dark:via-blue-400 dark:to-blue-500">
                       {stat.number}
                     </div>
                     <div className="text-xs md:text-xs lg:text-sm text-gray-600 dark:text-gray-400 uppercase tracking-wide">{stat.label}</div>
@@ -175,7 +175,7 @@ export default function CommitteePage() {
 
         {/* Key Committee Cards */}
         <section className="py-16 md:py-24 lg:py-32 relative">
-          <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-white dark:from-gray-800 dark:to-gray-900"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-white dark:from-gray-800 dark:to-gray-900"></div>
 
           <div className="relative z-10 container mx-auto px-4 md:px-6">
             <motion.div
@@ -185,7 +185,7 @@ export default function CommitteePage() {
               transition={{ duration: 0.5 }}
               className="text-center mb-12 md:mb-16 lg:mb-20"
             >
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 lg:mb-8 bg-gradient-to-r from-gray-800 via-orange-600 to-red-600 bg-clip-text text-transparent dark:from-white dark:via-orange-400 dark:to-red-400 px-2">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 lg:mb-8 bg-gradient-to-r from-gray-800 via-blue-600 to-blue-700 bg-clip-text text-transparent dark:from-white dark:via-blue-400 dark:to-blue-500 px-2">
                 Key Organizers
               </h2>
               <p className="text-base md:text-lg lg:text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto px-4">
@@ -207,10 +207,10 @@ export default function CommitteePage() {
                   onClick={() => setSelectedMember(selectedMember === member.id ? null : member.id)}
                 >
                   {/* Glowing Background */}
-                  <div className="absolute inset-0 rounded-2xl md:rounded-3xl blur-2xl opacity-10 group-hover:opacity-20 transition-all duration-500 bg-gradient-to-br from-orange-500/30 to-red-600/20"></div>
+                  <div className="absolute inset-0 rounded-2xl md:rounded-3xl blur-2xl opacity-10 group-hover:opacity-20 transition-all duration-500 bg-gradient-to-br from-blue-500/30 to-blue-700/20"></div>
 
                   {/* Main Card */}
-                  <div className="relative bg-white dark:bg-gray-800 backdrop-blur-xl border border-orange-100 dark:border-gray-700 rounded-xl md:rounded-2xl lg:rounded-3xl overflow-hidden group-hover:border-orange-200 dark:group-hover:border-gray-600 transition-all duration-500 shadow-lg hover:shadow-xl hover:shadow-orange-100/20 dark:hover:shadow-gray-700/20">
+                  <div className="relative bg-white dark:bg-gray-800 backdrop-blur-xl border border-blue-100 dark:border-gray-700 rounded-xl md:rounded-2xl lg:rounded-3xl overflow-hidden group-hover:border-blue-200 dark:group-hover:border-gray-600 transition-all duration-500 shadow-lg hover:shadow-xl hover:shadow-blue-100/20 dark:hover:shadow-gray-700/20">
                     {/* Header with Member Image */}
                     <div className="relative h-64 md:h-80 lg:h-96 overflow-hidden">
                       <OptimizedImage
@@ -242,10 +242,10 @@ export default function CommitteePage() {
                     {/* Content */}
                     <div className="p-3 md:p-4 lg:p-6">
                       <div className="mb-4 md:mb-6">
-                        <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2 group-hover:text-orange-600 transition-colors">
+                        <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2 group-hover:text-blue-600 transition-colors">
                           {member.name}
                         </h3>
-                        <p className="text-orange-600 font-semibold mb-1 text-sm md:text-base">{member.title}</p>
+                        <p className="text-blue-600 font-semibold mb-1 text-sm md:text-base">{member.title}</p>
                         {/* <p className="text-gray-600 dark:text-gray-300 text-xs md:text-sm mb-2">{member.institution}</p>
                         <p className="text-gray-500 dark:text-gray-400 text-xs md:text-sm">{member.specialty}</p> */}
                       </div>
@@ -316,7 +316,7 @@ export default function CommitteePage() {
               transition={{ duration: 0.45 }}
               className="text-center mb-12 md:mb-16 lg:mb-20"
             >
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 lg:mb-8 bg-gradient-to-r from-gray-800 via-orange-600 to-red-600 bg-clip-text text-transparent dark:from-white dark:via-orange-400 dark:to-red-400 px-2">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 lg:mb-8 bg-gradient-to-r from-gray-800 via-blue-600 to-blue-700 bg-clip-text text-transparent dark:from-white dark:via-blue-400 dark:to-blue-500 px-2">
                 Committee Members
               </h2>
               <p className="text-base md:text-lg lg:text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto px-4">
@@ -326,9 +326,9 @@ export default function CommitteePage() {
 
             {/* Glass Morphism Grid for Additional Members */}
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-50/50 to-white/50 dark:from-gray-800/50 dark:to-gray-900/50 rounded-3xl"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-white/50 dark:from-gray-800/50 dark:to-gray-900/50 rounded-3xl"></div>
               
-                <div className="relative bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm md:backdrop-blur-xl border border-orange-100/50 dark:border-gray-700/50 rounded-3xl p-6 md:p-12 lg:p-16 shadow-xl">
+                <div className="relative bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm md:backdrop-blur-xl border border-blue-100/50 dark:border-gray-700/50 rounded-3xl p-6 md:p-12 lg:p-16 shadow-xl">
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
                     {additionalCommitteeMembers.map((memberName, index) => (
                     <motion.div
@@ -377,7 +377,7 @@ export default function CommitteePage() {
                   <blockquote className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-light text-gray-800 dark:text-gray-100 mb-6 md:mb-8 leading-relaxed italic">
                     "We are not just organizing a conference—we are orchestrating the future of human mobility. Every
                     innovation, every breakthrough, every moment of collaboration brings us closer to a world where
-                    neurotrauma limitations become obsolete."
+                    orthopedic limitations become obsolete."
                   </blockquote>
 
                   <div className="flex flex-col md:flex-row items-center justify-center space-y-2 md:space-y-0 md:space-x-4">

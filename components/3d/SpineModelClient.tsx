@@ -119,7 +119,7 @@ export default function SpineModelClient() {
           touchAction: isMobile ? 'pan-y pan-x' : 'none', // Critical: allow scroll on mobile
           pointerEvents: isMobile ? 'none' : 'auto' // Disable canvas interactions on mobile
         }}
-        className="rounded-2xl bg-gradient-to-br from-orange-50 to-white dark:from-gray-800 dark:to-gray-900"
+        className="rounded-2xl bg-gradient-to-br from-blue-50 to-white dark:from-gray-800 dark:to-gray-900"
         gl={{
           antialias: !isMobile, // Disable antialiasing on mobile for performance
           alpha: true,

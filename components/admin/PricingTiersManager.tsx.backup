@@ -59,9 +59,9 @@ interface PricingTiersData {
   onsite: PricingTier
 }
 
-const categoryKeys = ['ntsi-member', 'non-member', 'pg-student', 'accompanying']
+const categoryKeys = ['ossap-member', 'non-member', 'pg-student', 'accompanying']
 const categoryLabels = {
-  'ntsi-member': 'NTSI Member',
+  'ossap-member': 'OSSAP Member',
   'non-member': 'Non Member', 
   'pg-student': 'PG Student',
   'accompanying': 'Accompanying Person'
@@ -899,7 +899,7 @@ function EditSpecialOfferForm({
         <h4 className="text-lg font-semibold">Category Pricing</h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[
-            { key: 'ntsi-member', label: 'NTSI Member' },
+            { key: 'ossap-member', label: 'OSSAP Member' },
             { key: 'non-member', label: 'Non Member' },
             { key: 'pg-student', label: 'PG Student' }
           ].map(category => (
@@ -963,7 +963,7 @@ function NewSpecialOfferForm({
     endDate: '',
     isActive: true,
     categories: {
-      'ntsi-member': { amount: 5000, currency: 'INR', label: 'NTSI Member' },
+      'ossap-member': { amount: 5000, currency: 'INR', label: 'OSSAP Member' },
       'non-member': { amount: 5000, currency: 'INR', label: 'Non Member' },
       'pg-student': { amount: 5000, currency: 'INR', label: 'PG Student' },
       'accompanying': { amount: 5000, currency: 'INR', label: 'Accompanying Person' }

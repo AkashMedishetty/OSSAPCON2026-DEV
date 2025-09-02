@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Script to create an admin user for the NeuroTrauma Conference Platform
+ * Script to create an admin user for the OSSAPCON Conference Platform
  * Run with: node scripts/create-admin.js
  */
 
@@ -13,7 +13,7 @@ function generateRegistrationId() {
 }
 
 // MongoDB connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/neurotrauma-conference'
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/ossapcon2026'
 
 // User Schema (simplified for script)
 const UserSchema = new mongoose.Schema({
@@ -52,18 +52,18 @@ async function createAdmin() {
 
     // Admin user details
     const adminData = {
-      email: 'admin@neurotrauma2026.com',
+      email: 'admin@ossapcon2026.com',
       password: 'admin123456', // Change this!
       profile: {
         title: 'Dr.',
-        firstName: 'Admin',
-        lastName: 'User',
-        phone: '+91-9999999999',
-        institution: 'NeuroTrauma Conference',
+        firstName: 'LAXMI',
+        lastName: 'PRABHA',
+        phone: '+91 9052192744',
+        institution: 'OSSAPCON Conference',
         address: {
           street: '123 Admin Street',
-          city: 'Hyderabad',
-          state: 'Telangana',
+          city: 'Kurnool',
+          state: 'Andhra Pradesh',
           country: 'India',
           pincode: '500001'
         }
@@ -103,7 +103,7 @@ async function createAdmin() {
 
     console.log('\n🚀 Admin panel access:')
     console.log('   URL: http://localhost:3001/admin')
-    console.log('   Email: admin@neurotrauma2026.com')
+    console.log('   Email: admin@ossapcon2026.com')
     console.log('   Password: admin123456')
     console.log('\n⚠️  IMPORTANT: Change the admin password after first login!')
 

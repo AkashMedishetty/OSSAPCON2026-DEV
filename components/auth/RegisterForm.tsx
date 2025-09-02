@@ -459,10 +459,10 @@ export function RegisterForm() {
           />
           <label htmlFor="agreeTerms" className="text-sm leading-relaxed">
             I agree to the{" "}
-            <Link href="/terms-conditions" className="text-orange-600 hover:underline">
+            <Link href="/terms-conditions" className="text-blue-600 hover:underline">
               Terms and Conditions
             </Link>{" "}
-            of the NeuroTrauma 2026 Conference
+            of the OSSAPCON 2026 Conference
           </label>
         </div>
         {errors.agreeTerms && <p className="text-sm text-red-500">{errors.agreeTerms}</p>}
@@ -475,7 +475,7 @@ export function RegisterForm() {
           />
           <label htmlFor="agreePrivacy" className="text-sm leading-relaxed">
             I agree to the{" "}
-            <Link href="/privacy-policy" className="text-orange-600 hover:underline">
+            <Link href="/privacy-policy" className="text-blue-600 hover:underline">
               Privacy Policy
             </Link>{" "}
             and consent to the processing of my personal data
@@ -507,7 +507,7 @@ export function RegisterForm() {
       <Card className="w-full max-w-2xl mx-auto">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-center">
-            Register for NeuroTrauma 2026
+            Register for OSSAPCON 2026
           </CardTitle>
           <CardDescription className="text-center">
             Step {step} of 3: {stepTitles[step - 1]}
@@ -516,7 +516,7 @@ export function RegisterForm() {
           {/* Progress Bar */}
           <div className="w-full bg-gray-200 rounded-full h-2 mt-4">
             <div 
-              className="bg-gradient-to-r from-orange-500 to-red-600 h-2 rounded-full transition-all duration-300"
+              className="bg-gradient-to-r from-blue-600 to-blue-700 h-2 rounded-full transition-all duration-300"
               style={{ width: `${(step / 3) * 100}%` }}
             />
           </div>
@@ -546,14 +546,14 @@ export function RegisterForm() {
                 <Button
                   type="button"
                   onClick={handleNext}
-                  className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
+                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
                 >
                   Next
                 </Button>
               ) : (
                 <Button
                   type="submit"
-                  className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
+                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
                   disabled={isLoading}
                 >
                   {isLoading ? (
@@ -573,7 +573,7 @@ export function RegisterForm() {
             Already have an account?{" "}
             <Link 
               href="/auth/login"
-              className="font-medium text-orange-600 hover:text-orange-700 hover:underline"
+              className="font-medium text-blue-600 hover:text-blue-700 hover:underline"
             >
               Sign in here
             </Link>

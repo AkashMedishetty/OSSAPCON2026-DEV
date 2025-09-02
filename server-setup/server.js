@@ -25,7 +25,7 @@ app.use(cookieParser())
 app.use(cors({
   origin: [
     'http://localhost:3001',
-    'https://nuerotruama2026.vercel.app',
+    'https://ossapcon2026.com',
     process.env.FRONTEND_URL
   ].filter(Boolean),
   credentials: true,
@@ -67,7 +67,7 @@ app.use(session({
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
   },
-  name: 'neurotrauma.sid'
+  name: 'ossapcon.sid'
 }))
 
 // User model (simplified)
@@ -215,7 +215,7 @@ app.post('/api/auth/logout', async (req, res) => {
       if (err) {
         return res.status(500).json({ error: 'Logout failed' })
       }
-      res.clearCookie('neurotrauma.sid')
+      res.clearCookie('ossapcon.sid')
       res.json({ success: true })
     })
   } catch (error) {
@@ -337,7 +337,7 @@ app.use((err, req, res, next) => {
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`🚀 NeuroTrauma Server running on port ${PORT}`)
+  console.log(`🚀 OSSAPCON Server running on port ${PORT}`)
   console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`)
   console.log(`🔐 Session store: MongoDB`)
   console.log(`🌐 CORS enabled for frontend`)

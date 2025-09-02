@@ -61,7 +61,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
         return (
           <div className="min-h-screen flex items-center justify-center bg-gray-50">
             <div className="text-center space-y-4 p-8">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
               <h2 className="text-xl font-semibold text-gray-900">Loading...</h2>
               <p className="text-gray-600">Updating application, please wait...</p>
             </div>
@@ -87,7 +87,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
             <div className="space-y-2">
               <Button 
                 onClick={this.retry}
-                className="bg-orange-500 hover:bg-orange-600"
+                className="bg-blue-600 hover:bg-blue-700"
               >
                 Try Again
               </Button>

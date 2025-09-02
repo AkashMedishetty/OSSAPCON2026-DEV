@@ -1,15 +1,14 @@
 // Force Update Service Worker - v8
 // This service worker forces cache invalidation and ensures users get fresh content
 
-const CACHE_VERSION = 'neurotrauma-2026-v1756532209855-1e4f3bc';
+const CACHE_VERSION = 'ossapcon-2026-v1756719664938-350cd2d';
 const STATIC_CACHE_NAME = `${CACHE_VERSION}-static`;
 const DYNAMIC_CACHE_NAME = `${CACHE_VERSION}-dynamic`;
 
 // Minimal static assets - only truly essential ones
 const STATIC_ASSETS = [
   '/offline.html',
-  '/NTSILOGO.png',
-  '/brainandspinesociety.png',
+  '/ossapcon-logo.png',
   '/KIMS.png'
 ];
 
@@ -198,4 +197,4 @@ self.addEventListener('message', (event) => {
   }
 });
 
-console.log('🚀 NeuroTrauma 2026 Force Update Service Worker v8 - Loaded and ready to clear caches!');
+console.log('🚀 OSSAPCON 2026 Force Update Service Worker v8 - Loaded and ready to clear caches!');

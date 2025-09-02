@@ -94,7 +94,7 @@ function ResetPasswordForm() {
 
   if (tokenError) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         <Navigation />
         
         <main className="container mx-auto px-4 py-20">
@@ -146,7 +146,7 @@ function ResetPasswordForm() {
 
   if (isSuccess) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         <Navigation />
         
         <main className="container mx-auto px-4 py-20">
@@ -176,7 +176,7 @@ function ResetPasswordForm() {
                 
                 <div className="text-center">
                   <Link href="/auth/login">
-                    <Button className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700">
+                    <Button className="w-full bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800">
                       Go to Login
                     </Button>
                   </Link>
@@ -190,7 +190,7 @@ function ResetPasswordForm() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <Navigation />
       
       <main className="container mx-auto px-4 py-20">
@@ -285,7 +285,7 @@ function ResetPasswordForm() {
 
                 <Button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
+                  className="w-full bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800"
                   disabled={isLoading}
                 >
                   {isLoading ? (

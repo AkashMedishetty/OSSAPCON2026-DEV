@@ -341,7 +341,7 @@ export function ProfileForm() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <User className="h-5 w-5 text-orange-500" />
+              <User className="h-5 w-5 text-blue-600" />
               Profile Picture
             </CardTitle>
             <CardDescription>
@@ -397,7 +397,7 @@ export function ProfileForm() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <User className="h-5 w-5 text-orange-500" />
+              <User className="h-5 w-5 text-blue-600" />
               Personal Information
             </CardTitle>
             <CardDescription>
@@ -487,7 +487,7 @@ export function ProfileForm() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Building className="h-5 w-5 text-orange-500" />
+              <Building className="h-5 w-5 text-blue-600" />
               Professional Information
             </CardTitle>
             <CardDescription>
@@ -528,7 +528,7 @@ export function ProfileForm() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <MapPin className="h-5 w-5 text-orange-500" />
+              <MapPin className="h-5 w-5 text-blue-600" />
               Address Information
             </CardTitle>
             <CardDescription>
@@ -637,7 +637,7 @@ export function ProfileForm() {
             <Button
               type="submit"
               disabled={isSaving}
-              className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
+              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
             >
               {isSaving ? (
                 <>

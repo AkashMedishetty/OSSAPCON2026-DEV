@@ -84,7 +84,7 @@ export default function MobileBrainFallback() {
             {/* Temporal lobe */}
             <div className="absolute bottom-8 right-1 w-14 h-8 bg-rose-300 rounded-full opacity-80"></div>
             {/* Occipital lobe */}
-            <div className="absolute bottom-2 left-2 w-8 h-8 bg-orange-300 rounded-full opacity-80"></div>
+            <div className="absolute bottom-2 left-2 w-8 h-8 bg-blue-300 rounded-full opacity-80"></div>
           </motion.div>
 
           {/* Cerebellum */}
@@ -101,7 +101,7 @@ export default function MobileBrainFallback() {
 
           {/* Brain stem */}
           <motion.div
-            className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-2 w-6 h-8 bg-gradient-to-b from-yellow-400 to-orange-500 rounded-b-lg"
+            className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-2 w-6 h-8 bg-gradient-to-b from-yellow-400 to-blue-500 rounded-b-lg"
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 8, opacity: 1 }}
             transition={{ duration: 0.5, delay: 1.8 }}

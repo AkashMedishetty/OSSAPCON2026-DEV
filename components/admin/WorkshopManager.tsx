@@ -251,7 +251,7 @@ export function WorkshopManager() {
           <Input
             value={formData.id}
             onChange={(e) => setFormData(prev => ({ ...prev, id: e.target.value }))}
-            placeholder="e.g., brain-surgery"
+            placeholder="e.g., joint-replacement"
             disabled={!!editingWorkshop}
           />
         </div>

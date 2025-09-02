@@ -1,4 +1,4 @@
-# Robots.txt for NeuroTrauma 2026 Conference Website
+# Robots.txt for OSSAPCON 2026 Conference Website
 
 User-agent: *
 Allow: /
@@ -16,7 +16,7 @@ Allow: /api/contact
 Allow: /api/notifications/subscribe
 
 # Sitemap location
-Sitemap: https://neurotrauma2026.in/sitemap.xml
+Sitemap: https://ossapcon2026.com/sitemap.xml
 
 # Crawl delay
 Crawl-delay: 1

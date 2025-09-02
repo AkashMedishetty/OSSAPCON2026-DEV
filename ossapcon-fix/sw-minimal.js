@@ -1,5 +1,5 @@
 // MINIMAL Service Worker - Bypass everything for debugging 
-const VERSION = 'neurotrauma-2026-v7-minimal'; 
+const VERSION = 'ossapcon-2026-v7-minimal'; 
 
 self.addEventListener('install', (event) => { 
   console.log('SW v7 minimal: Installing...'); 
@@ -27,4 +27,4 @@ self.addEventListener('fetch', (event) => {
   return; 
 }); 
 
-console.log('NeuroTrauma 2026 Service Worker v7 - MINIMAL MODE');
+console.log('OSSAPCON 2026 Service Worker v7 - MINIMAL MODE');

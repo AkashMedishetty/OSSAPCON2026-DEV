@@ -42,7 +42,7 @@ async function sendWebhookNotification(webhookUrl, message) {
     
     const payload = {
       text: message,
-      username: 'NeuroTrauma 2026 Deploy Bot',
+      username: 'OSSAPCON 2026 Deploy Bot',
       icon_emoji: ':rocket:'
     };
     
@@ -152,7 +152,7 @@ async function executeDeploymentHook() {
     
     // Step 6: Send notifications
     console.log('\n🔄 Step 6: Sending notifications...');
-    const message = `🚀 NeuroTrauma 2026 deployed successfully!\n` +
+    const message = `🚀 OSSAPCON 2026 deployed successfully!\n` +
                    `📦 Version: ${version}\n` +
                    `🌿 Branch: ${config.gitBranch}\n` +
                    `📝 Commit: ${config.gitCommit}\n` +
@@ -180,7 +180,7 @@ async function executeDeploymentHook() {
     console.error('❌ Deployment hook failed:', error);
     
     // Send failure notification
-    const errorMessage = `❌ NeuroTrauma 2026 deployment failed!\n` +
+    const errorMessage = `❌ OSSAPCON 2026 deployment failed!\n` +
                         `🌿 Branch: ${config.gitBranch}\n` +
                         `📝 Commit: ${config.gitCommit}\n` +
                         `❌ Error: ${error.message}\n` +

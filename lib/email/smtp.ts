@@ -93,7 +93,7 @@ export async function sendEmail({
 
     const mailOptions = {
       from: {
-        name: emailConfig?.fromName || process.env.APP_NAME || 'NeuroTrauma 2026',
+        name: emailConfig?.fromName || process.env.APP_NAME || 'OSSAPCON 2026',
         address: emailConfig?.fromEmail || process.env.SMTP_USER || process.env.EMAIL_USER
       },
       to: Array.isArray(to) ? to.join(', ') : to,

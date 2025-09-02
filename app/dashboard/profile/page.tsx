@@ -4,8 +4,8 @@ import { ProfileForm } from "@/components/dashboard/ProfileForm"
 import { Navigation } from "@/components/navigation"
 
 export const metadata: Metadata = {
-  title: "Profile | NeuroTrauma 2026",
-  description: "Manage your NeuroTrauma 2026 conference profile",
+  title: "Profile | OSSAPCON 2026",
+  description: "Manage your OSSAPCON 2026 conference profile",
 }
 
 export default function ProfilePage() {

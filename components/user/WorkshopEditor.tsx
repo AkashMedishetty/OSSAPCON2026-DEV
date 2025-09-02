@@ -193,7 +193,7 @@ export function WorkshopEditor({ userWorkshops, canEdit, onUpdate }: WorkshopEdi
           <div className="flex items-center justify-between">
             <div>
               <CardTitle className="flex items-center gap-2">
-                <Calendar className="h-5 w-5 text-orange-500" />
+                <Calendar className="h-5 w-5 text-ossapcon-950" />
                 Workshop Selections ({userWorkshops.length})
               </CardTitle>
               <CardDescription>
@@ -223,7 +223,7 @@ export function WorkshopEditor({ userWorkshops, canEdit, onUpdate }: WorkshopEdi
                       const canSelect = workshop.canRegister && (isSelected || workshop.availableSeats > 0)
                       
                       return (
-                        <Card key={workshop.id} className={`${isSelected ? 'ring-2 ring-orange-500' : ''}`}>
+                        <Card key={workshop.id} className={`${isSelected ? 'ring-2 ring-ossapcon-950' : ''}`}>
                           <CardContent className="p-4">
                             <div className="flex items-start justify-between">
                               <div className="flex items-start gap-3 flex-1">
@@ -263,7 +263,7 @@ export function WorkshopEditor({ userWorkshops, canEdit, onUpdate }: WorkshopEdi
                                     </div>
                                   </div>
                                   
-                                  <div className="mt-2 text-lg font-semibold text-orange-600">
+                                  <div className="mt-2 text-lg font-semibold text-ossapcon-700">
                                     {formatCurrency(workshop.price, workshop.currency)}
                                   </div>
                                 </div>
@@ -323,7 +323,7 @@ export function WorkshopEditor({ userWorkshops, canEdit, onUpdate }: WorkshopEdi
           ) : (
             <div className="space-y-4">
               {selectedWorkshopDetails.map((workshop) => (
-                <Card key={workshop.id} className="border-l-4 border-l-orange-500">
+                <Card key={workshop.id} className="border-l-4 border-l-ossapcon-950">
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
@@ -353,7 +353,7 @@ export function WorkshopEditor({ userWorkshops, canEdit, onUpdate }: WorkshopEdi
                       </div>
                       
                       <div className="text-right">
-                        <div className="text-lg font-semibold text-orange-600">
+                        <div className="text-lg font-semibold text-ossapcon-700">
                           {formatCurrency(workshop.price, workshop.currency)}
                         </div>
                         <Badge variant="secondary" className="mt-1">

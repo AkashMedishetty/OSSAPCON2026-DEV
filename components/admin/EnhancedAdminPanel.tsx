@@ -359,7 +359,7 @@ export function EnhancedAdminPanel() {
       >
         <div>
           <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-            Admin Panel - NeuroTrauma 2026
+            Admin Panel - OSSAPCON 2026
           </h1>
           <p className="text-muted-foreground">
             Manage registrations, payments, and conference administration

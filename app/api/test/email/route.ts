@@ -52,12 +52,12 @@ export async function POST(request: NextRequest) {
         const { sendEmail } = await import('@/lib/email/smtp')
         result = await sendEmail({
           to: email,
-          subject: 'Test Email - NeuroTrauma 2026',
+          subject: 'Test Email - OSSAPCON 2026',
           html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
               <h2 style="color: #f97316;">Email Test Successful!</h2>
               <p>Hello,</p>
-              <p>This is a test email from your NeuroTrauma 2026 Conference platform.</p>
+              <p>This is a test email from your OSSAPCON 2026 Conference platform.</p>
               <p>If you received this email, your SMTP configuration is working correctly!</p>
               <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
                 <h3>System Information:</h3>
@@ -68,10 +68,10 @@ export async function POST(request: NextRequest) {
                 </ul>
               </div>
               <p>Best regards,<br>
-              <strong>NeuroTrauma 2026 Team</strong></p>
+              <strong>OSSAPCON 2026 Team</strong></p>
             </div>
           `,
-          text: `Email Test Successful! This is a test email from NeuroTrauma 2026 Conference platform. Timestamp: ${new Date().toLocaleString()}`
+          text: `Email Test Successful! This is a test email from OSSAPCON 2026 Conference platform. Timestamp: ${new Date().toLocaleString()}`
         })
     }
 

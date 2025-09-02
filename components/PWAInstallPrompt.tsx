@@ -120,10 +120,10 @@ export function PWAInstallPrompt() {
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
             className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:max-w-sm z-50"
           >
-            <div className="bg-white dark:bg-gray-800 border border-orange-200 dark:border-gray-600 rounded-xl shadow-lg p-4 backdrop-blur-sm">
+            <div className="bg-white dark:bg-gray-800 border border-ossapcon-200 dark:border-gray-600 rounded-xl shadow-lg p-4 backdrop-blur-sm">
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center">
+                  <div className="w-8 h-8 bg-gradient-to-br from-ossapcon-950 to-ossapcon-800 rounded-lg flex items-center justify-center">
                     <Download className="w-4 h-4 text-white" />
                   </div>
                   <h3 className="font-semibold text-gray-900 dark:text-gray-100">
@@ -139,13 +139,13 @@ export function PWAInstallPrompt() {
               </div>
               
               <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
-                Install NeuroTrauma 2026 for quick access to conference updates, schedule, and offline features.
+                Install OSSAPCON 2026 for quick access to conference updates, schedule, and offline features.
               </p>
               
               <div className="flex space-x-2">
                 <Button
                   onClick={handleInstallClick}
-                  className="flex-1 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white text-sm"
+                  className="flex-1 bg-gradient-to-r from-ossapcon-950 to-ossapcon-800 hover:from-ossapcon-800 hover:to-ossapcon-700 text-white text-sm"
                 >
                   <Download className="w-4 h-4 mr-2" />
                   Install
@@ -153,7 +153,7 @@ export function PWAInstallPrompt() {
                 <Button
                   onClick={handleDismiss}
                   variant="outline"
-                  className="text-sm border-orange-200 dark:border-gray-600"
+                  className="text-sm border-ossapcon-200 dark:border-gray-600"
                 >
                   Later
                 </Button>
@@ -174,7 +174,7 @@ export function PWAInstallPrompt() {
             className="fixed bottom-0 left-0 right-0 z-50 p-4"
           >
             <div className="max-w-4xl mx-auto">
-              <div className="bg-gradient-to-r from-orange-500 to-red-600 rounded-t-2xl shadow-2xl overflow-hidden">
+              <div className="bg-gradient-to-r from-ossapcon-950 to-ossapcon-800 rounded-t-2xl shadow-2xl overflow-hidden">
                 <div className="relative p-6 text-white">
                   {/* Background Pattern */}
                   <div className="absolute inset-0 opacity-10">
@@ -191,7 +191,7 @@ export function PWAInstallPrompt() {
                         </div>
                         <div>
                           <h3 className="text-xl font-bold">
-                            Get the NeuroTrauma 2026 App!
+                            Get the OSSAPCON 2026 App!
                           </h3>
                           <p className="text-white/90 text-sm">
                             Don't miss out on the full conference experience
@@ -217,7 +217,7 @@ export function PWAInstallPrompt() {
                       <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
                         <Button
                           onClick={handleInstallClick}
-                          className="bg-white text-orange-600 hover:bg-gray-100 font-semibold px-6 py-2 rounded-lg transition-all duration-200 transform hover:scale-105"
+                          className="bg-white text-ossapcon-700 hover:bg-gray-100 font-semibold px-6 py-2 rounded-lg transition-all duration-200 transform hover:scale-105"
                         >
                           <Download className="w-4 h-4 mr-2" />
                           Install Now - It's Free!

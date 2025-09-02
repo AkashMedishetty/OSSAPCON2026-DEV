@@ -40,7 +40,7 @@ function updateServiceWorker(version) {
   
   // Update cache version in service worker
   const versionRegex = /const CACHE_VERSION = '[^']+';/;
-  const newVersionLine = `const CACHE_VERSION = 'neurotrauma-2026-${version}';`;
+  const newVersionLine = `const CACHE_VERSION = 'ossapcon-2026-${version}';`;
   
   if (versionRegex.test(swContent)) {
     swContent = swContent.replace(versionRegex, newVersionLine);

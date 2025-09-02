@@ -16,7 +16,7 @@ export function getAuthUrl(): string {
   }
 
   // Fallback for production (use the correct domain)
-  return 'https://nuerotruama2026.vercel.app';
+  return 'https://ossapcon2026.vercel.app';
 }
 
 // Auto-detect APP_URL (same logic as NEXTAUTH_URL)

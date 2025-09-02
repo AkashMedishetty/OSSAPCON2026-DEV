@@ -151,7 +151,7 @@ function UserMenu({ userData }: { userData: any }) {
         <Button variant="ghost" className="relative h-10 w-10 rounded-full">
           <Avatar className="h-10 w-10">
             <AvatarImage src={userData?.profile?.profilePicture} />
-            <AvatarFallback className="bg-gradient-to-r from-orange-500 to-red-600 text-white">
+            <AvatarFallback className="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
               {userData?.profile ? getInitials(userData.profile.firstName, userData.profile.lastName) : 'U'}
             </AvatarFallback>
           </Avatar>
@@ -254,7 +254,7 @@ export function MainLayout({ children, currentPage, showSearch = false }: MainLa
   const navigationItems = session ? authNavigationItems : publicNavigationItems
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-orange-50 dark:from-gray-950 dark:via-gray-900 dark:to-orange-950">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950">
       {/* Top Navigation */}
       <motion.nav
         initial={{ y: -100, opacity: 0 }}
@@ -273,8 +273,8 @@ export function MainLayout({ children, currentPage, showSearch = false }: MainLa
               >
                 {/* Use the same logo as main page */}
                 <OptimizedImage
-                  src="/NueroTraumalogo.png"
-                  alt="NeuroTrauma 2026 Logo"
+                  src="/ossapcon-logo.png"
+                  alt="OSSAPCON 2026 Logo"
                   width={160}
                   height={64}
                   className="h-12 lg:h-16 w-auto object-contain"
@@ -305,8 +305,8 @@ export function MainLayout({ children, currentPage, showSearch = false }: MainLa
                     <Button
                       variant="ghost"
                       className={`text-sm font-medium transition-all duration-200 ${isActivePage(item.href)
-                        ? "bg-gradient-to-r from-orange-500 to-red-600 text-white hover:from-orange-600 hover:to-red-700 shadow-md"
-                        : "hover:bg-orange-50 hover:text-orange-600 dark:hover:bg-orange-900/20 dark:hover:text-orange-400"
+                        ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 shadow-md"
+                        : "hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/20 dark:hover:text-blue-400"
                         }`}
                     >
                       <Icon className="w-4 h-4 mr-2" />
@@ -339,7 +339,7 @@ export function MainLayout({ children, currentPage, showSearch = false }: MainLa
                     </Button>
                   </Link>
                   <Link href="/register">
-                    <Button className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white shadow-lg">
+                    <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg">
                       Register Now
                     </Button>
                   </Link>
@@ -400,8 +400,8 @@ export function MainLayout({ children, currentPage, showSearch = false }: MainLa
                           <Button
                             variant="ghost"
                             className={`w-full justify-start text-left h-12 transition-all duration-200 ${isActivePage(item.href)
-                              ? "bg-gradient-to-r from-orange-500 to-red-600 text-white"
-                              : "hover:bg-orange-50 hover:text-orange-600 dark:hover:bg-orange-900/20 dark:hover:text-orange-400"
+                              ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white"
+                              : "hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/20 dark:hover:text-blue-400"
                               }`}
                           >
                             <Icon className="w-4 h-4 mr-3" />
@@ -428,7 +428,7 @@ export function MainLayout({ children, currentPage, showSearch = false }: MainLa
                           </Button>
                         </Link>
                         <Link href="/register" onClick={() => setIsMenuOpen(false)}>
-                          <Button className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white h-12 shadow-lg">
+                          <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white h-12 shadow-lg">
                             <UserCheck className="w-4 h-4 mr-3" />
                             Register Now
                           </Button>
@@ -447,7 +447,7 @@ export function MainLayout({ children, currentPage, showSearch = false }: MainLa
                     >
                       <div className="flex items-center space-x-3 px-3 py-2">
                         <Avatar className="h-10 w-10">
-                          <AvatarFallback className="bg-gradient-to-r from-orange-500 to-red-600 text-white">
+                          <AvatarFallback className="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
                             {userData.profile ?
                               `${userData.profile.firstName?.charAt(0) || ''}${userData.profile.lastName?.charAt(0) || ''}`.toUpperCase()
                               : 'U'
@@ -519,30 +519,30 @@ export function MainLayout({ children, currentPage, showSearch = false }: MainLa
           {/* Organizers Section */}
           <div className="mb-16">
             <div className="text-center">
-              <h3 className="text-3xl font-bold mb-8 text-orange-400 leading-relaxed">Organized By</h3>
+              <h3 className="text-3xl font-bold mb-8 text-blue-400 leading-relaxed">Organized By</h3>
               <div className="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-12">
-                {/* Neurotrauma Society of India */}
+                {/* Orthopedic Surgeons Society of Andhra Pradesh */}
                 <div className="flex flex-col items-center space-y-4">
                   <OptimizedImage
-                    src="/NTSILOGO.png"
-                    alt="Neurotrauma Society of India"
+                    src="/ossapcon-logo.png"
+                    alt="Orthopedic Surgeons Society of Andhra Pradesh"
                     width={200}
                     height={80}
                     className="h-20 w-auto object-contain"
                   />
-                  <p className="text-gray-300 text-center font-medium">Neurotrauma Society of India</p>
+                  <p className="text-gray-300 text-center font-medium">Orthopedic Surgeons Society of Andhra Pradesh</p>
                 </div>
 
-                {/* Brain and Spine Society */}
+                {/* Department of Orthopedics */}
                 <div className="flex flex-col items-center space-y-4">
                   <OptimizedImage
-                    src="/brainandspinesociety.png"
-                    alt="Brain and Spine Society(BASS)"
+                    src="/ossapcon-logo.png"
+                    alt="Department of Orthopedics, Kurnool Medical College"
                     width={200}
                     height={80}
                     className="h-20 w-auto object-contain"
                   />
-                  <p className="text-gray-300 text-center font-medium">Brain and Spine Society(BASS)</p>
+                  <p className="text-gray-300 text-center font-medium">Department of Orthopedics, Kurnool Medical College</p>
                 </div>
 
                 {/* KIMS Hospitals */}
@@ -564,23 +564,23 @@ export function MainLayout({ children, currentPage, showSearch = false }: MainLa
           <div className="grid md:grid-cols-4 lg:grid-cols-5 gap-8 mb-16">
             {/* Conference Info */}
             <div className="md:col-span-2 lg:col-span-1">
-              <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-6 bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent leading-tight py-2">
-                NEUROTRAUMA 2026
+              <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-6 bg-gradient-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent leading-tight py-2">
+                OSSAPCON 2026
               </h3>
               <p className="text-gray-300 leading-relaxed mb-6">
-                Science, Sports & Spiritually through innovation, collaboration, and excellence. Join us in Hyderabad for three transformative days of medical learning.
+                Excellence in Orthopedic Care through innovation, collaboration, and excellence. Join us in Kurnool for three transformative days of medical learning.
               </p>
               <div className="space-y-2 text-gray-400">
                 <p className="flex items-center">
-                  <Calendar className="w-4 h-4 mr-2 text-orange-500" />
+                  <Calendar className="w-4 h-4 mr-2 text-blue-600" />
                   August 7-9, 2026
                 </p>
                 <p className="flex items-center">
-                  <MapPin className="w-4 h-4 mr-2 text-orange-500" />
-                  Hyderabad, India
+                  <MapPin className="w-4 h-4 mr-2 text-blue-600" />
+                  Kurnool, Andhra Pradesh
                 </p>
                 <p className="flex items-center">
-                  <Users className="w-4 h-4 mr-2 text-orange-500" />
+                  <Users className="w-4 h-4 mr-2 text-blue-600" />
                   400+ Expected Delegates
                 </p>
               </div>
@@ -588,7 +588,7 @@ export function MainLayout({ children, currentPage, showSearch = false }: MainLa
 
             {/* Quick Links */}
             <div>
-              <h4 className="font-bold mb-6 text-orange-400 uppercase tracking-wide">Quick Links</h4>
+              <h4 className="font-bold mb-6 text-blue-400 uppercase tracking-wide">Quick Links</h4>
               <ul className="space-y-3 text-gray-300">
                 {[
                   { name: "About Conference", href: "/" },
@@ -599,7 +599,7 @@ export function MainLayout({ children, currentPage, showSearch = false }: MainLa
                   { name: "Local Tourism", href: "/" }
                 ].map((item) => (
                   <li key={item.name}>
-                    <Link href={item.href} className="hover:text-orange-400 transition-colors duration-300 flex items-center">
+                    <Link href={item.href} className="hover:text-blue-400 transition-colors duration-300 flex items-center">
                       <ArrowRight className="w-3 h-3 mr-2" />
                       {item.name}
                     </Link>
@@ -610,19 +610,19 @@ export function MainLayout({ children, currentPage, showSearch = false }: MainLa
 
             {/* Contact Information */}
             <div>
-              <h4 className="font-bold mb-6 text-orange-400 uppercase tracking-wide">Contact Information</h4>
+              <h4 className="font-bold mb-6 text-blue-400 uppercase tracking-wide">Contact Information</h4>
 
               <div className="mb-6">
                 <h5 className="font-semibold text-white mb-2">Conference Secretariat</h5>
                 <p className="text-gray-300 text-sm">Dr. Raghavendra H</p>
                 <p className="text-gray-400 text-sm">Conference Secretariat</p>
-                <p className="text-gray-400 text-sm">Hyderabad, India 500001</p>
+                <p className="text-gray-400 text-sm">Kurnool, Andhra Pradesh 518002</p>
               </div>
             </div>
 
             {/* Conference Manager */}
             <div>
-              <h4 className="font-bold mb-6 text-orange-400 uppercase tracking-wide">Conference Manager</h4>
+              <h4 className="font-bold mb-6 text-blue-400 uppercase tracking-wide">Conference Manager</h4>
 
               <div className="mb-6">
                 <h5 className="font-semibold text-white mb-2">Mr. Kiran Kumar Lella</h5>
@@ -643,7 +643,7 @@ export function MainLayout({ children, currentPage, showSearch = false }: MainLa
 
             {/* Social Media & Follow */}
             <div>
-              <h4 className="font-bold mb-6 text-orange-400 uppercase tracking-wide">Follow Us</h4>
+              <h4 className="font-bold mb-6 text-blue-400 uppercase tracking-wide">Follow Us</h4>
               <div className="flex space-x-4 mb-8">
                 {[
                   { logo: "/LinkedIn_logo_initials.png", label: "LinkedIn" },
@@ -688,13 +688,13 @@ export function MainLayout({ children, currentPage, showSearch = false }: MainLa
           <div className="border-t border-gray-700 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
               <div className="text-gray-400 text-sm">
-                <p>&copy; 2026 NeuroTrauma Conference. All rights reserved.</p>
-                <p>Hyderabad, India</p>
+                <p>&copy; 2026 OSSAPCON Conference. All rights reserved.</p>
+                <p>Kurnool, Andhra Pradesh, India</p>
               </div>
               <div className="flex space-x-6 text-gray-400 text-sm">
-                <Link href="/privacy-policy" className="hover:text-orange-400 transition-colors">Privacy Policy</Link>
-                <Link href="/terms-conditions" className="hover:text-orange-400 transition-colors">Terms & Conditions</Link>
-                <Link href="/cookies-policy" className="hover:text-orange-400 transition-colors">Cookies Policy</Link>
+                <Link href="/privacy-policy" className="hover:text-blue-400 transition-colors">Privacy Policy</Link>
+                <Link href="/terms-conditions" className="hover:text-blue-400 transition-colors">Terms & Conditions</Link>
+                <Link href="/cookies-policy" className="hover:text-blue-400 transition-colors">Cookies Policy</Link>
               </div>
             </div>
           </div>

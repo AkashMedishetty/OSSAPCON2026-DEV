@@ -110,12 +110,12 @@ export default function AbstractsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-800">
       <Navigation currentPage="abstracts" />
 
       <div className="pt-24 pb-12">
         {/* Header */}
-        <section className="py-12 md:py-16 bg-gradient-to-r from-orange-600 to-orange-700 text-white">
+        <section className="py-12 md:py-16 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
           <div className="container mx-auto px-4 text-center">
             <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6">Abstract Submission</h1>
@@ -161,7 +161,7 @@ export default function AbstractsPage() {
               transition={{ duration: 0.8 }}
               className="text-center mb-16"
             >
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-800 via-orange-600 to-red-600 bg-clip-text text-transparent">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-800 via-blue-600 to-blue-800 bg-clip-text text-transparent">
                 Submission Timeline
               </h2>
               <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
@@ -199,9 +199,9 @@ export default function AbstractsPage() {
                   className="relative group"
                   whileHover={{ scale: 1.05, y: -5 }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-red-600/10 rounded-2xl blur-xl opacity-50 group-hover:opacity-70 transition-all duration-300"></div>
-                  <div className="relative text-center p-8 bg-white dark:bg-gray-800 backdrop-blur-xl border border-orange-100 dark:border-gray-700 rounded-2xl hover:border-orange-200 dark:hover:border-gray-600 transition-all duration-300 shadow-lg hover:shadow-xl">
-                    <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-blue-600/10 rounded-2xl blur-xl opacity-50 group-hover:opacity-70 transition-all duration-300"></div>
+                  <div className="relative text-center p-8 bg-white dark:bg-gray-800 backdrop-blur-xl border border-blue-100 dark:border-gray-700 rounded-2xl hover:border-blue-200 dark:hover:border-gray-600 transition-all duration-300 shadow-lg hover:shadow-xl">
+                    <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
                       <item.icon className="w-8 h-8 text-white" />
                     </div>
                     <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">{item.title}</h3>
@@ -215,7 +215,7 @@ export default function AbstractsPage() {
         </section>
 
         {/* Research Categories Preview */}
-        <section className="py-16 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-gray-800 dark:to-gray-900">
+        <section className="py-16 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-800 dark:to-gray-900">
           <div className="container mx-auto px-6">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -224,7 +224,7 @@ export default function AbstractsPage() {
               transition={{ duration: 0.8 }}
               className="text-center mb-16"
             >
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-800 via-orange-600 to-red-600 bg-clip-text text-transparent">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-800 via-blue-600 to-blue-800 bg-clip-text text-transparent">
                 Research Categories
               </h2>
               <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
@@ -250,9 +250,9 @@ export default function AbstractsPage() {
                   className="relative group"
                   whileHover={{ scale: 1.05, y: -5 }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-red-600/10 rounded-2xl blur-xl opacity-50 group-hover:opacity-70 transition-all duration-300"></div>
-                  <div className="relative bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-orange-100 dark:border-gray-700 hover:border-orange-200 dark:hover:border-gray-600">
-                    <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-600 rounded-xl flex items-center justify-center mb-6">
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-blue-600/10 rounded-2xl blur-xl opacity-50 group-hover:opacity-70 transition-all duration-300"></div>
+                  <div className="relative bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-blue-100 dark:border-gray-700 hover:border-blue-200 dark:hover:border-gray-600">
+                    <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-6">
                       <category.icon className="w-6 h-6 text-white" />
                     </div>
                     <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-3">{category.title}</h3>
@@ -287,7 +287,7 @@ export default function AbstractsPage() {
               </button>
 
               <div className="text-center mb-6">
-                <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Mail className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">
@@ -321,7 +321,7 @@ export default function AbstractsPage() {
                   </Button>
                   <Button
                     type="submit"
-                    className="flex-1 py-3 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white"
+                    className="flex-1 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
                   >
                     <Bell className="w-4 h-4 mr-2" />
                     Notify Me

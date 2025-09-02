@@ -44,6 +44,20 @@ const config: Config = {
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',
   			ring: 'hsl(var(--ring))',
+  			// OSSAPCON Blue Theme Colors
+  			ossapcon: {
+  				50: '#f0f8ff',
+  				100: '#e0f2fe',
+  				200: '#bae6fd',
+  				300: '#7dd3fc',
+  				400: '#38bdf8',
+  				500: '#0ea5e9',
+  				600: '#0284c7',
+  				700: '#0369a1',
+  				800: '#075985',
+  				900: '#0c4a6e',
+  				950: '#015189',
+  			},
   			chart: {
   				'1': 'hsl(var(--chart-1))',
   				'2': 'hsl(var(--chart-2))',

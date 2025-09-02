@@ -52,7 +52,7 @@ function ParticleSphere() {
         <mesh key={i} position={[position[0], position[1], position[2]]}>
           <sphereGeometry args={[0.8, 4, 4]} />
           <meshBasicMaterial
-            color="#ff6b35"
+            color="#015189"
             transparent
             opacity={0.5}
           />
@@ -99,7 +99,7 @@ function BrainModel() {
             <mesh position={[0, 0, 0]}>
               <sphereGeometry args={[50.0, 16, 16]} />
               <meshBasicMaterial
-                color="#ff6b35"
+                color="#015189"
                 transparent
                 opacity={0.9}
               />
@@ -107,7 +107,7 @@ function BrainModel() {
             <mesh position={[18.0, 8.0, 12.0]}>
               <sphereGeometry args={[20.0, 12, 12]} />
               <meshBasicMaterial
-                color="#e55a2b"
+                color="#0066b3"
                 transparent
                 opacity={0.7}
               />
@@ -115,7 +115,7 @@ function BrainModel() {
             <mesh position={[-18.0, 6.0, 8.0]}>
               <sphereGeometry args={[18.0, 12, 12]} />
               <meshBasicMaterial
-                color="#e55a2b"
+                color="#0066b3"
                 transparent
                 opacity={0.7}
               />
@@ -123,7 +123,7 @@ function BrainModel() {
             <mesh position={[0, -8.0, -4.0]}>
               <sphereGeometry args={[15.0, 12, 12]} />
               <meshBasicMaterial
-                color="#e55a2b"
+                color="#0066b3"
                 transparent
                 opacity={0.7}
               />

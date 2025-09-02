@@ -1,7 +1,7 @@
 {
-  "name": "neurotrauma-server",
+  "name": "ossapcon-server",
   "version": "1.0.0",
-  "description": "Dedicated server for NeuroTrauma 2026 with proper session management",
+  "description": "Dedicated server for OSSAPCON 2026 with proper session management",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

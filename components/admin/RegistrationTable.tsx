@@ -54,12 +54,12 @@ interface WorkshopSelectionEditorProps {
 
 function WorkshopSelectionEditor({ selectedWorkshops, onSelectionChange }: WorkshopSelectionEditorProps) {
   const [availableWorkshops, setAvailableWorkshops] = useState([
-    { id: "brain-surgery", label: "Advanced Brain Surgery Techniques" },
-    { id: "spinal-injury", label: "Spinal Cord Injury Management" },
-    { id: "pediatric-neurotrauma", label: "Pediatric Neurotrauma" },
-    { id: "minimally-invasive", label: "Minimally Invasive Neurosurgery" },
-    { id: "neurotrauma-rehab", label: "Neurotrauma Rehabilitation" },
-    { id: "emergency-neurosurgery", label: "Emergency Neurosurgery" }
+    { id: "joint-replacement", label: "Advanced Joint Replacement Techniques" },
+    { id: "spinal-surgery", label: "Spine Surgery and Instrumentation" },
+    { id: "pediatric-orthopedics", label: "Pediatric Orthopedics" },
+    { id: "arthroscopy", label: "Arthroscopic Surgery Techniques" },
+    { id: "orthopedic-rehab", label: "Orthopedic Rehabilitation" },
+    { id: "trauma-surgery", label: "Orthopedic Trauma Surgery" }
   ])
 
   const handleWorkshopToggle = (workshopId: string, checked: boolean) => {
@@ -355,7 +355,7 @@ export function RegistrationTable({
       }
     },
     registration: {
-      type: "ntsi-member",
+      type: "ossap-member",
       status: "pending",
       workshopSelections: [],
       accompanyingPersons: []
@@ -636,7 +636,7 @@ export function RegistrationTable({
             }
           },
           registration: {
-            type: "ntsi-member",
+            type: "ossap-member",
             status: "pending",
             workshopSelections: [],
             accompanyingPersons: []
@@ -767,7 +767,7 @@ export function RegistrationTable({
 
   const downloadTemplate = () => {
     const template = `Title,First Name,Last Name,Email,Phone,Designation,Institution,City,State,Country,Registration Type,Membership Number,Dietary Requirements,Special Needs
-Dr.,John,Doe,john.doe@example.com,+1234567890,Consultant,Example Hospital,New York,NY,USA,ntsi-member,,Vegetarian,None
+Dr.,John,Doe,john.doe@example.com,+1234567890,Consultant,Example Hospital,New York,NY,USA,ossap-member,,Vegetarian,None
 Prof.,Jane,Smith,jane.smith@example.com,+0987654321,Consultant,Medical College,Los Angeles,CA,USA,non-member,MED123,None,Wheelchair access
 Dr.,Alice,Johnson,alice.johnson@example.com,+1122334455,PG/Student,University Hospital,Boston,MA,USA,pg-student,,None,None`
 
@@ -856,7 +856,7 @@ Dr.,Alice,Johnson,alice.johnson@example.com,+1122334455,PG/Student,University Ho
 
   const getTypeLabel = (type: string) => {
     switch (type) {
-      case "ntsi-member": return "NTSI Member"
+      case "ossap-member": return "OSSAP Member"
       case "non-member": return "Non Member"
       case "pg-student": return "PG Student"
       case "complimentary": return "Complimentary"
@@ -1300,7 +1300,7 @@ Dr.,Alice,Johnson,alice.johnson@example.com,+1122334455,PG/Student,University Ho
           {selectedRegistration && (
             <div className="space-y-6">
               {/* Registration Summary Card */}
-              <Card className="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 border-orange-200">
+              <Card className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-900/20 border-blue-200">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
@@ -1846,7 +1846,7 @@ Dr.,Alice,Johnson,alice.johnson@example.com,+1122334455,PG/Student,University Ho
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="ntsi-member">NTSI Member</SelectItem>
+                          <SelectItem value="ossap-member">OSSAP Member</SelectItem>
                           <SelectItem value="non-member">Non Member</SelectItem>
                           <SelectItem value="pg-student">PG Student</SelectItem>
                           <SelectItem value="complimentary">Complimentary</SelectItem>
@@ -2162,7 +2162,7 @@ Dr.,Alice,Johnson,alice.johnson@example.com,+1122334455,PG/Student,University Ho
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="ntsi-member">NTSI Member</SelectItem>
+                      <SelectItem value="ossap-member">OSSAP Member</SelectItem>
                       <SelectItem value="non-member">Non Member</SelectItem>
                       <SelectItem value="pg-student">PG Student</SelectItem>
                       <SelectItem value="complimentary">Complimentary</SelectItem>

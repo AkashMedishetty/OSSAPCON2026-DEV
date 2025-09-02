@@ -2,7 +2,7 @@
 
 ## Overview
 
-The NeuroTrauma 2026 email system provides automated email functionality for:
+The OSSAPCON 2026 email system provides automated email functionality for:
 - Registration confirmations
 - Payment confirmations with invoices
 - Password reset emails
@@ -26,7 +26,7 @@ EMAIL_USER=your-email@gmail.com
 EMAIL_PASS=your-app-password
 
 # Application Settings
-APP_NAME=NeuroTrauma 2026
+APP_NAME=OSSAPCON 2026
 APP_URL=https://your-domain.com
 
 # NextAuth Secret (Required for password reset tokens)

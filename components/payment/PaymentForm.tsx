@@ -204,7 +204,7 @@ export function PaymentForm() {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: orderData.data.amount,
         currency: orderData.data.currency,
-        name: "NeuroTrauma 2026 Conference",
+        name: "OSSAPCON 2026 Conference",
         description: `Registration Payment - ${userData.registration.registrationId}`,
         order_id: orderData.data.id,
         prefill: {
@@ -217,7 +217,7 @@ export function PaymentForm() {
           registration_type: userData.registration.type
         },
         theme: {
-          color: "#f97316" // Orange theme matching the website
+          color: "#015189" // Blue theme matching OSSAPCON branding
         },
         handler: async function (response: any) {
           try {
@@ -333,7 +333,7 @@ export function PaymentForm() {
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold mb-2">Complete Your Payment</h1>
             <p className="text-gray-600 dark:text-gray-400">
-              Secure your spot at NeuroTrauma 2026 Conference
+              Secure your spot at OSSAPCON 2026 Conference
             </p>
           </div>
 
@@ -342,7 +342,7 @@ export function PaymentForm() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <CreditCard className="h-5 w-5 text-orange-500" />
+                  <CreditCard className="h-5 w-5 text-ossapcon-600" />
                   Registration Summary
                 </CardTitle>
                 <CardDescription>
@@ -550,7 +550,7 @@ export function PaymentForm() {
                     <Button
                       onClick={handlePayment}
                       disabled={isProcessingPayment}
-                      className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
+                      className="w-full bg-gradient-to-r from-ossapcon-950 to-ossapcon-800 hover:from-ossapcon-800 hover:to-ossapcon-700"
                       size="lg"
                     >
                       {isProcessingPayment ? (

@@ -8,7 +8,7 @@ export function getBaseTemplate(content: string) {
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>NeuroTrauma 2026</title>
+      <title>OSSAPCON 2026</title>
       <style>
         body {
           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -29,12 +29,12 @@ export function getBaseTemplate(content: string) {
           text-align: center;
           margin-bottom: 30px;
           padding-bottom: 20px;
-          border-bottom: 3px solid #ff6b35;
+          border-bottom: 3px solid #015189;
         }
         .logo {
           font-size: 28px;
           font-weight: bold;
-          background: linear-gradient(45deg, #ff6b35, #e55a2b);
+          background: linear-gradient(45deg, #015189, #0066b3);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           margin-bottom: 10px;
@@ -49,7 +49,7 @@ export function getBaseTemplate(content: string) {
         .button {
           display: inline-block;
           padding: 12px 24px;
-          background: linear-gradient(45deg, #ff6b35, #e55a2b);
+          background: linear-gradient(45deg, #015189, #0066b3);
           color: white;
           text-decoration: none;
           border-radius: 5px;
@@ -65,9 +65,9 @@ export function getBaseTemplate(content: string) {
           font-size: 12px;
         }
         .highlight {
-          background-color: #fff3e0;
+          background-color: #f0f8ff;
           padding: 15px;
-          border-left: 4px solid #ff6b35;
+          border-left: 4px solid #015189;
           margin: 15px 0;
         }
         table {
@@ -89,19 +89,19 @@ export function getBaseTemplate(content: string) {
     <body>
       <div class="container">
         <div class="header">
-          <div class="logo">NEUROTRAUMA 2026</div>
-          <div class="subtitle">Annual Conference of Neurotrauma Society of India</div>
-          <div class="subtitle">August 7-9, 2026 | Hyderabad, Telangana</div>
+          <div class="logo">OSSAPCON 2026</div>
+          <div class="subtitle">Annual Conference of Orthopedic Surgeons Society of Andhra Pradesh</div>
+          <div class="subtitle">August 7-9, 2026 | Kurnool, Andhra Pradesh</div>
         </div>
         <div class="content">
           ${content}
         </div>
         <div class="footer">
           <p>
-            <strong>NeuroTrauma 2026</strong><br>
-            The Park Hotel, Somajiguda<br>
-            Hyderabad, Telangana, India<br>
-            Email: info@neurotrauma2026.com | Phone: +91-9676541985
+            <strong>OSSAPCON 2026</strong><br>
+            Kurnool Medical College<br>
+            Kurnool, Andhra Pradesh, India<br>
+            Email: contact@ossapcon2026.com | Phone: +91 9052192744
           </p>
           <p>
             This is an automated email. Please do not reply to this email address.
@@ -126,7 +126,7 @@ export function getRegistrationConfirmationTemplate(userData: {
     <h2>Registration Confirmation</h2>
     <p>Dear ${userData.name},</p>
     
-    <p>Thank you for registering for <strong>NeuroTrauma 2026</strong>! We are excited to have you join us for this premier conference on neurotrauma care and research.</p>
+    <p>Thank you for registering for <strong>OSSAPCON 2026</strong>! We are excited to have you join us for this premier conference on orthopedic surgery and care.</p>
     
     <div class="highlight">
       <h3>Your Registration Details:</h3>
@@ -157,7 +157,7 @@ export function getRegistrationConfirmationTemplate(userData: {
     <p>Looking forward to seeing you at the conference!</p>
     
     <p>Best regards,<br>
-    <strong>NeuroTrauma 2026 Organizing Committee</strong></p>
+    <strong>OSSAPCON 2026 Organizing Committee</strong></p>
   `
   
   return getBaseTemplate(content)
@@ -177,7 +177,7 @@ export function getPaymentConfirmationTemplate(paymentData: {
     <h2>Payment Confirmation & Invoice</h2>
     <p>Dear ${paymentData.name},</p>
     
-    <p>Thank you for your payment! Your registration for <strong>NeuroTrauma 2026</strong> is now confirmed.</p>
+    <p>Thank you for your payment! Your registration for <strong>OSSAPCON 2026</strong> is now confirmed.</p>
     
     <div class="highlight">
       <h3>Payment Details:</h3>
@@ -200,7 +200,7 @@ export function getPaymentConfirmationTemplate(paymentData: {
           `<tr><th>Accompanying Person Fees</th><td>${paymentData.currency} ${paymentData.breakdown.accompanyingPersons}</td></tr>` : ''}
         ${paymentData.breakdown.discount > 0 ? 
           `<tr><th>Discount Applied</th><td style="color: green;">-${paymentData.currency} ${paymentData.breakdown.discount}</td></tr>` : ''}
-        <tr style="border-top: 2px solid #ff6b35; font-weight: bold;">
+        <tr style="border-top: 2px solid #015189; font-weight: bold;">
           <th>Total Amount</th><td>${paymentData.currency} ${paymentData.amount}</td>
         </tr>
       </table>
@@ -217,10 +217,10 @@ export function getPaymentConfirmationTemplate(paymentData: {
       <a href="${process.env.APP_URL}/dashboard" class="button">View Your Dashboard</a>
     </p>
     
-    <p>We look forward to welcoming you to NeuroTrauma 2026!</p>
+    <p>We look forward to welcoming you to OSSAPCON 2026!</p>
     
     <p>Best regards,<br>
-    <strong>NeuroTrauma 2026 Organizing Committee</strong></p>
+    <strong>OSSAPCON 2026 Organizing Committee</strong></p>
   `
   
   return getBaseTemplate(content)
@@ -236,7 +236,7 @@ export function getPasswordResetTemplate(resetData: {
     <h2>Password Reset Request</h2>
     <p>Dear ${resetData.name},</p>
     
-    <p>We received a request to reset your password for your NeuroTrauma 2026 account.</p>
+    <p>We received a request to reset your password for your OSSAPCON 2026 account.</p>
     
     <div class="highlight">
       <p><strong>Important:</strong> This link will expire in ${resetData.expiryTime}.</p>
@@ -254,7 +254,7 @@ export function getPasswordResetTemplate(resetData: {
     <p style="word-break: break-all; color: #666; font-size: 12px;">${resetData.resetLink}</p>
     
     <p>Best regards,<br>
-    <strong>NeuroTrauma 2026 Support Team</strong></p>
+    <strong>OSSAPCON 2026 Support Team</strong></p>
   `
   
   return getBaseTemplate(content)
@@ -274,7 +274,7 @@ export function getPaymentReminderTemplate(userData: {
     <h2>Payment Reminder</h2>
     <p>Dear ${userData.name},</p>
     
-    <p>This is a friendly reminder regarding your registration payment for <strong>NeuroTrauma 2026</strong>.</p>
+    <p>This is a friendly reminder regarding your registration payment for <strong>OSSAPCON 2026</strong>.</p>
     
     <div class="highlight">
       <h3>Your Registration Details:</h3>
@@ -303,15 +303,15 @@ export function getPaymentReminderTemplate(userData: {
     <p><strong>Conference Details:</strong></p>
     <ul>
       <li><strong>Dates:</strong> August 7-9, 2026</li>
-      <li><strong>Venue:</strong> The Park Hotel, Somajiguda, Hyderabad</li>
+      <li><strong>Venue:</strong> Kurnool Medical College, Kurnool, Andhra Pradesh</li>
     </ul>
     
-    <p>For any payment-related queries, please contact us at <a href="mailto:payments@neurotraumacon2026.com">payments@neurotraumacon2026.com</a></p>
+    <p>For any payment-related queries, please contact us at <a href="mailto:contact@ossapcon2026.com">contact@ossapcon2026.com</a></p>
     
     <p>Thank you for your understanding.</p>
     
     <p>Best regards,<br>
-    <strong>NeuroTrauma 2026 Finance Team</strong></p>
+    <strong>OSSAPCON 2026 Finance Team</strong></p>
   `
   
   return getBaseTemplate(content)
@@ -333,7 +333,7 @@ export function getCustomMessageTemplate(messageData: {
     </div>
     
     <p>Best regards,<br>
-    <strong>${messageData.senderName || 'NeuroTrauma 2026 Team'}</strong></p>
+    <strong>${messageData.senderName || 'OSSAPCON 2026 Team'}</strong></p>
   `
   
   return getBaseTemplate(content)
@@ -353,7 +353,7 @@ export function getBulkEmailTemplate(emailData: {
     </div>
     
     <p>Best regards,<br>
-    <strong>${emailData.senderName || 'NeuroTrauma 2026 Team'}</strong></p>
+    <strong>${emailData.senderName || 'OSSAPCON 2026 Team'}</strong></p>
   `
   
   return getBaseTemplate(content)

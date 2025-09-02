@@ -63,7 +63,7 @@ const login = async (email, password) => {
 ```bash
 # Install Heroku CLI
 # Create Heroku app
-heroku create neurotrauma-server
+heroku create ossapcon-server
 
 # Add MongoDB addon
 heroku addons:create mongolab:sandbox
@@ -76,7 +76,7 @@ heroku config:set FRONTEND_URL="https://nuerotruama2026.vercel.app"
 git init
 git add .
 git commit -m "Initial server setup"
-heroku git:remote -a neurotrauma-server
+heroku git:remote -a ossapcon-server
 git push heroku main
 ```
 

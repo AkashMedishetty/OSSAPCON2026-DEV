@@ -222,7 +222,7 @@ export function UserDashboard() {
               Welcome back, {userData.profile.title} {userData.profile.firstName}!
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mt-2">
-              Manage your NeuroTrauma 2026 registration and profile
+              Manage your OSSAPCON 2026 registration and profile
             </p>
           </div>
           <Badge 
@@ -246,7 +246,7 @@ export function UserDashboard() {
             <AlertDescription className="flex items-center justify-between">
               <span>Complete your registration by making the payment.</span>
               <Link href="/dashboard/payment">
-                <Button size="sm" className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700">
+                <Button size="sm" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800">
                   Pay Now
                 </Button>
               </Link>
@@ -275,7 +275,7 @@ export function UserDashboard() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <FileText className="h-5 w-5 text-orange-500" />
+                    <FileText className="h-5 w-5 text-blue-600" />
                     Registration Status
                   </CardTitle>
                 </CardHeader>
@@ -336,7 +336,7 @@ export function UserDashboard() {
                     </div>
                     <div className="flex items-center gap-2">
                       <MapPin className="h-4 w-4 text-gray-400" />
-                      <span>Hyderabad, Telangana</span>
+                      <span>Kurnool, Andhra Pradesh</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Users className="h-4 w-4 text-gray-400" />
@@ -363,7 +363,7 @@ export function UserDashboard() {
               
               {userData.registration.status === "pending" && (
                 <Link href="/dashboard/payment">
-                  <Button className="w-full flex items-center gap-2 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700">
+                  <Button className="w-full flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800">
                     <CreditCard className="h-4 w-4" />
                     Complete Payment
                   </Button>
@@ -467,7 +467,7 @@ export function UserDashboard() {
 
                 <div className="flex justify-end">
                   <Link href="/dashboard/profile">
-                    <Button className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700">
+                    <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800">
                       Edit Profile
                     </Button>
                   </Link>
