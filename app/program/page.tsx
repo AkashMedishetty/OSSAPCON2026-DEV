@@ -1,12 +1,14 @@
 "use client"
 
 import React, { useState } from "react"
-import { motion, useScroll, useTransform } from "framer-motion"
-import { Clock, MapPin, Users, Award, Calendar, Download, Play, Zap, Brain, Cpu, Bell, Mail, CheckCircle, X } from "lucide-react"
+import { motion, useReducedMotion, AnimatePresence } from "framer-motion"
+import { Clock, MapPin, Users, Award, Calendar, Download, Play, Zap, Brain, Cpu, Bell, Mail, CheckCircle, X, Stethoscope, BookOpen, Target, Microscope, Activity, TrendingUp, Star, Shield, Phone } from "lucide-react"
 import { Navigation } from "@/components/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
 
 const futuristicProgram = {
   day1: [
@@ -265,11 +267,10 @@ const getTypeColor = (type: string) => {
 }
 
 export default function ProgramPage() {
-  const [selectedDay, setSelectedDay] = useState(1)
+  const [selectedTrack, setSelectedTrack] = useState('all')
   const [isNotifyOpen, setIsNotifyOpen] = useState(false)
   const [email, setEmail] = useState("")
-  const { scrollY } = useScroll()
-  const y1 = useTransform(scrollY, [0, 1000], [0, -200])
+  const shouldReduceMotion = useReducedMotion()
 
   const handleNotifySubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -306,146 +307,257 @@ export default function ProgramPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-blue-50 text-gray-800 overflow-hidden dark:from-gray-900 dark:to-gray-800 dark:text-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-ocean-50 text-midnight-800 overflow-hidden dark:from-midnight-900 dark:to-midnight-800 dark:text-midnight-100">
       <Navigation currentPage="program" />
 
-      <div className="pt-20 lg:pt-24">
-        {/* Interactive Coming Soon Section */}
-        <section className="relative py-32 overflow-hidden bg-gradient-to-b from-blue-100 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <div className="pt-16 md:pt-20 lg:pt-24">
+        {/* Zigzag Hero Section - Completely New Layout */}
+        <section className="relative py-20 md:py-32 overflow-visible">
+          {/* Diagonal Background Elements */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-br from-emerald-100/50 to-ocean-100/30 dark:from-midnight-800/40 dark:to-midnight-700/30 transform -skew-y-3 origin-top-left"></div>
+            <div className="absolute bottom-0 right-0 w-full h-1/2 bg-gradient-to-tl from-sapphire-100/50 to-emerald-100/30 dark:from-midnight-800/40 dark:to-midnight-700/30 transform skew-y-3 origin-bottom-right"></div>
+            <div className="absolute top-20 right-20 w-80 h-80 rounded-full blur-3xl bg-gradient-to-br from-emerald-400/20 to-ocean-500/20 dark:from-midnight-600/30 dark:to-midnight-500/30 animate-[pulse_16s_ease-in-out_infinite]"></div>
+            <div className="absolute bottom-20 left-20 w-96 h-96 rounded-full blur-3xl bg-gradient-to-br from-ocean-400/20 to-sapphire-500/20 dark:from-midnight-600/30 dark:to-midnight-500/30 animate-[pulse_18s_ease-in-out_infinite]" style={{ animationDelay: '2s' }}></div>
+          </div>
 
-          <div className="container mx-auto px-6 text-center">
-            <motion.div initial={{ opacity: 0, y: 100 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-8 leading-none">
-                <span className="bg-gradient-to-r from-gray-800 via-blue-600 to-blue-700 bg-clip-text text-transparent dark:from-white dark:via-blue-400 dark:to-blue-500">
-                  CONFERENCE
-                </span>
-                <br />
-                <span className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 bg-clip-text text-transparent">
-                  PROGRAM
-                </span>
-              </h1>
-
-              <div className="mb-8">
-                <motion.div 
-                  className="inline-flex items-center px-6 py-3 bg-blue-100 dark:bg-blue-900/30 rounded-full mb-6"
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: 0.5, duration: 0.5 }}
-                >
-                  <Zap className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" />
-                  <span className="text-blue-600 dark:text-blue-400 font-semibold">Coming Soon</span>
-                </motion.div>
+          <div className="container mx-auto px-6 relative z-10">
+            <div className="grid lg:grid-cols-2 gap-16 items-center">
+              {/* Left Content */}
+              <motion.div
+                initial={shouldReduceMotion ? undefined : { opacity: 0, x: -50 }}
+                animate={shouldReduceMotion ? undefined : { opacity: 1, x: 0 }}
+                transition={{ duration: 0.8 }}
+              >
+                <Badge variant="success" size="lg" className="mb-6">
+                  <Stethoscope className="w-4 h-4 mr-2" />
+                  Conference Program
+                </Badge>
                 
-                <p className="text-xl lg:text-2xl text-gray-700 dark:text-gray-300 mb-6 max-w-4xl mx-auto leading-relaxed">
-                  Our expert committee is crafting an extraordinary program featuring cutting-edge research,
-                  <br />
-                  <span className="text-lg text-blue-600 dark:text-blue-400">interactive workshops, and world-renowned speakers.</span>
+                <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-black mb-8 leading-tight tracking-tight">
+                  <span className="block bg-gradient-to-r from-emerald-600 to-ocean-600 bg-clip-text text-transparent">
+                    SCIENTIFIC
+                  </span>
+                  <span className="block bg-gradient-to-r from-ocean-600 to-sapphire-600 bg-clip-text text-transparent">
+                    PROGRAM
+                  </span>
+                </h1>
+
+                <p className="text-fluid-xl text-midnight-600 dark:text-midnight-300 mb-8 leading-relaxed">
+                  Three days of cutting-edge orthopedic science, featuring world-class speakers, innovative research presentations, and hands-on workshops.
                 </p>
-              </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button 
-                    onClick={() => setIsNotifyOpen(true)}
-                    className="px-8 py-4 text-lg bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white rounded-full shadow-2xl"
-                  >
-                    <Bell className="w-5 h-5 mr-2" />
-                    Notify Me When Available
-                  </Button>
-                </motion.div>
-                
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Link href="/register">
-                    <Button 
-                      variant="outline"
-                      className="px-8 py-4 text-lg border-2 border-blue-500 text-blue-600 hover:bg-blue-50 rounded-full dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-900/20"
-                    >
+                <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                  <Button size="xl" className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700" asChild>
+                    <Link href="/register">
                       <Calendar className="w-5 h-5 mr-2" />
                       Register Now
-                    </Button>
-                  </Link>
-                </motion.div>
-              </div>
-            </motion.div>
+                    </Link>
+                  </Button>
+                  <Button 
+                    size="xl" 
+                    variant="outline" 
+                    onClick={() => setIsNotifyOpen(true)}
+                    className="border-emerald-500 text-emerald-600 hover:bg-emerald-50"
+                  >
+                    <Bell className="w-5 h-5 mr-2" />
+                    Get Updates
+                  </Button>
+                </div>
+
+                {/* Conference Details */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 rounded-lg bg-emerald-100 text-emerald-600">
+                      <Calendar className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-midnight-800 dark:text-midnight-200">February 6-8, 2026</p>
+                      <p className="text-fluid-sm text-midnight-600 dark:text-midnight-400">Three Days</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 rounded-lg bg-ocean-100 text-ocean-600">
+                      <MapPin className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-midnight-800 dark:text-midnight-200">Kurnool, AP</p>
+                      <p className="text-fluid-sm text-midnight-600 dark:text-midnight-400">Kurnool Medical College</p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Right Visual - Program Preview Cards */}
+              <motion.div
+                initial={shouldReduceMotion ? undefined : { opacity: 0, x: 50 }}
+                animate={shouldReduceMotion ? undefined : { opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="relative z-10"
+              >
+                <div className="grid grid-cols-2 sm:grid-cols-2 gap-4 md:gap-6">
+                  {[
+                    { title: "Keynote Sessions", count: "6+", icon: Star, color: "emerald" },
+                    { title: "Workshops", count: "12+", icon: BookOpen, color: "ocean" },
+                    { title: "Research Papers", count: "50+", icon: Microscope, color: "sapphire" },
+                    { title: "Expert Speakers", count: "25+", icon: Users, color: "coral" }
+                  ].map((item, index) => (
+                    <motion.div
+                      key={index}
+                      initial={shouldReduceMotion ? undefined : { opacity: 0, scale: 0.9 }}
+                      animate={shouldReduceMotion ? undefined : { opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      <Card variant="glass" className="text-center bg-white/90 dark:bg-midnight-800/90 border border-gray-200 dark:border-midnight-700">
+                        <CardContent className="p-5 md:p-6">
+                          <div className={`w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center ${
+                            item.color === 'emerald' ? 'bg-gradient-to-br from-emerald-500 to-emerald-600' :
+                            item.color === 'ocean' ? 'bg-gradient-to-br from-ocean-500 to-ocean-600' :
+                            item.color === 'sapphire' ? 'bg-gradient-to-br from-sapphire-500 to-sapphire-600' :
+                            'bg-gradient-to-br from-coral-400 to-coral-500'
+                          } text-white`}>
+                            <item.icon className="w-6 h-6" />
+                          </div>
+                          <div className={`text-3xl md:text-4xl font-black mb-2 ${
+                            item.color === 'emerald' ? 'text-emerald-600' :
+                            item.color === 'ocean' ? 'text-ocean-600' :
+                            item.color === 'sapphire' ? 'text-sapphire-600' :
+                            'text-coral-500'
+                          }`}>
+                            {item.count}
+                          </div>
+                          <div className="text-sm md:text-base font-semibold text-midnight-700 dark:text-midnight-300">
+                            {item.title}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
           </div>
         </section>
 
-        {/* Program Preview Section */}
-        <section className="py-16 relative">
+        {/* Program Tracks - Circular Layout */}
+        <section className="py-20 relative bg-gradient-to-r from-white via-emerald-50/30 to-ocean-50/20 dark:from-midnight-800 dark:to-midnight-900">
           <div className="container mx-auto px-6">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={shouldReduceMotion ? undefined : { opacity: 0, y: 30 }}
+              whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
               className="text-center mb-16"
             >
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-800 via-blue-600 to-blue-700 bg-clip-text text-transparent">
-                What to Expect
+              <h2 className="font-display text-fluid-5xl font-bold mb-6 bg-gradient-to-r from-emerald-600 to-ocean-600 bg-clip-text text-transparent">
+                Program Tracks
               </h2>
-              <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-                Get a sneak peek at what our revolutionary program will include
+              <p className="text-fluid-xl text-midnight-600 dark:text-midnight-300 max-w-3xl mx-auto">
+                Specialized tracks designed for different aspects of orthopedic practice
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {/* Track Filter Buttons */}
+            <div className="flex flex-wrap justify-center gap-3 md:gap-4 mb-10">
               {[
-                {
-                  icon: Brain,
-                  title: "Keynote Sessions",
-                  desc: "World-renowned experts sharing breakthrough research",
-                  color: "from-purple-500 to-pink-600",
-                },
-                {
-                  icon: Users,
-                  title: "Interactive Workshops",
-                  desc: "Hands-on learning with cutting-edge techniques",
-                  color: "from-blue-500 to-cyan-600",
-                },
-                {
-                  icon: Cpu,
-                  title: "Technical Sessions",
-                  desc: "Latest innovations in orthopedic care",
-                  color: "from-blue-500 to-blue-700",
-                },
-                {
-                  icon: Award,
-                  title: "Awards Ceremony",
-                  desc: "Recognizing excellence in the field",
-                  color: "from-green-500 to-teal-600",
-                },
-                {
-                  icon: MapPin,
-                  title: "Networking Events",
-                  desc: "Connect with peers and industry leaders",
-                  color: "from-yellow-500 to-blue-600",
-                },
-                {
-                  icon: Download,
-                  title: "Research Presentations",
-                  desc: "Latest findings and clinical studies",
-                  color: "from-indigo-500 to-purple-600",
-                },
-              ].map((item, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="relative group"
-                  whileHover={{ scale: 1.05, y: -5 }}
+                { id: 'all', label: 'All Tracks', icon: Target },
+                { id: 'surgery', label: 'Surgical Techniques', icon: Microscope },
+                { id: 'research', label: 'Research & Innovation', icon: Brain },
+                { id: 'education', label: 'Medical Education', icon: BookOpen },
+                { id: 'technology', label: 'Technology', icon: Cpu }
+              ].map((track) => (
+                <Button
+                  key={track.id}
+                  variant={selectedTrack === track.id ? "default" : "outline"}
+                  size="lg"
+                  onClick={() => setSelectedTrack(track.id)}
+                  className={selectedTrack === track.id ? 
+                    "bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700" :
+                    "border-emerald-200 text-emerald-700 hover:bg-emerald-50 dark:border-midnight-600 dark:text-midnight-100 dark:hover:bg-midnight-700/40"
+                  }
                 >
-                  <div className={`absolute inset-0 bg-gradient-to-r ${item.color} opacity-10 rounded-2xl blur-xl group-hover:opacity-20 transition-all duration-300`}></div>
-                  <div className="relative text-center p-8 bg-white dark:bg-gray-800 backdrop-blur-xl border border-blue-100 dark:border-gray-700 rounded-2xl hover:border-blue-200 dark:hover:border-gray-600 transition-all duration-300 shadow-lg hover:shadow-xl">
-                    <div className={`w-16 h-16 bg-gradient-to-r ${item.color} rounded-2xl flex items-center justify-center mx-auto mb-6`}>
-                      <item.icon className="w-8 h-8 text-white" />
-                    </div>
-                    <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-3">{item.title}</h3>
-                    <p className="text-gray-600 dark:text-gray-300">{item.desc}</p>
-                  </div>
-                </motion.div>
+                  <track.icon className="w-4 h-4 mr-2" />
+                  {track.label}
+                </Button>
               ))}
+            </div>
+
+            {/* Circular Track Layout */}
+            <div className="relative max-w-4xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {[
+                  {
+                    title: "Advanced Surgical Techniques",
+                    icon: Microscope,
+                    color: "emerald",
+                    track: "surgery"
+                  },
+                  {
+                    title: "Trauma & Emergency Care",
+                    icon: Activity,
+                    color: "coral",
+                    track: "surgery"
+                  },
+                  {
+                    title: "Research Methodologies",
+                    icon: Brain,
+                    color: "sapphire",
+                    track: "research"
+                  },
+                  {
+                    title: "Biomechanics & Materials",
+                    icon: Shield,
+                    color: "ocean",
+                    track: "technology"
+                  },
+                  {
+                    title: "Medical Education",
+                    icon: BookOpen,
+                    color: "amber",
+                    track: "education"
+                  },
+                  {
+                    title: "Digital Health",
+                    icon: TrendingUp,
+                    color: "emerald",
+                    track: "technology"
+                  }
+                ].filter(item => selectedTrack === 'all' || item.track === selectedTrack).map((item, index) => (
+                  <motion.div
+                    key={index}
+                    initial={shouldReduceMotion ? undefined : { opacity: 0, scale: 0.9 }}
+                    whileInView={shouldReduceMotion ? undefined : { opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    <Card variant="glass" className="h-full bg-white/90 dark:bg-midnight-800/90 border border-gray-200 dark:border-midnight-700">
+                      <CardHeader>
+                        <div className={`w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center ${
+                          item.color === 'emerald' ? 'bg-gradient-to-br from-emerald-500 to-emerald-600' :
+                          item.color === 'coral' ? 'bg-gradient-to-br from-coral-400 to-coral-500' :
+                          item.color === 'sapphire' ? 'bg-gradient-to-br from-sapphire-500 to-sapphire-600' :
+                          item.color === 'ocean' ? 'bg-gradient-to-br from-ocean-500 to-ocean-600' :
+                          item.color === 'amber' ? 'bg-gradient-to-br from-amber-400 to-amber-500' :
+                          'bg-gradient-to-br from-emerald-500 to-emerald-600'
+                        } text-white`}>
+                          <item.icon className="w-8 h-8" />
+                        </div>
+                        <CardTitle className="text-center text-lg md:text-xl text-midnight-900 dark:text-white">{item.title}</CardTitle>
+                        <Badge variant="outline" className="mx-auto text-midnight-700 dark:text-midnight-200 border-emerald-200 dark:border-midnight-600">
+                          Coming Soon
+                        </Badge>
+                      </CardHeader>
+                      <CardContent>
+                        <CardDescription className="text-center text-midnight-700 dark:text-midnight-300">
+                          Program details will be announced soon. Stay tuned for updates.
+                        </CardDescription>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -467,50 +579,60 @@ export default function ProgramPage() {
         </section>
         */}
 
-        {/* Spectacular CTA */}
-        <section className="py-16 md:py-24 lg:py-32 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700"></div>
-          <div className="absolute inset-0 bg-white/10"></div>
+
+
+        {/* Coming Soon Banner - Wave Design */}
+        <section className="py-20 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 via-ocean-600 to-sapphire-600"></div>
+          <div className="absolute inset-0">
+            <svg className="absolute bottom-0 w-full h-32" viewBox="0 0 1200 120" preserveAspectRatio="none">
+              <path d="M0,60 C300,120 900,0 1200,60 L1200,120 L0,120 Z" fill="rgba(255,255,255,0.1)"></path>
+            </svg>
+          </div>
 
           <motion.div
-            className="relative z-10 container mx-auto px-4 md:px-6 text-center"
-            initial={{ opacity: 0, y: 100 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
+            className="relative z-10 container mx-auto px-6 text-center"
+            initial={shouldReduceMotion ? undefined : { opacity: 0, y: 50 }}
+            whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
           >
-            <h2 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 md:mb-8 text-white">
-              Ready to Join
+            <Badge variant="glass" size="lg" className="mb-8 text-emerald-800 bg-white/90 border-white/50">
+              <Zap className="w-4 h-4 mr-2" />
+              Program Coming Soon
+            </Badge>
+
+            <h2 className="font-display text-fluid-5xl font-bold mb-8 text-white">
+              Detailed Program
               <br />
-              <span className="bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
-                The Future?
+              <span className="text-emerald-200 drop-shadow-lg">
+                Under Development
               </span>
             </h2>
 
-            <p className="text-lg md:text-xl lg:text-2xl text-white/90 mb-8 md:mb-12 max-w-3xl mx-auto leading-relaxed px-4">
-              Don't just attend a conference—experience the future of orthopedic medicine.
+            <p className="text-fluid-xl text-white mb-12 max-w-3xl mx-auto leading-relaxed drop-shadow-lg">
+              Our organizing committee is carefully crafting a comprehensive program featuring world-class speakers, cutting-edge research, and hands-on workshops.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-6 md:gap-8 justify-center px-4">
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <Button size="xl" className="bg-emerald-600 text-white hover:bg-emerald-700" asChild>
                 <Link href="/register">
-                  <Button className="w-full sm:w-auto px-8 md:px-12 py-4 md:py-6 text-lg md:text-xl bg-white text-blue-600 hover:bg-gray-100 rounded-full shadow-2xl font-bold">
-                    <Play className="mr-2 md:mr-3 h-5 w-5 md:h-6 md:w-6" />
-                    Register Now
-                  </Button>
+                  <Calendar className="w-5 h-5 mr-2" />
+                  Register Now
                 </Link>
-              </motion.div>
-
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link href="/abstracts">
-                  <Button
-                    variant="outline"
-                    className="w-full sm:w-auto px-8 md:px-12 py-4 md:py-6 text-lg md:text-xl border-2 border-white text-white bg-white/20 hover:bg-white/30 rounded-full backdrop-blur-sm font-bold shadow-lg"
-                  >
-                    Submit Abstract
-                  </Button>
-                </Link>
-              </motion.div>
+              </Button>
+              <Button 
+                size="xl" 
+                variant="outline" 
+                className="border-white/50 text-white hover:bg-white/20 bg-white/10"
+                onClick={() => setIsNotifyOpen(true)}
+              >
+                <Bell className="w-5 h-5 mr-2" />
+                Get Notified
+              </Button>
             </div>
+
+
           </motion.div>
         </section>
 
@@ -582,6 +704,8 @@ export default function ProgramPage() {
           </div>
         )}
       </div>
+
+
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter, Orbitron } from "next/font/google"
+import { Inter, Orbitron, Plus_Jakarta_Sans } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { SessionProvider } from "@/components/providers/SessionProvider"
 import { Toaster } from "@/components/ui/sonner"
@@ -10,6 +10,7 @@ import { PWAInstallPrompt } from "@/components/PWAInstallPrompt"
 // import { ServiceWorkerUpdate } from "@/components/ServiceWorkerUpdate" // Removed to prevent infinite reload loops
 import { DeviceSessionManager } from "@/components/auth/DeviceSessionManager"
 import { RedirectLoopHandler } from "@/components/auth/RedirectLoopHandler"
+import { PageTransition } from "@/components/ui/page-transition"
 import "./globals.css"
 
 const inter = Inter({ 
@@ -18,6 +19,15 @@ const inter = Inter({
   preload: true,
   fallback: ['system-ui', 'arial']
 })
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: 'swap',
+  preload: true,
+  fallback: ['Inter', 'system-ui', 'arial']
+})
+
 const orbitron = Orbitron({ 
   subsets: ["latin"], 
   variable: "--font-orbitron",
@@ -85,24 +95,7 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  icons: {
-    icon: [
-      { url: '/Favicons/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/Favicons/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/Favicons/favicon.ico', sizes: 'any' }
-    ],
-    apple: [
-      { url: '/Favicons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }
-    ],
-    other: [
-      {
-        rel: 'mask-icon',
-        url: '/Favicons/favicon.ico',
-        color: '#015189'
-      }
-    ]
-  },
-  manifest: '/Favicons/site.webmanifest',
+
   openGraph: {
     type: 'website',
     locale: 'en_IN',
@@ -159,7 +152,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${orbitron.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${plusJakartaSans.variable} ${orbitron.variable}`} suppressHydrationWarning>
       <head>
         {/* Structured Data for SEO */}
         <script
@@ -232,8 +225,10 @@ export default function RootLayout({
           }}
         />
         
+        {/* PWA Theme */}
+        <meta name="theme-color" content="#020412" />
+
         {/* Additional Meta Tags for Enhanced SEO */}
-        <meta name="theme-color" content="#015189" />
         <meta name="msapplication-TileColor" content="#015189" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
         
@@ -269,12 +264,17 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="//www.google-analytics.com" />
         <link rel="dns-prefetch" href="//www.googletagmanager.com" />
         
-        {/* Service Worker Registration with Force Update */}
+        {/* Clash Display Font */}
+        <link rel="preconnect" href="https://api.fontshare.com" />
+        <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,300,400,500,600,700&display=swap" rel="stylesheet" />
+        
+        {/* Service Worker Registration with Force Update (prod only) */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
               // Enhanced Cache Management and Auto-Update System
-              if ('serviceWorker' in navigator) {
+              if ('serviceWorker' in navigator && !(window && window.__OSSAP_SW_INIT_DONE)) {
+                window.__OSSAP_SW_INIT_DONE = true;
                 // Always clear existing service workers first
                 navigator.serviceWorker.getRegistrations().then(function(registrations) {
                   console.log('🔄 Found existing service workers:', registrations.length);
@@ -310,6 +310,11 @@ export default function RootLayout({
                       scope: '/',
                       updateViaCache: 'none'
                     });
+                  }
+                  // In development, register the main SW so testing works
+                  else {
+                    console.log('🧪 Dev: registering /sw.js for testing');
+                    return navigator.serviceWorker.register('/sw.js?' + Date.now(), { scope: '/' });
                   }
                 }).then(function(registration) {
                   if (registration) {
@@ -388,7 +393,9 @@ export default function RootLayout({
                 disableTransitionOnChange={false}
               >
                 <div className="relative min-h-screen">
-                  {children}
+                  <PageTransition>
+                    {children}
+                  </PageTransition>
                   <Toaster />
                   <Analytics />
                   <PWAInstallPrompt />

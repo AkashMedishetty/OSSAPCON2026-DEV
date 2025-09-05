@@ -190,7 +190,7 @@ export default function ContactPage() {
                     <div>
                       <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-1">Conference Manager</h3>
                       <p className="text-gray-600 dark:text-gray-300">
-                        Mr. Kiran Kumar Lella
+                        Ms. Lakhshmi Prabha
                         <br />
                         Conference Manager
                         <br />
@@ -205,7 +205,7 @@ export default function ContactPage() {
                     <div>
                       <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-1">Phone</h3>
                       <p className="text-gray-600 dark:text-gray-300">
-                        +91 – 9676541985
+                        +91 9052192744
                       </p>
                     </div>
                   </div>
@@ -216,7 +216,7 @@ export default function ContactPage() {
                     <div>
                       <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-1">Email</h3>
                       <p className="text-gray-600 dark:text-gray-300">
-                        kiran@cmchyd.com
+                        contact@ossapcon2026.com
                       </p>
                     </div>
                   </div>

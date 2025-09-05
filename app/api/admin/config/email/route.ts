@@ -28,8 +28,8 @@ export async function GET(request: NextRequest) {
 
     // Get email configuration
     const emailConfig = await Configuration.findOne({ 
-      type: 'email', 
-      key: 'settings' 
+      type: 'settings', 
+      key: 'email_settings' 
     })
 
     // Default email configuration
@@ -40,19 +40,19 @@ export async function GET(request: NextRequest) {
       templates: {
         registration: {
           enabled: true,
-          subject: 'Registration Confirmation - NeuroTrauma 2026'
+          subject: 'Registration Confirmation - OSSAPCON 2026'
         },
         payment: {
           enabled: true,
-          subject: 'Payment Confirmation & Invoice - NeuroTrauma 2026'
+          subject: 'Payment Confirmation & Invoice - OSSAPCON 2026'
         },
         passwordReset: {
           enabled: true,
-          subject: 'Password Reset - NeuroTrauma 2026'
+          subject: 'Password Reset - OSSAPCON 2026'
         },
         bulkEmail: {
           enabled: true,
-          subject: 'Conference Update - NeuroTrauma 2026'
+          subject: 'Conference Update - OSSAPCON 2026'
         }
       },
       rateLimiting: {
@@ -103,10 +103,10 @@ export async function PUT(request: NextRequest) {
 
     // Update email configuration
     await Configuration.findOneAndUpdate(
-      { type: 'email', key: 'settings' },
+      { type: 'settings', key: 'email_settings' },
       {
-        type: 'email',
-        key: 'settings',
+        type: 'settings',
+        key: 'email_settings',
         value: body,
         isActive: true,
         createdBy: adminUser._id,

@@ -1,5 +1,4 @@
 import { Suspense } from "react"
-import Image from "next/image"
 import { Navigation } from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { Calendar, MapPin, Users, Award, Sparkles, ArrowRight, Mail } from "lucide-react"
@@ -8,15 +7,7 @@ import dynamic from "next/dynamic"
 import { CountdownTimer } from "@/components/home/CountdownTimer"
 import { InteractiveElements } from "@/components/home/InteractiveElements"
 
-// Lazy load 3D components for better performance
-const BrainModel = dynamic(() => import("@/components/3d/BrainModel"), {
-  ssr: false,
-  loading: () => (
-    <div className="flex items-center justify-center h-full bg-gradient-to-br from-blue-100/60 via-blue-50/40 to-blue-200/30 rounded-3xl">
-      <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500"></div>
-    </div>
-  )
-})
+// Spine model kept, Brain model removed
 
 const SpineModel = dynamic(() => import("@/components/3d/SpineModel"), {
   ssr: false,
@@ -30,19 +21,16 @@ const SpineModel = dynamic(() => import("@/components/3d/SpineModel"), {
 // Static data that can be pre-rendered
 const organizers = [
   {
-    src: "/ossapcon-logo.png",
-    alt: "Orthopedic Surgeons Society of Andhra Pradesh",
-    name: "Orthopedic Surgeons Society of Andhra Pradesh"
+    name: "Orthopedic Surgeons Society of Andhra Pradesh",
+    abbreviation: "OSSAP"
   },
   {
-    src: "/ossapcon-logo.png",
-    alt: "Department of Orthopedics, Kurnool Medical College",
-    name: "Department of Orthopedics, Kurnool Medical College"
+    name: "Department of Orthopedics, Kurnool Medical College",
+    abbreviation: "KMC"
   },
   {
-    src: "/KIMS.png",
-    alt: "KIMS Hospitals",
-    name: "KIMS Hospitals"
+    name: "KIMS Hospitals",
+    abbreviation: "KIMS"
   },
 ]
 
@@ -176,10 +164,10 @@ export default function HomePage() {
                 <div>
                   <h1 className="text-5xl lg:text-6xl xl:text-7xl font-black leading-none">
                     <span className="bg-gradient-to-r from-gray-800 via-gray-700 to-gray-900 bg-clip-text text-transparent">
-                      NEURO
+                      OSSAP
                     </span>
                     <span className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 bg-clip-text text-transparent">
-                      TRAUMA
+                      CON
                     </span>
                     <br />
                     <span className="text-4xl lg:text-5xl xl:text-6xl bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent">
@@ -221,14 +209,9 @@ export default function HomePage() {
                         key={index}
                         className="flex flex-col items-center space-y-4 p-6 rounded-xl bg-white/80 backdrop-blur-xl border border-blue-100 hover:bg-white hover:shadow-lg transition-all duration-300 dark:bg-gray-800/80 dark:border-gray-700 dark:hover:bg-gray-800 w-full max-w-xs"
                       >
-                        <Image
-                          src={org.src}
-                          alt={org.alt}
-                          width={80}
-                          height={64}
-                          className="object-contain filter hover:brightness-110 transition-all duration-300"
-                          priority={index === 0}
-                        />
+                        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold text-lg">
+                          {org.abbreviation}
+                        </div>
                         <p className="text-sm font-medium text-gray-700 dark:text-gray-300 text-center leading-tight">
                           {org.name}
                         </p>
@@ -247,7 +230,7 @@ export default function HomePage() {
                     </div>
                   }
                 >
-                  <BrainModel />
+                  <SpineModel />
                 </Suspense>
               </div>
             </div>

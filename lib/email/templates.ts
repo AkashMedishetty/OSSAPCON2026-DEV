@@ -106,6 +106,9 @@ export function getBaseTemplate(content: string) {
           <p>
             This is an automated email. Please do not reply to this email address.
           </p>
+          <p style="margin-top: 8px; color: #4b5563;">
+            Powered by <a href="https://purplehatevents.in" style="color: #015189; text-decoration: none; font-weight: 600;">PurpleHat Events</a>
+          </p>
         </div>
       </div>
     </body>
@@ -123,17 +126,18 @@ export function getRegistrationConfirmationTemplate(userData: {
   accompanyingPersons?: number
 }) {
   const content = `
-    <h2>Registration Confirmation</h2>
+    <h2>Registration Application Received</h2>
     <p>Dear ${userData.name},</p>
     
-    <p>Thank you for registering for <strong>OSSAPCON 2026</strong>! We are excited to have you join us for this premier conference on orthopedic surgery and care.</p>
+    <p>Thank you for submitting your registration application for <strong>OSSAPCON 2026</strong>! We have received your application and bank transfer details.</p>
     
     <div class="highlight">
-      <h3>Your Registration Details:</h3>
+      <h3>Your Application Details:</h3>
       <table>
         <tr><th>Registration ID</th><td><strong>${userData.registrationId}</strong></td></tr>
         <tr><th>Registration Type</th><td>${userData.registrationType}</td></tr>
         <tr><th>Email</th><td>${userData.email}</td></tr>
+        <tr><th>Status</th><td><span style="color: #ffa500;">Pending Verification</span></td></tr>
         ${userData.workshopSelections && userData.workshopSelections.length > 0 ? 
           `<tr><th>Workshops</th><td>${userData.workshopSelections.join(', ')}</td></tr>` : ''}
         ${userData.accompanyingPersons && userData.accompanyingPersons > 0 ? 
@@ -141,20 +145,21 @@ export function getRegistrationConfirmationTemplate(userData: {
       </table>
     </div>
     
-    <p><strong>Next Steps:</strong></p>
-    <ol>
-      <li>Complete your payment to confirm your registration</li>
-      <li>You will receive an invoice and payment confirmation once payment is processed</li>
-      <li>Keep this email for your records</li>
-    </ol>
+    <div style="background-color: #fff3cd; padding: 15px; border-left: 4px solid #ffa500; margin: 20px 0;">
+      <h4 style="margin-top: 0; color: #856404;">What happens next?</h4>
+      <ul style="margin-bottom: 0;">
+        <li>Our team will verify your bank transfer within <strong>10 business days</strong></li>
+        <li>You will receive a confirmation email once your payment is verified</li>
+        <li>Your registration will be confirmed and full access will be activated</li>
+        <li>Conference materials and updates will be shared via email</li>
+      </ul>
+    </div>
     
-    <p style="text-align: center;">
-      <a href="${process.env.APP_URL}/dashboard" class="button">Access Your Dashboard</a>
-    </p>
+    <p><strong>Important:</strong> Please allow up to 10 business days for payment verification. You will receive another email once your registration is confirmed.</p>
     
-    <p>If you have any questions, please don't hesitate to contact us.</p>
+    <p>If you have any questions about your application, please contact us at <a href="mailto:support@ossapcon2026.com">support@ossapcon2026.com</a></p>
     
-    <p>Looking forward to seeing you at the conference!</p>
+    <p>Thank you for your patience!</p>
     
     <p>Best regards,<br>
     <strong>OSSAPCON 2026 Organizing Committee</strong></p>

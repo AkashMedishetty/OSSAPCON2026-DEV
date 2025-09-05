@@ -4,8 +4,8 @@ import { ConfigManager } from "@/components/admin/ConfigManager"
 import { Navigation } from "@/components/navigation"
 
 export const metadata: Metadata = {
-  title: "System Configuration | NeuroTrauma 2026",
-  description: "Manage system settings, pricing, discounts, and email configurations",
+  title: "System Configuration | OSSAPCON 2026",
+  description: "Configure system settings and preferences for OSSAPCON 2026 conference",
 }
 
 export default function ConfigPage() {

@@ -219,7 +219,7 @@ export function BulkEmailForm() {
           subject,
           content,
           recipients: selectedData.map(r => r.email),
-          senderName: "NeuroTrauma 2026 Team"
+          senderName: "OSSAPCON 2026 Team"
         })
       })
 

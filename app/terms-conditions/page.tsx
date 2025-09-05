@@ -193,9 +193,9 @@ export default function TermsConditionsPage() {
                     For questions regarding these terms and conditions, please contact:
                   </p>
                   <div className="bg-gray-50 p-4 rounded-lg">
-                    <p><strong>Conference Manager:</strong> Mr. Kiran Kumar Lella</p>
-                    <p><strong>Email:</strong> kiran@cmchyd.com</p>
-                    <p><strong>Phone:</strong> +91 – 9676541985</p>
+                    <p><strong>Conference Manager:</strong> Ms. Lakhshmi Prabha</p>
+                    <p><strong>Email:</strong> contact@ossapcon2026.com</p>
+                    <p><strong>Phone:</strong> +91 9052192744</p>
                   </div>
                 </div>
               </section>

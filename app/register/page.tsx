@@ -2,20 +2,25 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { motion } from "framer-motion"
+import { motion, useReducedMotion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { FloatingInput } from "@/components/ui/floating-input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Calendar, FileText, Award, Users, CheckCircle, CreditCard, Eye, EyeOff, Loader2, AlertCircle, CheckIcon } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import { Progress, StepProgress } from "@/components/ui/progress"
+import { Calendar, FileText, Award, Users, CheckCircle, CreditCard, Eye, EyeOff, Loader2, AlertCircle, CheckIcon, UserPlus, MapPin, Phone, Mail, Building, Shield, Sparkles } from "lucide-react"
 import Link from "next/link"
 import { Navigation } from "@/components/navigation"
+import dynamic from "next/dynamic"
 import { useToast } from "@/hooks/use-toast"
+import { getCurrentTier, getTierSummary, getTierPricing } from "@/lib/registration"
 import { signIn } from "next-auth/react"
 
 export default function RegisterPage() {
@@ -29,6 +34,14 @@ export default function RegisterPage() {
   const [emailAvailable, setEmailAvailable] = useState<boolean | null>(null)
   const router = useRouter()
   const { toast } = useToast()
+  const shouldReduceMotion = useReducedMotion()
+
+  // Step configuration for the new design
+  const steps = [
+    { label: "Personal Info", completed: step > 1, current: step === 1 },
+    { label: "Registration", completed: step > 2, current: step === 2 },
+    { label: "Payment", completed: step > 3, current: step === 3 },
+  ]
 
   // Cleanup timeout on unmount
   useEffect(() => {
@@ -44,28 +57,22 @@ export default function RegisterPage() {
     const loadData = async () => {
       try {
         setLoadingPricing(true)
-        
-        // Load pricing data
-        const pricingResponse = await fetch('/api/payment/pricing')
-        if (pricingResponse.ok) {
-          const pricingResult = await pricingResponse.json()
-          if (pricingResult.success && pricingResult.data.currentTier) {
-            setCurrentTier(pricingResult.data.currentTier)
-            setNextTier(pricingResult.data.nextTier)
-            
-            // Update registration types with current pricing
-            const updatedTypes = [
-              { value: "ossap-member", label: "OSSAP Member", price: 12000, currency: "INR" },
-              { value: "non-member", label: "Non Member", price: 17000, currency: "INR" },
-              { value: "pg-student", label: "PG Student", price: 10000, currency: "INR" }
-            ].map(type => ({
-              ...type,
-              price: pricingResult.data.currentTier.categories[type.value]?.amount || type.price,
-              currency: pricingResult.data.currentTier.categories[type.value]?.currency || type.currency
-            }))
-            setRegistrationTypes(updatedTypes)
-          }
-        }
+        // Use centralized config instead of API to avoid drift
+        const tierName = getCurrentTier()
+        const pricing = getTierPricing(tierName)
+        setCurrentTier({ name: tierName, description: getTierSummary(), endDate: new Date() })
+        setNextTier(null)
+
+        const updatedTypes = [
+          { value: "ossap-member", label: "OSSAP Member", price: 0, currency: "INR", description: `${tierName} (Inclusive 18% GST)` },
+          { value: "non-member", label: "OSSAP Non-Member", price: 0, currency: "INR", description: `${tierName} (Inclusive 18% GST)` },
+          { value: "pg-student", label: "PG Student", price: 0, currency: "INR", description: `${tierName} (Inclusive 18% GST)` }
+        ].map(type => ({
+          ...type,
+          price: pricing[type.value]?.amount ?? 0,
+          currency: pricing[type.value]?.currency ?? "INR"
+        }))
+        setRegistrationTypes(updatedTypes)
 
         // Load workshops data
         const workshopsResponse = await fetch('/api/workshops')
@@ -104,6 +111,7 @@ export default function RegisterPage() {
     password: "",
     confirmPassword: "",
     institution: "",
+    mciNumber: "",
     
     // Address
     address: "",
@@ -120,27 +128,22 @@ export default function RegisterPage() {
     workshopSelection: [] as string[],
     accompanyingPersons: [] as Array<{
       name: string
-      age: number
       relationship: string
       dietaryRequirements?: string
     }>,
     discountCode: "",
     
     // Payment
-    paymentMethod: "pay-later",
-    paymentSubMethod: "",
-    cardNumber: "",
-    cardName: "",
-    expiryDate: "",
-    cvv: "",
+    paymentMethod: "bank-transfer",
+    bankTransferUTR: "",
     agreeTerms: false,
   })
 
-  // State for dynamic data
+  // State for dynamic data - Updated OSSAP Pricing
   const [registrationTypes, setRegistrationTypes] = useState([
-    { value: "ossap-member", label: "OSSAP Member", price: 12000, currency: "INR" },
-    { value: "non-member", label: "Non Member", price: 17000, currency: "INR" },
-    { value: "pg-student", label: "PG Student", price: 10000, currency: "INR" }
+    { value: "ossap-member", label: "OSSAP Member", price: 8250, currency: "INR", description: "Early Bird (Inclusive 18% GST)" },
+    { value: "non-member", label: "OSSAP Non-Member", price: 9440, currency: "INR", description: "Early Bird (Inclusive 18% GST)" },
+    { value: "pg-student", label: "PG Student", price: 5900, currency: "INR", description: "Early Bird (Inclusive 18% GST)" }
   ])
   const [workshops, setWorkshops] = useState<Array<{
     id: string
@@ -285,7 +288,6 @@ export default function RegisterPage() {
       ...prev,
       accompanyingPersons: [...prev.accompanyingPersons, {
         name: "",
-        age: 18,
         relationship: "",
         dietaryRequirements: ""
       }]
@@ -457,7 +459,7 @@ export default function RegisterPage() {
           console.log('Missing registration type')
           toast({
             title: "Registration Type Required",
-            description: "Please select your registration type (NTSI Member, Non Member, or PG Student).",
+            description: "Please select your registration type (OSSAP Member, Non Member, or PG Student).",
             variant: "destructive",
             duration: 5000
           })
@@ -472,8 +474,31 @@ export default function RegisterPage() {
         console.log('Step 3 validation - checking payment and terms...')
         console.log('Step 3 form data:', {
           agreeTerms: formData.agreeTerms,
-          paymentMethod: formData.paymentMethod
+          paymentMethod: formData.paymentMethod,
+          bankTransferUTR: formData.bankTransferUTR
         })
+        
+        if (!formData.bankTransferUTR) {
+          console.log('UTR number missing')
+          toast({
+            title: "UTR Number Required",
+            description: "Please enter the UTR number from your bank transfer.",
+            variant: "destructive",
+            duration: 6000
+          })
+          return false
+        }
+        
+        if (formData.bankTransferUTR.length < 12) {
+          console.log('UTR number too short')
+          toast({
+            title: "Invalid UTR Number",
+            description: "UTR number must be 12 digits long.",
+            variant: "destructive",
+            duration: 6000
+          })
+          return false
+        }
         
         if (!formData.agreeTerms) {
           console.log('Terms not agreed')
@@ -548,6 +573,7 @@ export default function RegisterPage() {
           phone: formData.phone,
           designation: formData.designation,
           institution: formData.institution,
+          mciNumber: formData.mciNumber,
           address: {
             street: formData.address,
             city: formData.city,
@@ -563,6 +589,13 @@ export default function RegisterPage() {
           membershipNumber: formData.membershipNumber,
           workshopSelections: formData.workshopSelection,
           accompanyingPersons: formData.accompanyingPersons
+        },
+        payment: {
+          method: "bank-transfer",
+          bankTransferUTR: formData.bankTransferUTR,
+          amount: priceCalculation?.total || 0,
+          tier: priceCalculation?.currentTier?.name || undefined,
+          status: "pending"
         }
       }
       
@@ -587,59 +620,8 @@ export default function RegisterPage() {
         console.log('Price calculation:', priceCalculation)
         console.log('Should redirect to payment:', formData.paymentMethod === 'pay-now' && priceCalculation)
 
-        if (formData.paymentMethod === 'pay-now' && priceCalculation) {
-          // Automatically log in the user and redirect to payment
-          toast({
-            title: "Logging you in...",
-            description: "Automatically signing you in to complete payment."
-          })
-          
-          try {
-            // Add a small delay to ensure the user is properly saved
-            await new Promise(resolve => setTimeout(resolve, 1000))
-            
-            const loginResult = await signIn("credentials", {
-              email: formData.email,
-              password: formData.password,
-              redirect: false
-            })
-
-            console.log('Auto-login result:', loginResult)
-
-            if (loginResult?.ok && !loginResult?.error) {
-              toast({
-                title: "Redirecting to Payment",
-                description: "Taking you to the payment page to complete your registration."
-              })
-              // Add another small delay to ensure session is established
-              await new Promise(resolve => setTimeout(resolve, 500))
-              // Use window.location to ensure proper navigation with session
-              window.location.href = `/dashboard/payment?registrationId=${result.data.registrationId}`
-            } else {
-              console.error('Auto-login failed:', loginResult?.error)
-              toast({
-                title: "Auto-login Failed",
-                description: "Please log in manually to complete payment.",
-                variant: "destructive"
-              })
-              window.location.href = `/auth/login?callbackUrl=${encodeURIComponent(`/dashboard/payment?registrationId=${result.data.registrationId}`)}`
-            }
-          } catch (loginError) {
-            console.error('Auto-login error:', loginError)
-            toast({
-              title: "Auto-login Failed",
-              description: "Please log in manually to complete payment.",
-              variant: "destructive"
-            })
-            window.location.href = `/auth/login?callbackUrl=${encodeURIComponent(`/dashboard/payment?registrationId=${result.data.registrationId}`)}`
-          }
-        } else {
-          // Show success and redirect to login
+        // Show success page - bank transfer payment pending approval
           setStep(4)
-          setTimeout(() => {
-            window.location.href = '/auth/login?message=Registration successful. Please log in.'
-          }, 3000)
-        }
       } else {
         toast({
           title: "Registration Failed",
@@ -681,7 +663,8 @@ export default function RegisterPage() {
         designation: formData.designation,
         password: formData.password,
         confirmPassword: formData.confirmPassword,
-        institution: formData.institution
+        institution: formData.institution,
+        mciNumber: formData.mciNumber
       }
       
       missingFields = Object.entries(requiredFields)
@@ -711,199 +694,277 @@ export default function RegisterPage() {
       case 1:
         return (
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
+            initial={shouldReduceMotion ? undefined : { opacity: 0, x: 20 }}
+            animate={shouldReduceMotion ? undefined : { opacity: 1, x: 0 }}
+            exit={shouldReduceMotion ? undefined : { opacity: 0, x: -20 }}
             transition={{ duration: 0.5 }}
-            className="space-y-6"
+            className="p-4 sm:p-6 md:p-8 lg:p-12"
           >
-            <h2 className="text-2xl font-bold text-gray-800">Personal Information</h2>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Title *</label>
-                <Select value={formData.title} onValueChange={(value) => handleInputChange("title", value)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select title" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Dr.">Dr.</SelectItem>
-                    <SelectItem value="Prof.">Prof.</SelectItem>
-                    <SelectItem value="Mr.">Mr.</SelectItem>
-                    <SelectItem value="Mrs.">Mrs.</SelectItem>
-                    <SelectItem value="Ms.">Ms.</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
-                <Input
-                  value={formData.firstName}
-                  onChange={(e) => handleInputChange("firstName", e.target.value)}
-                  placeholder="Enter your first name"
-                  className={!formData.firstName ? "border-red-200 focus:border-red-400" : "border-green-200 focus:border-green-400"}
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
-                <Input
-                  value={formData.lastName}
-                  onChange={(e) => handleInputChange("lastName", e.target.value)}
-                  placeholder="Enter your last name"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email Address *
-                  {isCheckingEmail && <span className="text-blue-500 text-xs ml-2">(Checking availability...)</span>}
-                  {emailAvailable === true && <span className="text-green-500 text-xs ml-2">✓ Available</span>}
-                  {emailAvailable === false && <span className="text-red-500 text-xs ml-2">✗ Already registered</span>}
-                </label>
-                <Input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => handleInputChange("email", e.target.value)}
-                  placeholder="your.email@example.com"
-                  required
-                  className={
-                    isCheckingEmail ? "border-blue-300" :
-                    emailAvailable === true ? "border-green-300" :
-                    emailAvailable === false ? "border-red-300" : ""
-                  }
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
-                <Input
-                  type="tel"
-                  value={formData.phone}
-                  onChange={(e) => handleInputChange("phone", e.target.value)}
-                  placeholder="+91 9876543210"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Designation *</label>
-                <Select value={formData.designation} onValueChange={(value) => handleInputChange("designation", value)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select your designation" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Consultant">Consultant</SelectItem>
-                    <SelectItem value="PG/Student">PG/Student</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Institution/Hospital *</label>
-                <Input
-                  value={formData.institution}
-                  onChange={(e) => handleInputChange("institution", e.target.value)}
-                  placeholder="Enter your institution name"
-                  required
-                />
-              </div>
-            </div>
-            
-            {/* Password Fields */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Password *</label>
-                <div className="relative">
-                  <Input
-                    type={showPassword ? "text" : "password"}
-                    value={formData.password}
-                    onChange={(e) => handleInputChange("password", e.target.value)}
-                    placeholder="Create a password (min 8 characters)"
-                    className="pr-10"
-                    required
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </Button>
+            {/* Header */}
+            <div className="text-center mb-12">
+              <div className="flex items-center justify-center mb-6">
+                <div className="p-4 rounded-2xl bg-gradient-to-br from-ocean-500 to-sapphire-600 text-white">
+                  <UserPlus className="w-8 h-8" />
                 </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Confirm Password *</label>
-                <div className="relative">
-                  <Input
-                    type={showConfirmPassword ? "text" : "password"}
-                    value={formData.confirmPassword}
-                    onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
-                    placeholder="Confirm your password"
-                    className="pr-10"
-                    required
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  >
-                    {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </Button>
-                </div>
-              </div>
+              <h2 className="font-display text-fluid-4xl font-bold text-midnight-800 dark:text-midnight-200 mb-4">
+                Personal Information
+              </h2>
+              <p className="text-fluid-lg text-midnight-600 dark:text-midnight-400 max-w-2xl mx-auto">
+                Let's start with your basic information to create your conference account.
+              </p>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Address</label>
-              <Textarea
-                value={formData.address}
-                onChange={(e) => handleInputChange("address", e.target.value)}
-                placeholder="Enter your address"
-              />
-            </div>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">City</label>
-                <Input
-                  value={formData.city}
-                  onChange={(e) => handleInputChange("city", e.target.value)}
-                  placeholder="Enter your city"
-                />
+            <div className="space-y-8">
+              {/* Basic Information */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                <div>
+                  <label className="block text-fluid-sm font-semibold text-midnight-700 dark:text-midnight-300 mb-3">Title *</label>
+                  <Select value={formData.title} onValueChange={(value) => handleInputChange("title", value)}>
+                    <SelectTrigger className="h-14">
+                      <SelectValue placeholder="Select title" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Dr.">Dr.</SelectItem>
+                      <SelectItem value="Prof.">Prof.</SelectItem>
+                      <SelectItem value="Mr.">Mr.</SelectItem>
+                      <SelectItem value="Mrs.">Mrs.</SelectItem>
+                      <SelectItem value="Ms.">Ms.</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div>
+                  <FloatingInput
+                    label="First Name *"
+                    variant="glass"
+                    value={formData.firstName}
+                    onChange={(e) => handleInputChange("firstName", e.target.value)}
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <FloatingInput
+                    label="Last Name *"
+                    variant="glass"
+                    value={formData.lastName}
+                    onChange={(e) => handleInputChange("lastName", e.target.value)}
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <div className="relative">
+                    <FloatingInput
+                      label="Email Address *"
+                      type="email"
+                      variant="glass"
+                      value={formData.email}
+                      onChange={(e) => handleInputChange("email", e.target.value)}
+                      required
+                      className={
+                        isCheckingEmail ? "border-sapphire-300" :
+                        emailAvailable === true ? "border-emerald-300" :
+                        emailAvailable === false ? "border-coral-300" : ""
+                      }
+                    />
+                    <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                      {isCheckingEmail && <Loader2 className="w-4 h-4 animate-spin text-sapphire-500" />}
+                      {emailAvailable === true && <CheckCircle className="w-4 h-4 text-emerald-500" />}
+                      {emailAvailable === false && <AlertCircle className="w-4 h-4 text-coral-500" />}
+                    </div>
+                  </div>
+                  {emailAvailable === true && (
+                    <p className="text-fluid-xs text-emerald-600 mt-2 flex items-center">
+                      <CheckCircle className="w-3 h-3 mr-1" />
+                      Email is available
+                    </p>
+                  )}
+                  {emailAvailable === false && (
+                    <p className="text-fluid-xs text-coral-600 mt-2 flex items-center">
+                      <AlertCircle className="w-3 h-3 mr-1" />
+                      Email already registered
+                    </p>
+                  )}
+                </div>
+                
+                <div>
+                  <div className="relative">
+                    <Phone className="absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-midnight-400 z-10" />
+                    <FloatingInput
+                      label="Phone Number *"
+                      type="tel"
+                      variant="glass"
+                      value={formData.phone}
+                      onChange={(e) => handleInputChange("phone", e.target.value)}
+                      className="pl-12"
+                      required
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <label className="block text-fluid-sm font-semibold text-midnight-700 dark:text-midnight-300 mb-3">Designation *</label>
+                  <Select value={formData.designation} onValueChange={(value) => handleInputChange("designation", value)}>
+                    <SelectTrigger className="h-14">
+                      <SelectValue placeholder="Select your designation" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Consultant">Consultant</SelectItem>
+                      <SelectItem value="PG/Student">PG/Student</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div>
+                  <div className="relative">
+                    <Building className="absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-midnight-400 z-10" />
+                    <FloatingInput
+                      label="Institution/Hospital *"
+                      variant="glass"
+                      value={formData.institution}
+                      onChange={(e) => handleInputChange("institution", e.target.value)}
+                      className="pl-12"
+                      required
+                    />
+                  </div>
+                </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">State/Province</label>
-                <Input
-                  value={formData.state}
-                  onChange={(e) => handleInputChange("state", e.target.value)}
-                  placeholder="Enter your state"
-                />
+
+              {/* Password Section */}
+              <div className="border-t border-midnight-200/50 dark:border-midnight-700/50 pt-8">
+                <h3 className="font-display text-fluid-2xl font-bold text-midnight-800 dark:text-midnight-200 mb-6 flex items-center">
+                  <Shield className="w-6 h-6 mr-3 text-ocean-600" />
+                  Account Security
+                </h3>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                  <div>
+                    <div className="relative">
+                      <FloatingInput
+                        label="Password *"
+                        type={showPassword ? "text" : "password"}
+                        variant="glass"
+                        value={formData.password}
+                        onChange={(e) => handleInputChange("password", e.target.value)}
+                        className="pr-12"
+                        required
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon-sm"
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </Button>
+                    </div>
+                    <p className="text-fluid-xs text-midnight-500 mt-2">
+                      Minimum 8 characters required
+                    </p>
+                  </div>
+                  
+                  <div>
+                    <div className="relative">
+                      <FloatingInput
+                        label="Confirm Password *"
+                        type={showConfirmPassword ? "text" : "password"}
+                        variant="glass"
+                        value={formData.confirmPassword}
+                        onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
+                        className="pr-12"
+                        required
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon-sm"
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      >
+                        {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Country</label>
-                <Input
-                  value={formData.country}
-                  onChange={(e) => handleInputChange("country", e.target.value)}
-                  placeholder="Enter your country"
-                />
+
+              {/* Address Section */}
+              <div className="border-t border-midnight-200/50 dark:border-midnight-700/50 pt-8">
+                <h3 className="font-display text-fluid-2xl font-bold text-midnight-800 dark:text-midnight-200 mb-6 flex items-center">
+                  <MapPin className="w-6 h-6 mr-3 text-emerald-600" />
+                  Address Information
+                </h3>
+                
+                <div className="space-y-6">
+                  <div>
+                    <label className="block text-fluid-sm font-semibold text-midnight-700 dark:text-midnight-300 mb-3">Address</label>
+                    <Textarea
+                      value={formData.address}
+                      onChange={(e) => handleInputChange("address", e.target.value)}
+                      placeholder="Enter your complete address"
+                      className="min-h-[100px] rounded-xl border-midnight-200 focus:border-ocean-500"
+                    />
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                    <FloatingInput
+                      label="City"
+                      variant="glass"
+                      value={formData.city}
+                      onChange={(e) => handleInputChange("city", e.target.value)}
+                    />
+                    
+                    <FloatingInput
+                      label="State/Province"
+                      variant="glass"
+                      value={formData.state}
+                      onChange={(e) => handleInputChange("state", e.target.value)}
+                    />
+                    
+                    <FloatingInput
+                      label="Country"
+                      variant="glass"
+                      value={formData.country}
+                      onChange={(e) => handleInputChange("country", e.target.value)}
+                    />
+                    
+                    <FloatingInput
+                      label="Postal/ZIP Code"
+                      variant="glass"
+                      value={formData.pincode}
+                      onChange={(e) => handleInputChange("pincode", e.target.value)}
+                    />
+                  </div>
+                </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Postal/ZIP Code</label>
-                <Input
-                  value={formData.pincode}
-                  onChange={(e) => handleInputChange("pincode", e.target.value)}
-                  placeholder="Enter your postal code"
-                />
+
+              {/* Validation Summary */}
+              <ValidationSummary currentStep={1} />
+
+              {/* Action Buttons */}
+              <div className="flex justify-end pt-8 border-t border-midnight-200/50 dark:border-midnight-700/50">
+                <Button 
+                  type="submit" 
+                  size="lg"
+                  className="min-w-[150px]"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    <>
+                      Next Step
+                      <CheckCircle className="w-4 h-4 ml-2" />
+                    </>
+                  )}
+                </Button>
               </div>
-            </div>
-            
-            {/* Validation Summary */}
-            <ValidationSummary currentStep={1} />
-            
-            <div className="flex justify-end">
-              <Button type="submit" className="bg-ossapcon-700 hover:bg-ossapcon-800">
-                Next Step
-              </Button>
             </div>
           </motion.div>
         )
@@ -914,31 +975,21 @@ export default function RegisterPage() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.5 }}
-            className="space-y-6"
+            className="p-4 sm:p-6 md:p-8 lg:p-12 space-y-4 sm:space-y-6"
           >
-            <h2 className="text-2xl font-bold text-gray-800">Registration Details</h2>
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Registration Details</h2>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Registration Type *</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Registration Type *</label>
               {/* Special Offer Banner */}
               {currentTier && (
                 <div className="bg-gradient-to-r from-ossapcon-600 to-ossapcon-800 text-white p-4 rounded-lg mb-4">
                   <div className="flex items-start justify-between">
                     <div>
                       <h3 className="font-bold text-lg">{currentTier.name}</h3>
-                      <p className="text-sm opacity-90">{currentTier.description}</p>
+                      <p className="text-sm opacity-90">{getTierSummary()}</p>
                     </div>
-                    <div className="text-right">
-                      <p className="text-sm opacity-90">Valid until</p>
-                      <p className="font-semibold">{new Date(currentTier.endDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
-                    </div>
+                    <div className="text-right"></div>
                   </div>
-                  {nextTier && (
-                    <div className="mt-2 pt-2 border-t border-white/20">
-                      <p className="text-xs opacity-75">
-                        Next: {nextTier.tier.name} starts in {nextTier.daysUntil} days
-                      </p>
-                    </div>
-                  )}
                 </div>
               )}
 
@@ -971,7 +1022,7 @@ export default function RegisterPage() {
               </RadioGroup>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">NSI Membership Number (if applicable)</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">OSSAP Membership Number (if applicable)</label>
               <Input
                 value={formData.membershipNumber}
                 onChange={(e) => handleInputChange("membershipNumber", e.target.value)}
@@ -979,7 +1030,16 @@ export default function RegisterPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Workshop Selection (Optional)</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">MCI Number *</label>
+              <Input
+                value={formData.mciNumber}
+                onChange={(e) => handleInputChange("mciNumber", e.target.value)}
+                placeholder="Enter your MCI number"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Workshop Selection (Optional)</label>
               <div className="space-y-3">
                 {workshops.map((workshop) => (
                   <div key={workshop.id} className={`flex items-center justify-between p-3 border rounded-lg ${
@@ -999,7 +1059,7 @@ export default function RegisterPage() {
                         >
                           {workshop.label}
                         </label>
-                        <p className="text-xs text-gray-500 mt-1">
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                           ₹{workshop.price.toLocaleString()}
                           {workshop.availableSeats !== undefined && (
                             <span className={`ml-2 ${
@@ -1017,7 +1077,7 @@ export default function RegisterPage() {
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Dietary Requirements</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Dietary Requirements</label>
               <Select
                 value={formData.dietaryRequirements}
                 onValueChange={(value) => handleInputChange("dietaryRequirements", value)}
@@ -1036,7 +1096,7 @@ export default function RegisterPage() {
               </Select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Special Needs/Accessibility Requirements
               </label>
               <Textarea
@@ -1049,7 +1109,7 @@ export default function RegisterPage() {
             {/* Accompanying Persons Section */}
             <div className="border-t pt-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-800">Accompanying Persons (Optional)</h3>
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Accompanying Persons (Optional)</h3>
                 <Button
                   type="button"
                   variant="outline"
@@ -1063,7 +1123,7 @@ export default function RegisterPage() {
               </div>
 
               {formData.accompanyingPersons.length === 0 ? (
-                <div className="text-center py-6 text-gray-500 bg-gray-50 rounded-lg">
+                <div className="text-center py-6 text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800 rounded-lg">
                   <Users className="w-8 h-8 mx-auto mb-2 opacity-50" />
                   <p className="text-sm">No accompanying persons added yet.</p>
                   <p className="text-xs">Click "Add Person" to include family or colleagues.</p>
@@ -1071,9 +1131,9 @@ export default function RegisterPage() {
               ) : (
                 <div className="space-y-4">
                   {formData.accompanyingPersons.map((person, index) => (
-                    <div key={index} className="border rounded-lg p-4 bg-gray-50">
+                    <div key={index} className="border dark:border-gray-600 rounded-lg p-4 bg-gray-50 dark:bg-gray-800">
                       <div className="flex items-center justify-between mb-3">
-                        <h4 className="font-medium text-gray-800">Person {index + 1}</h4>
+                        <h4 className="font-medium text-gray-800 dark:text-gray-200">Person {index + 1}</h4>
                         <Button
                           type="button"
                           variant="outline"
@@ -1084,27 +1144,18 @@ export default function RegisterPage() {
                           Remove
                         </Button>
                       </div>
-                      <div className="grid md:grid-cols-3 gap-4">
+                      <div className="grid md:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name *</label>
                           <Input
                             value={person.name}
                             onChange={(e) => updateAccompanyingPerson(index, 'name', e.target.value)}
                             placeholder="Full name"
                           />
                         </div>
+                        {/* Age field removed intentionally */}
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Age *</label>
-                          <Input
-                            type="number"
-                            value={person.age}
-                            onChange={(e) => updateAccompanyingPerson(index, 'age', parseInt(e.target.value) || 18)}
-                            min="1"
-                            max="120"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Relationship *</label>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Relationship *</label>
                           <Select
                             value={person.relationship}
                             onValueChange={(value) => updateAccompanyingPerson(index, 'relationship', value)}
@@ -1140,7 +1191,7 @@ export default function RegisterPage() {
 
             {/* Discount Code Section */}
             <div className="border-t pt-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Discount Code (Optional)</h3>
+              <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Discount Code (Optional)</h3>
               <div className="flex gap-3">
                 <div className="flex-1">
                   <Input
@@ -1158,16 +1209,16 @@ export default function RegisterPage() {
                   Apply
                 </Button>
               </div>
-              <p className="text-sm text-gray-500 mt-2">
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
                 Available discounts: Early Bird, Student discounts, Independence Day offers
               </p>
             </div>
 
-            <div className="flex justify-between">
-              <Button type="button" variant="outline" onClick={() => setStep(1)}>
+            <div className="flex flex-col sm:flex-row gap-4 sm:justify-between">
+              <Button type="button" variant="outline" onClick={() => setStep(1)} className="w-full sm:w-auto">
                 Previous
               </Button>
-              <Button type="submit" className="bg-ossapcon-700 hover:bg-ossapcon-800">
+              <Button type="submit" className="bg-ossapcon-700 hover:bg-ossapcon-800 w-full sm:w-auto">
                 Next Step
               </Button>
             </div>
@@ -1180,14 +1231,14 @@ export default function RegisterPage() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.5 }}
-            className="space-y-6"
+            className="p-4 sm:p-6 md:p-8 lg:p-12 space-y-4 sm:space-y-6"
           >
-            <h2 className="text-2xl font-bold text-gray-800">Payment Information</h2>
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Payment Information</h2>
             
             {/* Price Summary */}
             {priceCalculation && (
-              <div className="bg-ossapcon-50 p-6 rounded-lg mb-6">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">Registration Summary</h3>
+              <div className="bg-ossapcon-50 dark:bg-ossapcon-900/20 p-6 rounded-lg mb-6">
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Registration Summary</h3>
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span>Registration Fee:</span>
@@ -1231,34 +1282,110 @@ export default function RegisterPage() {
               </div>
             )}
 
+            {/* Bank Transfer Instructions */}
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-4 flex items-center">
+                <Building className="w-5 h-5 mr-2" />
+                Bank Transfer Payment Details
+              </h3>
+              <div className="space-y-4 text-sm">
+                <div className="grid grid-cols-1 gap-4">
+                  <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-blue-200 dark:border-blue-700">
+                    <span className="font-medium text-gray-700 dark:text-gray-300 block mb-2">Account Name:</span>
+                    <div className="flex items-center justify-between bg-gray-50 dark:bg-gray-700 p-3 rounded border">
+                      <p className="text-gray-800 dark:text-gray-200 font-medium break-all">OSSAPCON 2026</p>
+                      <button 
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText('OSSAPCON 2026')
+                          toast({ title: "Copied!", description: "Account name copied to clipboard" })
+                        }}
+                        className="ml-2 px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded hover:bg-blue-200 dark:hover:bg-blue-800 flex-shrink-0"
+                      >
+                        Copy
+                      </button>
+                </div>
+                </div>
+                  
+                  <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-blue-200 dark:border-blue-700">
+                    <span className="font-medium text-gray-700 dark:text-gray-300 block mb-2">Account Number:</span>
+                    <div className="flex items-center justify-between bg-gray-50 dark:bg-gray-700 p-3 rounded border">
+                      <p className="text-gray-800 dark:text-gray-200 font-mono break-all">13731201000140</p>
+                      <button 
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText('13731201000140')
+                          toast({ title: "Copied!", description: "Account number copied to clipboard" })
+                        }}
+                        className="ml-2 px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded hover:bg-blue-200 dark:hover:bg-blue-800 flex-shrink-0"
+                      >
+                        Copy
+                      </button>
+                </div>
+                </div>
+                  
+                  <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-blue-200 dark:border-blue-700">
+                    <span className="font-medium text-gray-700 dark:text-gray-300 block mb-2">IFSC Code:</span>
+                    <div className="flex items-center justify-between bg-gray-50 dark:bg-gray-700 p-3 rounded border">
+                      <p className="text-gray-800 dark:text-gray-200 font-mono">AUBL0003173</p>
+                      <button 
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText('AUBL0003173')
+                          toast({ title: "Copied!", description: "IFSC code copied to clipboard" })
+                        }}
+                        className="ml-2 px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded hover:bg-blue-200 dark:hover:bg-blue-800 flex-shrink-0"
+                      >
+                        Copy
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-blue-200 dark:border-blue-700">
+                    <span className="font-medium text-gray-700 dark:text-gray-300 block mb-2">Branch:</span>
+                    <div className="flex items-center justify-between bg-gray-50 dark:bg-gray-700 p-3 rounded border">
+                      <p className="text-gray-800 dark:text-gray-200 break-all">Kurnool Medical College</p>
+                      <button 
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText('Kurnool Medical College')
+                          toast({ title: "Copied!", description: "Branch name copied to clipboard" })
+                        }}
+                        className="ml-2 px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded hover:bg-blue-200 dark:hover:bg-blue-800 flex-shrink-0"
+                      >
+                        Copy
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div className="border-t border-blue-200 dark:border-blue-700 pt-3 mt-4">
+                  <p className="text-blue-800 dark:text-blue-200 font-medium">
+                    💡 Transfer Amount: ₹{priceCalculation?.finalAmount || 'TBD'}
+                  </p>
+                  <p className="text-xs text-blue-600 dark:text-blue-300 mt-1">
+                    Please transfer the exact amount and enter the UTR number below
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* UTR Number Field */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Payment Option *</label>
-              <RadioGroup
-                value={formData.paymentMethod}
-                onValueChange={(value) => handleInputChange("paymentMethod", value)}
-                className="space-y-4"
-              >
-                <div className="flex items-center space-x-2 p-3 border rounded-lg dark:border-gray-600">
-                  <RadioGroupItem value="pay-later" id="pay-later" />
-                  <Label htmlFor="pay-later" className="flex items-center space-x-2 cursor-pointer">
-                    <CreditCard className="w-4 h-4 text-ossapcon-600" />
-                    <span className="text-gray-700 dark:text-gray-300">Register Now, Pay Later (Recommended)</span>
-                  </Label>
-                </div>
-                <div className="text-xs text-gray-500 dark:text-gray-400 ml-6 -mt-2">
-                  Complete your registration now and pay from your dashboard later
-                </div>
-                <div className="flex items-center space-x-2 p-3 border rounded-lg dark:border-gray-600">
-                  <RadioGroupItem value="pay-now" id="pay-now" />
-                  <Label htmlFor="pay-now" className="flex items-center space-x-2 cursor-pointer">
-                    <CreditCard className="w-4 h-4 text-green-500" />
-                    <span className="text-gray-700 dark:text-gray-300">Pay Now</span>
-                  </Label>
-                </div>
-                <div className="text-xs text-gray-500 dark:text-gray-400 ml-6 -mt-2">
-                  Complete payment immediately after registration
-                </div>
-              </RadioGroup>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Bank Transfer UTR Number *
+              </label>
+              <Input
+                type="text"
+                value={formData.bankTransferUTR}
+                onChange={(e) => handleInputChange("bankTransferUTR", e.target.value)}
+                placeholder="Enter 12-digit UTR number from your bank transfer"
+                className="dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"
+                maxLength={12}
+                required
+              />
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                The UTR (Unique Transaction Reference) number is provided by your bank after successful transfer
+              </p>
             </div>
             
             <div className="flex items-start space-x-2 mt-6">
@@ -1267,25 +1394,25 @@ export default function RegisterPage() {
                 checked={formData.agreeTerms}
                 onCheckedChange={(checked) => handleInputChange("agreeTerms", checked === true)}
               />
-              <label htmlFor="terms" className="text-sm text-gray-700">
+              <label htmlFor="terms" className="text-sm text-gray-700 dark:text-gray-300">
                 I agree to the{" "}
-                <Link href="#" className="text-ossapcon-700 hover:underline">
+                <Link href="#" className="text-ossapcon-700 dark:text-ossapcon-400 hover:underline">
                   Terms and Conditions
                 </Link>{" "}
                 and{" "}
-                <Link href="#" className="text-ossapcon-700 hover:underline">
+                <Link href="#" className="text-ossapcon-700 dark:text-ossapcon-400 hover:underline">
                   Privacy Policy
                 </Link>
               </label>
             </div>
-            <div className="flex justify-between">
-              <Button type="button" variant="outline" onClick={() => setStep(2)}>
+            <div className="flex flex-col sm:flex-row gap-4 sm:justify-between">
+              <Button type="button" variant="outline" onClick={() => setStep(2)} className="w-full sm:w-auto">
                 Previous
               </Button>
               <Button
                 type="submit"
-                className="bg-ossapcon-700 hover:bg-ossapcon-800"
-                disabled={!formData.agreeTerms || loading}
+                className="bg-ossapcon-700 hover:bg-ossapcon-800 w-full sm:w-auto"
+                disabled={!formData.agreeTerms || !formData.bankTransferUTR || loading}
               >
                 {loading ? (
                   <>
@@ -1307,32 +1434,37 @@ export default function RegisterPage() {
             transition={{ duration: 0.5 }}
             className="text-center p-12"
           >
-            <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-6" />
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Registration Successful!</h2>
-            <p className="text-gray-600 mb-6">
-              Thank you for registering for OSSAPCON 2026. Your account has been created successfully.
+            <CheckCircle className="w-16 h-16 text-blue-500 mx-auto mb-6" />
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">Registration Application Submitted!</h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
+              Thank you for registering for OSSAPCON 2026. Your registration application has been submitted successfully.
             </p>
-            <p className="text-gray-600 mb-8">
-              A confirmation email has been sent to <span className="font-semibold">{formData.email}</span> with your
-              registration details and login instructions.
+            <p className="text-gray-600 dark:text-gray-400 mb-8">
+              An acknowledgment email has been sent to <span className="font-semibold">{formData.email}</span> with your
+              application details.
             </p>
-            <div className="bg-ossapcon-50 p-6 rounded-lg mb-6 text-left">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">What's Next?</h3>
-              <div className="space-y-2 text-sm">
-                <p>• Check your email for confirmation and login instructions</p>
-                <p>• Sign in to your dashboard to complete payment</p>
-                <p>• Access your registration details and conference materials</p>
-                <p>• Update your profile and preferences</p>
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-6 rounded-lg mb-6 text-left">
+              <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-4">What happens next?</h3>
+              <div className="space-y-2 text-sm text-blue-800 dark:text-blue-200">
+                <p>• Our team will verify your bank transfer within 10 business days</p>
+                <p>• You will receive a confirmation email once your payment is verified</p>
+                <p>• Your registration will be confirmed and dashboard access will be activated</p>
+                <p>• Conference materials and updates will be shared via email</p>
               </div>
             </div>
-            <div className="space-x-4">
-              <Link href="/auth/login">
-                <Button className="bg-ossapcon-700 hover:bg-ossapcon-800">
+            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 p-4 rounded-lg mb-6">
+              <p className="text-amber-800 dark:text-amber-200 text-sm">
+                <strong>Important:</strong> Your registration is currently under review. Please allow up to 10 business days for verification.
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4 sm:space-x-4 sm:justify-center">
+              <Link href="/auth/login" className="w-full sm:w-auto">
+                <Button className="bg-ossapcon-700 hover:bg-ossapcon-800 w-full sm:w-auto">
                   Sign In Now
                 </Button>
               </Link>
-              <Link href="/">
-                <Button variant="outline">Return to Home</Button>
+              <Link href="/" className="w-full sm:w-auto">
+                <Button variant="outline" className="w-full sm:w-auto">Return to Home</Button>
               </Link>
             </div>
           </motion.div>
@@ -1343,169 +1475,158 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-ossapcon-50 to-white dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-b from-ocean-50 via-white to-sapphire-50 text-midnight-800 dark:from-midnight-900 dark:to-midnight-800 dark:text-midnight-100">
       <Navigation currentPage="register" />
 
-      <div className="pt-20 pb-12 px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <section className="py-12 sm:py-16 bg-gradient-to-r from-ossapcon-800 to-ossapcon-900 text-white rounded-lg mx-4 sm:mx-6 lg:mx-8">
-          <div className="container mx-auto px-4 sm:px-6 text-center">
-            <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6">Conference Registration</h1>
-              <p className="text-lg sm:text-xl max-w-3xl mx-auto px-4">
-                Join us for the premier orthopedic conference - February 4-6, 2026 in Kurnool, Andhra Pradesh
-              </p>
+      <div className="pt-16 md:pt-20 lg:pt-24 px-4 sm:px-6 lg:px-8">
+        {/* Hero Section - Completely New Design */}
+        <section className="relative py-20 md:py-32 lg:py-40 overflow-visible">
+          {/* Dynamic Background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-ocean-50 via-sapphire-50/50 to-emerald-50/30 dark:from-midnight-900 dark:via-midnight-800 dark:to-midnight-900"></div>
+          
+          {/* Floating Elements */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute -top-40 -left-40 w-80 h-80 bg-gradient-to-br from-ocean-400/20 to-sapphire-500/20 rounded-full blur-3xl animate-pulse"></div>
+            <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-gradient-to-br from-emerald-400/20 to-ocean-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-br from-sapphire-300/10 to-emerald-300/10 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '4s' }}></div>
+          </div>
+
+          <div className="container mx-auto px-4 sm:px-6 md:px-8 relative z-10 max-w-7xl">
+            <motion.div
+              initial={shouldReduceMotion ? undefined : { opacity: 0, y: 40 }}
+              animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center max-w-6xl mx-auto"
+            >
+              {/* Conference Info Badge */}
+              <motion.div
+                initial={shouldReduceMotion ? undefined : { opacity: 0, scale: 0.9 }}
+                animate={shouldReduceMotion ? undefined : { opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="mb-8"
+              >
+                <Badge variant="glass" size="lg" className="text-ocean-700 font-medium">
+                  <Calendar className="w-4 h-4 mr-2" />
+                  OSSAPCON 2026 • February 6-8, 2026
+                </Badge>
+              </motion.div>
+
+              {/* Main Title */}
+              <motion.h1
+                initial={shouldReduceMotion ? undefined : { opacity: 0, y: 30 }}
+                animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                className="font-display text-5xl sm:text-6xl md:text-7xl font-black mb-6 leading-tight break-normal whitespace-normal hyphens-none overflow-visible tracking-tight pr-1"
+              >
+                <span className="block bg-gradient-to-r from-ocean-600 via-sapphire-600 to-emerald-600 bg-clip-text text-transparent">
+                  CONFERENCE
+                </span>
+                <span className="block bg-gradient-to-r from-emerald-600 via-ocean-600 to-sapphire-600 bg-clip-text text-transparent">
+                  REGISTRATION
+                </span>
+              </motion.h1>
+
+              {/* Subtitle */}
+              <motion.p
+                initial={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}
+                animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+                className="text-fluid-xl text-midnight-600 dark:text-midnight-300 mb-12 max-w-4xl mx-auto leading-relaxed"
+              >
+                Join the premier orthopedic conference in Kurnool. Register now to secure your place among leading medical professionals.
+              </motion.p>
+
+              {/* Key Info Cards */}
+              <motion.div
+                initial={shouldReduceMotion ? undefined : { opacity: 0, y: 30 }}
+                animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto mb-8 sm:mb-12"
+              >
+                {[
+                  { icon: UserPlus, title: "Easy Registration", desc: "Simple 3-step process", color: "ocean" },
+                  { icon: Shield, title: "Secure Payment", desc: "Protected transactions", color: "emerald" },
+                  { icon: Sparkles, title: "Instant Confirmation", desc: "Immediate access", color: "sapphire" },
+                ].map((item, index) => (
+                  <Card key={index} variant="glass" padding="lg" interactive="hover" className="text-center group bg-white/90 dark:bg-midnight-800/90 backdrop-blur-sm border border-white/50 dark:border-midnight-700/50">
+                    <CardContent>
+                      <item.icon className={`w-12 h-12 mx-auto mb-4 transition-transform duration-300 group-hover:scale-110 ${
+                        item.color === 'ocean' ? 'text-ocean-600 dark:text-ocean-400' :
+                        item.color === 'emerald' ? 'text-emerald-600 dark:text-emerald-400' :
+                        'text-sapphire-600 dark:text-sapphire-400'
+                      }`} />
+                      <h3 className="font-display text-fluid-lg font-bold text-midnight-800 dark:text-midnight-200 mb-2">
+                        {item.title}
+                      </h3>
+                      <p className="text-fluid-sm text-midnight-600 dark:text-midnight-400">
+                        {item.desc}
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </motion.div>
+
+              {/* Sign In Link */}
+              <motion.div
+                initial={shouldReduceMotion ? undefined : { opacity: 0 }}
+                animate={shouldReduceMotion ? undefined : { opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.8 }}
+                className="text-center"
+              >
+                <p className="text-fluid-base text-midnight-600 dark:text-midnight-400">
+                  Already have an account?{" "}
+                  <Link href="/auth/login" className="text-ocean-600 hover:text-ocean-700 font-semibold hover:underline transition-colors">
+                    Sign in here
+                  </Link>
+                </p>
+              </motion.div>
             </motion.div>
           </div>
         </section>
 
-        {/* Independence Day Special Offer */}
-        {new Date() <= new Date('2025-08-15') && (
-          <section className="py-8 mx-4 sm:mx-6 lg:mx-8">
-            <div className="container mx-auto px-4 sm:px-6">
-              <motion.div 
-                initial={{ opacity: 0, y: 30 }} 
-                animate={{ opacity: 1, y: 0 }} 
-                transition={{ duration: 0.6, delay: 0.2 }}
+        {/* Progress Indicator - New Design */}
+        {step < 4 && (
+          <section className="py-12 md:py-16 relative">
+            <div className="absolute inset-0 bg-gradient-to-b from-white via-ocean-50/20 to-sapphire-50/30 dark:from-midnight-800 dark:to-midnight-900"></div>
+            
+            <div className="container mx-auto px-4 md:px-6 relative z-10">
+              <motion.div
+                initial={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}
+                animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
                 className="max-w-2xl mx-auto"
               >
-                {/* Independence Day Special */}
-                  <div className="relative overflow-hidden rounded-xl shadow-lg">
-                    {/* Slanted Waving Indian Flag Background */}
-                    <div className="absolute inset-0">
-                      {/* Orange Stripe with Wave */}
-                      <div 
-                        className="absolute top-0 left-0 w-full h-1/3 transform -skew-y-2 origin-top-left"
-                        style={{
-                          background: 'linear-gradient(135deg, #0066b3 0%, #015189 50%, #0066b3 100%)',
-                          backgroundSize: '200% 200%',
-                          animation: 'gradientShift 4s ease-in-out infinite, wave 3s ease-in-out infinite'
-                        }}
-                      ></div>
-                      
-                      {/* White Stripe with Wave */}
-                      <div 
-                        className="absolute top-1/3 left-0 w-full h-1/3 transform -skew-y-2 origin-center"
-                        style={{
-                          background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #ffffff 100%)',
-                          backgroundSize: '200% 200%',
-                          animation: 'gradientShift 4s ease-in-out infinite 0.5s, wave 3s ease-in-out infinite 0.5s'
-                        }}
-                      ></div>
-                      
-                      {/* Green Stripe with Wave */}
-                      <div 
-                        className="absolute top-2/3 left-0 w-full h-1/3 transform -skew-y-2 origin-bottom-left"
-                        style={{
-                          background: 'linear-gradient(135deg, #138808 0%, #16a085 50%, #138808 100%)',
-                          backgroundSize: '200% 200%',
-                          animation: 'gradientShift 4s ease-in-out infinite 1s, wave 3s ease-in-out infinite 1s'
-                        }}
-                      ></div>
-                      
-                      {/* Flowing Wave Overlay */}
-                      <div 
-                        className="absolute inset-0 opacity-30"
-                        style={{
-                          background: 'linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%)',
-                          animation: 'flowingWave 3s linear infinite'
-                        }}
-                      ></div>
-                    </div>
-                    
-                    {/* Content Overlay */}
-                    <div className="relative bg-black/40 backdrop-blur-sm p-6 text-white">
-                      <div className="text-center mb-4">
-                        <div className="text-center mb-3">
-                          <h3 className="text-2xl font-bold text-white drop-shadow-lg">Independence Day Special</h3>
-                          <p className="text-sm text-white/90 drop-shadow">Celebrate freedom with exclusive pricing!</p>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-6xl font-black mb-2 text-white drop-shadow-lg">₹5,000</div>
-                          <div className="bg-white/30 backdrop-blur-sm px-6 py-3 rounded-full text-lg font-semibold inline-block text-white border border-white/30">
-                            Registration Fee
-                          </div>
-                        </div>
-                      </div>
-                      <div className="text-center space-y-3">
-                        <p className="text-base text-white/95 drop-shadow">Special Independence Day pricing for conference registration</p>
-                        <p className="text-sm text-white/90 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full inline-block border border-white/30">
-                          Valid until August 15, 2025 • Limited time offer
-                        </p>
-                      </div>
-                    </div>
-                    
-                    {/* Required CSS Styles */}
-                    <style jsx>{`
-                      @keyframes gradientShift {
-                        0%, 100% { background-position: 0% 50%; }
-                        50% { background-position: 100% 50%; }
-                      }
-                      
-                      @keyframes wave {
-                        0%, 100% { transform: translateY(0px) skewY(-2deg); }
-                        25% { transform: translateY(-2px) skewY(-1deg); }
-                        50% { transform: translateY(-4px) skewY(0deg); }
-                        75% { transform: translateY(-2px) skewY(-1deg); }
-                      }
-                      
-                      @keyframes flowingWave {
-                        0% { transform: translateX(-100%) rotate(-45deg); }
-                        100% { transform: translateX(200%) rotate(-45deg); }
-                      }
-                    `}</style>
-                  </div>
+                <StepProgress steps={steps} className="mb-8" />
+                
+                {/* Current Step Info */}
+                <div className="text-center">
+                  <Badge variant="glass" size="lg">
+                    Step {step} of 3
+                  </Badge>
+                </div>
               </motion.div>
             </div>
           </section>
         )}
 
-        {/* Sign In Link */}
-        <div className="text-center py-4">
-          <p className="text-gray-600">
-            Already have an account?{" "}
-            <Link href="/auth/login" className="text-ossapcon-700 hover:text-ossapcon-800 font-medium hover:underline">
-              Sign in here
-            </Link>
-          </p>
-        </div>
+        {/* Registration Form - Completely New Design */}
+        <section className="py-12 md:py-20 relative">
+          {/* Background */}
+          <div className="absolute inset-0 bg-gradient-to-b from-sapphire-50/30 via-white to-ocean-50/20 dark:from-midnight-800 dark:to-midnight-900"></div>
+          
+          {/* Floating Elements */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-br from-ocean-300/20 to-emerald-300/20 rounded-full blur-3xl animate-pulse"></div>
+            <div className="absolute bottom-20 right-10 w-80 h-80 bg-gradient-to-br from-sapphire-300/20 to-ocean-300/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '3s' }}></div>
+          </div>
 
-        {/* Progress Indicator */}
-        {step < 4 && (
-          <section className="py-6 sm:py-8">
-            <div className="container mx-auto px-4 sm:px-6">
-              <div className="flex items-center justify-center space-x-2 sm:space-x-4 lg:space-x-8 overflow-x-auto">
-                {[1, 2, 3].map((stepNumber) => (
-                  <div key={stepNumber} className="flex items-center flex-shrink-0">
-                    <div
-                      className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm sm:text-base ${
-                        step >= stepNumber ? "bg-blue-600 text-white" : "bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
-                      }`}
-                    >
-                      {stepNumber}
-                    </div>
-                    <span className="ml-1 sm:ml-2 text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hidden sm:inline">
-                      {stepNumber === 1 && "Personal Info"}
-                      {stepNumber === 2 && "Registration"}
-                      {stepNumber === 3 && "Payment"}
-                    </span>
-                    {stepNumber < 3 && (
-                      <div className={`w-8 sm:w-16 h-1 mx-2 sm:mx-4 ${step > stepNumber ? "bg-blue-600" : "bg-gray-200 dark:bg-gray-700"}`} />
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* Registration Form */}
-        <section className="py-8 sm:py-16">
-          <div className="container mx-auto px-4 sm:px-6">
-            <div className="max-w-4xl mx-auto">
-              <Card className="shadow-xl dark:bg-gray-800 dark:border-gray-700">
-                <CardContent className="p-4 sm:p-6 lg:p-8">
-                  <form onSubmit={handleSubmit}>{renderStepContent()}</form>
+          <div className="container mx-auto px-4 sm:px-6 md:px-8 relative z-10">
+            <div className="max-w-4xl mx-auto px-2 sm:px-4 md:px-6">
+              <Card variant="glass" padding="none" className="shadow-2xl bg-white/95 dark:bg-midnight-800/95 backdrop-blur-md border border-white/50 dark:border-midnight-700/50">
+                <CardContent className="p-4 sm:p-6 md:p-8">
+                  <form onSubmit={handleSubmit}>
+                    {renderStepContent()}
+                  </form>
                 </CardContent>
               </Card>
             </div>

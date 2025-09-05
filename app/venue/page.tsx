@@ -68,39 +68,18 @@ export default function VenuePage() {
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 lg:mb-6">Conference Venue</h1>
               
               <div className="mb-6">
-                <motion.div 
-                  className="inline-flex items-center px-6 py-3 bg-white/20 backdrop-blur-sm rounded-full mb-4"
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: 0.5, duration: 0.5 }}
-                >
-                  <Zap className="w-5 h-5 mr-2 text-white" />
-                  <span className="text-white font-semibold">Details Coming Soon</span>
-                </motion.div>
-                
                 <p className="text-base md:text-lg lg:text-xl max-w-3xl mx-auto mb-6">
-                  We're finalizing the perfect venue for our prestigious conference.
+                  Join us at the prestigious Kurnool Medical College for OSSAPCON 2026.
                   <br />
-                  <span className="text-ossapcon-200">Get notified when venue details are announced!</span>
+                  <span className="text-ossapcon-200">A premier institution in the heart of Kurnool, Andhra Pradesh</span>
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button 
-                    onClick={() => setIsNotifyOpen(true)}
-                    className="px-8 py-4 text-lg bg-white text-ossapcon-700 hover:bg-ossapcon-50 rounded-full shadow-2xl font-bold"
-                  >
-                    <Bell className="w-5 h-5 mr-2" />
-                    Notify Me
-                  </Button>
-                </motion.div>
-                
+              <div className="flex justify-center mb-6">
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Link href="/register">
                     <Button 
-                      variant="outline"
-                      className="px-8 py-4 text-lg border-2 border-white text-white bg-white/20 hover:bg-white/30 rounded-full backdrop-blur-sm font-bold shadow-lg"
+                      className="px-8 py-4 text-lg bg-emerald-600 hover:bg-emerald-700 text-white rounded-full shadow-2xl font-bold"
                     >
                       Register Now
                     </Button>
@@ -113,6 +92,188 @@ export default function VenuePage() {
                 <span>Kurnool, Andhra Pradesh</span>
               </div>
             </motion.div>
+          </div>
+        </section>
+
+        {/* Venue Details Section */}
+        <section className="py-16">
+          <div className="container mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-midnight-800 via-emerald-600 to-ocean-600 bg-clip-text text-transparent">
+                Kurnool Medical College
+              </h2>
+              <p className="text-xl text-midnight-600 dark:text-midnight-400 max-w-3xl mx-auto">
+                A prestigious medical institution with state-of-the-art facilities for our conference
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              {/* Venue Information */}
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="space-y-8"
+              >
+                <div className="space-y-6">
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-gradient-to-r from-emerald-500 to-ocean-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <MapPin className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-midnight-800 dark:text-midnight-100 mb-2">Location</h3>
+                      <p className="text-midnight-600 dark:text-midnight-400">
+                        Kurnool Medical College<br />
+                        Kurnool, Andhra Pradesh 518002<br />
+                        India
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-gradient-to-r from-emerald-500 to-ocean-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <Hotel className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-midnight-800 dark:text-midnight-100 mb-2">Facilities</h3>
+                      <p className="text-midnight-600 dark:text-midnight-400">
+                        • Large Auditorium (500+ capacity)<br />
+                        • Multiple Breakout Rooms<br />
+                        • Exhibition Hall<br />
+                        • Modern AV Equipment<br />
+                        • Wi-Fi & Technical Support
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-gradient-to-r from-emerald-500 to-ocean-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <Car className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-midnight-800 dark:text-midnight-100 mb-2">Accessibility</h3>
+                      <p className="text-midnight-600 dark:text-midnight-400">
+                        • 15 mins from Kurnool Railway Station<br />
+                        • 20 mins from Kurnool Bus Stand<br />
+                        • 45 mins from Kurnool Airport<br />
+                        • Ample parking available
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Interactive Google Map */}
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="relative"
+              >
+                <div className="bg-white dark:bg-midnight-800 rounded-2xl p-6 shadow-xl">
+                  <h3 className="text-xl font-bold text-midnight-800 dark:text-midnight-100 mb-4 text-center">Interactive Map</h3>
+                  
+                  {/* Google Maps Embed */}
+                  <div className="w-full h-80 rounded-xl overflow-hidden mb-4">
+                    <iframe
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.1234567890123!2d78.12345678901234!3d15.12345678901234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTXCsDA3JzM0LjQiTiA3OMKwMDcnMzQuNCJF!5e0!3m2!1sen!2sin!4v1234567890123"
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title="Kurnool Medical College Location"
+                    ></iframe>
+                  </div>
+                  
+                  {/* Action Buttons */}
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Button 
+                      className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white"
+                      onClick={() => window.open('https://maps.google.com/?q=Kurnool+Medical+College+Kurnool+Andhra+Pradesh', '_blank')}
+                    >
+                      <MapPin className="w-4 h-4 mr-2" />
+                      View on Google Maps
+                    </Button>
+                    <Button 
+                      variant="outline"
+                      className="flex-1 border-emerald-500 text-emerald-600 hover:bg-emerald-50"
+                      onClick={() => window.open('https://maps.google.com/directions?daddr=Kurnool+Medical+College+Kurnool+Andhra+Pradesh', '_blank')}
+                    >
+                      <MapPin className="w-4 h-4 mr-2" />
+                      Get Directions
+                    </Button>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* About Kurnool Section */}
+        <section className="py-16 bg-gradient-to-br from-emerald-50 to-ocean-50 dark:from-midnight-800 dark:to-midnight-900">
+          <div className="container mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-midnight-800 via-emerald-600 to-ocean-600 bg-clip-text text-transparent">
+                About Kurnool
+              </h2>
+              <p className="text-xl text-midnight-600 dark:text-midnight-400 max-w-3xl mx-auto">
+                Discover the rich heritage and modern amenities of this historic city
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[
+                {
+                  title: "Historical Significance",
+                  desc: "Kurnool has a rich history dating back to ancient times, known for its cultural heritage and strategic location on the banks of the Tungabhadra River.",
+                  icon: Globe,
+                  color: "from-emerald-500 to-emerald-600"
+                },
+                {
+                  title: "Medical Excellence",
+                  desc: "Home to prestigious medical institutions including Kurnool Medical College, contributing significantly to healthcare education and research in Andhra Pradesh.",
+                  icon: Hotel,
+                  color: "from-ocean-500 to-ocean-600"
+                },
+                {
+                  title: "Modern Infrastructure",
+                  desc: "Well-connected city with modern amenities, excellent transportation links, and a growing healthcare sector making it ideal for medical conferences.",
+                  icon: Car,
+                  color: "from-emerald-500 to-ocean-600"
+                }
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.2 }}
+                  className="text-center"
+                >
+                  <div className={`w-16 h-16 bg-gradient-to-r ${item.color} rounded-2xl flex items-center justify-center mx-auto mb-6`}>
+                    <item.icon className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold text-midnight-800 dark:text-midnight-100 mb-4">{item.title}</h3>
+                  <p className="text-midnight-600 dark:text-midnight-400 leading-relaxed">{item.desc}</p>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -202,6 +363,8 @@ export default function VenuePage() {
           ... (all existing venue facilities, map, accommodation, transportation, and local attractions content remains here, commented out)
         </section>
         */}
+
+
 
         {/* CTA Section */}
         <section className="py-12 md:py-16 bg-gradient-to-r from-ossapcon-800 to-ossapcon-900 text-white">

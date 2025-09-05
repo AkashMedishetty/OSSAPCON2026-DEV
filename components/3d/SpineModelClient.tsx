@@ -162,15 +162,15 @@ export default function SpineModelClient() {
             minDistance={4}
             maxDistance={12}
             enableRotate={true}
-            touches={{
-              ONE: THREE.TOUCH.ROTATE,
-              TWO: THREE.TOUCH.DOLLY_PAN
-            }}
+            // Remove touch controls to prevent passive event listener warnings
+            touches={undefined}
             mouseButtons={{
               LEFT: THREE.MOUSE.ROTATE,
               MIDDLE: THREE.MOUSE.DOLLY,
               RIGHT: THREE.MOUSE.PAN
             }}
+            // Disable problematic event handling
+            listenToKeyEvents={false}
           />
         )}
       </Canvas>

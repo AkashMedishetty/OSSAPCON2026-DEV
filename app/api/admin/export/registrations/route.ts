@@ -25,9 +25,9 @@ export async function GET(request: NextRequest) {
       }, { status: 403 })
     }
 
-    // Fetch all user registrations
+    // Fetch all user registrations including payment info
     const users = await User.find({ role: 'user' })
-      .select('email profile registration createdAt')
+      .select('email profile registration payment createdAt')
       .lean()
 
     // Generate CSV content
@@ -37,16 +37,22 @@ export async function GET(request: NextRequest) {
       'Email',
       'Phone',
       'Institution',
+      'MCI Number',
       'Registration Type',
       'Status',
-      'Payment Type',
-      'Sponsor Name',
-      'Sponsor Category',
+      'Tier',
+      'Payment Method',
+      'Payment Status',
+      'Payment Amount',
+      'UTR Number',
+      'Payment Date',
+      'Verified By',
+      'Verification Date',
       'Payment Remarks',
       'Workshop Selections',
       'Accompanying Persons',
+      'Accompanying Names',
       'Registration Date',
-      'Payment Date',
       'Address',
       'Dietary Requirements',
       'Special Needs'
@@ -58,16 +64,22 @@ export async function GET(request: NextRequest) {
       user.email,
       user.profile.phone || '',
       user.profile.institution || '',
+      user.profile.mciNumber || '',
       user.registration.type,
       user.registration.status,
-      user.registration.paymentType || 'regular',
-      user.registration.sponsorName || '',
-      user.registration.sponsorCategory || '',
-      user.registration.paymentRemarks || '',
+      user.registration.tier || '',
+      user.payment?.method || 'Not specified',
+      user.payment?.status || 'No payment info',
+      user.payment?.amount || 0,
+      user.payment?.bankTransferUTR || '',
+      user.payment?.paymentDate ? new Date(user.payment.paymentDate).toLocaleDateString() : '',
+      user.payment?.verifiedBy || '',
+      user.payment?.verificationDate ? new Date(user.payment.verificationDate).toLocaleDateString() : '',
+      user.payment?.remarks || '',
       user.registration.workshopSelections?.join('; ') || '',
       user.registration.accompanyingPersons?.length || 0,
+      (user.registration.accompanyingPersons || []).map((p: any) => p.name).join('; '),
       new Date(user.registration.registrationDate).toLocaleDateString(),
-      user.registration.paymentDate ? new Date(user.registration.paymentDate).toLocaleDateString() : '',
       user.profile.address ? 
         `${user.profile.address.street || ''}, ${user.profile.address.city || ''}, ${user.profile.address.state || ''}, ${user.profile.address.country || ''}`.replace(/^,+|,+$/g, '') : '',
       user.profile.dietaryRequirements || '',

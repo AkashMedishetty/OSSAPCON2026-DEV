@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
   try {
     const author = await User.findById(doc.userId)
     if (author?.email) {
-      const subject = decision === 'accepted' ? 'Abstract Accepted - NeuroTrauma 2026' : 'Abstract Decision - NeuroTrauma 2026'
+      const subject = decision === 'accepted' ? 'Abstract Accepted - OSSAPCON 2026' : 'Abstract Decision - OSSAPCON 2026'
       await EmailService.sendCustomMessage({
         email: author.email,
         recipientName: `${author.profile?.title || ''} ${author.profile?.firstName || ''}`.trim(),

@@ -154,7 +154,7 @@ export default function RegistrationsPage() {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="all">All Types</SelectItem>
-                        <SelectItem value="ntsi-member">NTSI Member</SelectItem>
+                        <SelectItem value="ntsi-member">OSSAP Member</SelectItem>
                         <SelectItem value="non-member">Non Member</SelectItem>
                         <SelectItem value="pg-student">PG Student</SelectItem>
                       </SelectContent>

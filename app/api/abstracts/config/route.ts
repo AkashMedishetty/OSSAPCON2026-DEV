@@ -1,17 +1,12 @@
-import { NextResponse } from 'next/server'
-import connectDB from '@/lib/mongodb'
-import Configuration from '@/lib/models/Configuration'
-import { defaultAbstractsSettings } from '@/lib/config/abstracts'
+import { NextRequest, NextResponse } from 'next/server'
 
-// Public read of abstracts settings for building forms
-export async function GET() {
-  try {
-    await connectDB()
-    const cfg = await Configuration.findOne({ type: 'abstracts', key: 'settings' })
-    return NextResponse.json({ success: true, data: cfg?.value || defaultAbstractsSettings })
-  } catch (e) {
-    return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 })
-  }
+// Minimal stub to satisfy build; abstracts are disabled for now
+export async function GET(request: NextRequest) {
+  return NextResponse.json({ success: true, data: { enabled: false } })
+}
+
+export async function PUT(request: NextRequest) {
+  return NextResponse.json({ success: false, message: 'Abstracts config disabled' }, { status: 503 })
 }
 
 

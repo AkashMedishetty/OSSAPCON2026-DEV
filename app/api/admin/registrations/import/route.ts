@@ -58,16 +58,17 @@ export async function POST(request: NextRequest) {
                             // Map registration types correctly
                             const mapRegistrationType = (type: string) => {
                                 const typeMap: { [key: string]: string } = {
-                                    'regular': 'ntsi-member',
-                                    'faculty': 'ntsi-member',
-                                    'ntsi-member': 'ntsi-member',
+                                    'regular': 'ossap-member',
+                                    'faculty': 'ossap-member',
+                                    'member': 'ossap-member',
+                                    'ossap-member': 'ossap-member',
                                     'non-member': 'non-member',
                                     'pg-student': 'pg-student',
                                     'student': 'pg-student',
                                     'complimentary': 'complimentary',
                                     'sponsored': 'sponsored'
                                 }
-                                return typeMap[type?.toLowerCase()] || 'ntsi-member'
+                                return typeMap[type?.toLowerCase()] || 'ossap-member'
                             }
 
                             const userData = {

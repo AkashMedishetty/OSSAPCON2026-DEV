@@ -63,9 +63,9 @@ export async function POST(
           await EmailService.sendCustomMessage({
             email: user.email,
             recipientName: userName,
-            subject: subject || 'Message from NeuroTrauma 2026 Team',
+            subject: subject || 'Message from OSSAPCON 2026 Team',
             content: message || '',
-            senderName: templateData?.senderName || 'NeuroTrauma 2026 Team'
+            senderName: templateData?.senderName || 'OSSAPCON 2026 Team'
           })
           break
           
@@ -84,9 +84,9 @@ export async function POST(
           // Use bulk email service for general emails
           await EmailService.sendBulkEmail({
             recipients: [user.email],
-            subject: subject || 'NeuroTrauma 2026 - Registration Update',
-            content: message || 'Thank you for registering for NeuroTrauma 2026 Conference.',
-            senderName: 'NeuroTrauma 2026 Team'
+            subject: subject || 'OSSAPCON 2026 - Registration Update',
+            content: message || 'Thank you for registering for OSSAPCON 2026 Conference.',
+            senderName: 'OSSAPCON 2026 Team'
           })
           break
       }

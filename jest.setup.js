@@ -101,11 +101,7 @@ jest.mock('framer-motion', () => ({
 }))
 
 // Mock 3D components
-jest.mock('@/components/3d/BrainModel', () => {
-  return function MockBrainModel() {
-    return <div data-testid="brain-model">Brain Model</div>
-  }
-})
+// BrainModel removed from codebase
 
 jest.mock('@/components/3d/SpineModel', () => {
   return function MockSpineModel() {

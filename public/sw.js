@@ -1,19 +1,19 @@
-// Service Worker for OSSAPCON 2026 PWA - Updated to fix auth issues
-const CACHE_NAME = 'ossapcon-2026-v2';
-const STATIC_CACHE_NAME = 'ossapcon-2026-static-v2';
-const DYNAMIC_CACHE_NAME = 'ossapcon-2026-dynamic-v2';
+// Service Worker for OSSAPCON 2026 PWA - No favicons/logos version
+const CACHE_NAME = 'ossapcon-2026-v7';
+const STATIC_CACHE_NAME = 'ossapcon-2026-static-v7';
+const DYNAMIC_CACHE_NAME = 'ossapcon-2026-dynamic-v7';
 
-// Static assets to cache immediately (only essential ones)
+// Static assets to cache immediately (only essential ones that exist)
 const STATIC_ASSETS = [
   '/',
   '/offline.html',
 ];
 
-// Optional assets to cache (don't fail if they don't exist)
+// Optional assets to cache (only if they exist)
 const OPTIONAL_ASSETS = [
-  '/Favicons/site.webmanifest',
-  '/ossapcon-logo.png',
-  '/KIMS.png',
+  '/video1.webm',
+  '/spine_model.glb',
+  '/placeholder-logo.png',
 ];
 
 // Dynamic assets to cache on demand
@@ -128,6 +128,11 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Skip dynamic registration page to avoid blank-first-render due to SW caching
+  if (url.pathname === '/register') {
+    return;
+  }
+
   // Skip dashboard routes (require server-side session validation)
   if (url.pathname.startsWith('/dashboard/')) {
     return;
@@ -135,6 +140,33 @@ self.addEventListener('fetch', (event) => {
 
   // Skip Next.js internal routes (e.g., _next/static, _next/data)
   if (url.pathname.startsWith('/_next/')) {
+    return;
+  }
+
+  // Skip Next.js RSC/Flight requests and prefetches which use special Accept/header semantics
+  const acceptHeader = request.headers.get('Accept') || '';
+  const nextRouterStateTree = request.headers.get('Next-Router-State-Tree');
+  const purposeHeader = request.headers.get('Purpose') || request.headers.get('Sec-Purpose') || '';
+  const isRscRequest = url.searchParams.has('_rsc') || acceptHeader.includes('text/x-component') || nextRouterStateTree;
+  const isPrefetch = purposeHeader.toLowerCase().includes('prefetch') || request.mode === 'navigate' && request.headers.get('x-middleware-prefetch') === '1';
+  if (isRscRequest || isPrefetch) {
+    return;
+  }
+
+  // Skip missing favicon and logo requests to prevent 404 errors
+  if (url.pathname.includes('favicon') || 
+      url.pathname.includes('logo') ||
+      url.pathname.includes('Favicons/') ||
+      url.pathname.endsWith('.ico') ||
+      url.pathname.includes('android-chrome') ||
+      url.pathname.includes('apple-touch-icon') ||
+      url.pathname.includes('ossapcon-logo')) {
+    event.respondWith(new Response(null, { status: 204 })); // Return empty response for missing assets
+    return;
+  }
+
+  // Avoid interfering with only-if-cached requests that can throw in SW
+  if (request.cache === 'only-if-cached' && request.mode !== 'same-origin') {
     return;
   }
 
@@ -283,7 +315,7 @@ self.addEventListener('notificationclick', (event) => {
   }
 });
 
-console.log('OSSAPCON 2026 Service Worker v2 loaded successfully - Auth issues fixed');
+console.log('OSSAPCON 2026 Service Worker v7 loaded successfully - No favicons/logos, 404 errors prevented, RSC/prefetch ignored, /register bypassed, Response error fixed');
 
 // Force update if user has old version
 self.addEventListener('message', (event) => {

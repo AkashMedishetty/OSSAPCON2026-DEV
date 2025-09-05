@@ -1,35 +1,29 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { motion, useScroll, useTransform, useSpring } from "framer-motion"
+import React, { useState, useEffect, useRef, useMemo } from "react"
+import { useTheme } from "next-themes"
+import { gsap } from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { motion, useScroll, useTransform, useReducedMotion, AnimatePresence, useMotionValue } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { MainLayout } from "@/components/layout/MainLayout"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Navigation } from "@/components/navigation"
-import { Calendar, MapPin, Users, Award, Play, Sparkles, ArrowRight, X, Navigation as NavigationIcon, ExternalLink, Zap, Star, Globe, Heart } from "lucide-react"
+import { Calendar, MapPin, Users, Award, Play, Sparkles, ArrowRight, Clock, Star, Globe, Heart, Stethoscope, BookOpen, Trophy, Zap, Shield, Target, Microscope, Brain, Activity, Navigation as NavigationIcon, ExternalLink, Phone, ChevronRight, ChevronLeft, Plus, CheckCircle, Timer, TrendingUp, Award as AwardIcon, UserCheck, BookMarked, Video, Headphones, Camera, Wifi, Sun, Menu, X } from "lucide-react"
 import Link from "next/link"
+import Masonry from "@/components/Masonry"
+import { Badge } from "@/components/ui/badge"
+import { Progress } from "@/components/ui/progress"
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogHeader } from "@/components/ui/dialog"
 import dynamic from "next/dynamic"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
+import { AnimatedGridPattern } from "@/components/magicui/animated-grid-pattern"
+import Footer from "@/components/Footer"
+const HeroVideoPlaylist = dynamic(() => import("@/components/home/HeroVideoPlaylist").then(m => m.HeroVideoPlaylist), { ssr: false })
+const ConferenceStats = dynamic(() => import("@/components/hero/ConferenceStats"), { ssr: false })
+import { GridBeams } from "@/components/magicui/grid-beams"
+import { getCurrentTier, getTierSummary } from "@/lib/registration"
+
 
 // Lazy load 3D components for better performance
-const BrainModel = dynamic(() => import("@/components/3d/BrainModel"), {
-  ssr: false,
-  loading: () => (
-    <div className="flex items-center justify-center h-full bg-gradient-to-br from-emerald-100/60 via-emerald-50/40 to-emerald-200/30 rounded-3xl relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
-      <div className="relative">
-        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-emerald-500 border-t-2 border-t-transparent"></div>
-        <div className="absolute inset-0 animate-ping rounded-full h-16 w-16 border border-emerald-300 opacity-20"></div>
-      </div>
-      <div className="absolute bottom-4 text-sm text-emerald-600 font-medium animate-pulse">Loading 3D Model...</div>
-    </div>
-  )
-})
 
 const SpineModel = dynamic(() => import("@/components/3d/SpineModel"), {
   ssr: false,
@@ -56,23 +50,26 @@ export default function HomePage() {
     minutes: 0,
     seconds: 0,
   })
-  const [isPlaying, setIsPlaying] = useState(true)
+  const [activeFeature, setActiveFeature] = useState(0)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [selectedLocation, setSelectedLocation] = useState<any>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [currentSpeaker, setCurrentSpeaker] = useState(0)
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null)
+  const shouldReduceMotion = useReducedMotion()
+  const { theme, setTheme } = useTheme()
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+  const heroRef = useRef<HTMLDivElement>(null)
 
   const { scrollY } = useScroll()
-  const y1 = useTransform(scrollY, [0, 1000], [0, -200])
-  const y2 = useTransform(scrollY, [0, 1000], [0, -400])
-  const opacity = useTransform(scrollY, [0, 500], [1, 0])
-  const scale = useTransform(scrollY, [0, 500], [1, 0.8])
-
-  const springConfig = { stiffness: 100, damping: 30, restDelta: 0.001 }
-  const x = useSpring(0, springConfig)
-  const y = useSpring(0, springConfig)
+  const heroY = useTransform(scrollY, [0, 800], [0, -200])
+  const heroOpacity = useTransform(scrollY, [0, 400], [1, 0])
 
   useEffect(() => {
-    const targetDate = new Date("2026-08-07T09:00:00").getTime()
+    const targetDate = new Date("2026-02-06T09:00:00").getTime()
 
     const updateCountdown = () => {
       const now = new Date().getTime()
@@ -86,21 +83,32 @@ export default function HomePage() {
 
         setTimeLeft({ days, hours, minutes, seconds })
       } else {
-        // Conference has started
         setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 })
       }
     }
 
-    // Update immediately
     updateCountdown()
-
-    // Then update every second
     const timer = setInterval(updateCountdown, 1000)
 
     return () => clearInterval(timer)
   }, [])
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        gsap.registerPlugin(ScrollTrigger)
+        const sections = document.querySelectorAll('.snap-sec')
+        sections.forEach((sec) => {
+          ScrollTrigger.create({
+            trigger: sec as Element,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: false,
+            snap: { snapTo: 1, duration: 0.4, ease: 'power1.inOut' }
+          })
+        })
+      } catch (_) {}
+    }
     const handleMouseMove = (e: MouseEvent) => {
       const { clientX, clientY } = e
       const { innerWidth, innerHeight } = window
@@ -130,206 +138,610 @@ export default function HomePage() {
     setSelectedLocation(null)
   }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50 text-slate-800 overflow-hidden dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 dark:text-slate-100">
-      <Navigation currentPage="home" />
+  // Registration tier logic (centralized)
+  const now = new Date()
+  const currentTier = getCurrentTier(now)
+  const tierSummary = getTierSummary(now)
 
-      {/* Modern Minimalist Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 dark:bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-        {/* Geometric Background Pattern */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/30 via-transparent to-slate-100/20 dark:from-emerald-900/10 dark:via-transparent dark:to-slate-800/20"></div>
-          <div className="absolute top-20 left-20 w-96 h-96 bg-emerald-200/20 rounded-full blur-3xl dark:bg-emerald-800/10"></div>
-          <div className="absolute bottom-20 right-20 w-80 h-80 bg-slate-200/30 rounded-full blur-3xl dark:bg-slate-700/20"></div>
+  // Responsive check for masonry items (mobile shows 4 only)
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(typeof window !== 'undefined' && window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+
+  const masonryItems = [
+    { id: "1", img: "/belum.png", height: 360 },
+    { id: "2", img: "/kurnoolfort.png", height: 320 },
+    { id: "3", img: "/Tugabadhra.png", height: 420 },
+    { id: "4", img: "/alampur.png", height: 300 },
+    { id: "5", img: "/kurnoolcollege.png", height: 280 },
+    { id: "6", img: "/ms1.jpg", height: 360 },
+    { id: "7", img: "/ms2.jpg", height: 320 },
+    { id: "8", img: "/ms3.jpg", height: 360 }
+  ]
+
+  // Featured speakers data
+  const featuredSpeakers = [
+    {
+      name: "Dr. Sarah Chen",
+      title: "Chief of Orthopedic Surgery",
+      hospital: "Johns Hopkins Hospital",
+      specialty: "Spine Surgery",
+      image: "/placeholder-user.jpg",
+      color: "from-pink-500 to-rose-500"
+    },
+    {
+      name: "Dr. Michael Rodriguez",
+      title: "Director of Sports Medicine",
+      hospital: "Mayo Clinic",
+      specialty: "Sports Medicine",
+      image: "/placeholder-user.jpg",
+      color: "from-blue-500 to-cyan-500"
+    },
+    {
+      name: "Dr. Priya Sharma",
+      title: "Head of Joint Replacement",
+      hospital: "Cleveland Clinic",
+      specialty: "Joint Arthroplasty",
+      image: "/placeholder-user.jpg",
+      color: "from-emerald-500 to-teal-500"
+    },
+    {
+      name: "Dr. James Wilson",
+      title: "Trauma Surgery Specialist",
+      hospital: "Massachusetts General",
+      specialty: "Trauma Surgery",
+      image: "/placeholder-user.jpg",
+      color: "from-purple-500 to-violet-500"
+    }
+  ]
+
+  // Conference features with modern icons
+  const conferenceFeatures = [
+    {
+      icon: Brain,
+      title: "Advanced Learning",
+      description: "Latest surgical techniques and medical innovations",
+      color: "from-blue-500 to-cyan-500",
+      stats: "25+ Sessions"
+    },
+    {
+      icon: Users,
+      title: "Expert Network",
+      description: "Connect with leading orthopedic surgeons",
+      color: "from-emerald-500 to-teal-500",
+      stats: "50+ Speakers"
+    },
+    {
+      icon: Trophy,
+      title: "CME Credits",
+      description: "Earn continuing medical education credits",
+      color: "from-purple-500 to-violet-500",
+      stats: "15 Credits"
+    },
+    {
+      icon: Target,
+      title: "Hands-on Workshops",
+      description: "Practical skills and live demonstrations",
+      color: "from-pink-500 to-rose-500",
+      stats: "8 Workshops"
+    }
+  ]
+
+  return (
+    <div className="min-h-screen bg-white text-midnight-900 overflow-visible scroll-smooth snap-y snap-mandatory">
+      {/* Navigation hidden on hero section - integrated into gradient */}
+      <div className="hidden">
+      <Navigation currentPage="home" />
+      </div>
+
+      {/* Hero Section - Pixel-accurate redesign with 70/30 layout */}
+      <section className="relative w-full px-0 md:px-6 pt-0 md:pt-6 pb-0 md:pb-6">
+        {/* Grid: Left 70% gradient canvas, Right 30% content column (desktop) */}
+        <div className="grid grid-cols-1 xl:grid-cols-[70%_30%] gap-4 md:gap-6">
+          {/* LEFT: Gradient Canvas */}
+          <div className="relative rounded-none md:rounded-3xl overflow-hidden min-h-[78svh]">
+            {/* Theme gradient (ocean/sapphire) */}
+            <div className="absolute inset-0 bg-gradient-to-br from-ocean-500 via-sapphire-600 to-sapphire-900" />
+            {/* Soft vignette */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_20%,rgba(14,165,233,0.18),transparent_60%)]" />
+            <div className="absolute inset-0 bg-gradient-to-t from-sapphire-950/30 to-transparent" />
+
+            {/* Top micro-nav bar inside gradient */}
+            <div className="relative z-50 px-5 sm:px-6 pt-4">
+              <div className="mx-auto rounded-full bg-white/10 border border-white/25 backdrop-blur-xl shadow-glass ring-1 ring-white/20 px-4 sm:px-6 py-3 w-full max-w-7xl">
+                {/* Mobile bar */}
+                <div className="flex items-center justify-between md:hidden">
+                  <button onClick={() => setIsMobileMenuOpen((v) => !v)} className="w-10 h-10 rounded-full bg-white/80 text-midnight-800 border border-white/60 inline-flex items-center justify-center">
+                    {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                  </button>
+                  <span className="text-sm font-bold text-white drop-shadow">OSSAPCON 2026</span>
+                  <a href="/register" className="rounded-full bg-midnight-900 text-white text-sm px-4 py-1.5 border border-black/5">Register</a>
+                </div>
+                {/* Desktop bar */}
+                <div className="hidden md:flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <span className="text-base font-bold text-white drop-shadow">OSSAPCON 2026</span>
+              </div>
+                  <div className="flex items-center gap-3 flex-nowrap">
+                    <Link href="/committee" className="rounded-full bg-white/70 text-midnight-700 text-sm px-4 py-2 border border-black/5">Committee</Link>
+                    <Link href="/program" className="rounded-full bg-white/70 text-midnight-700 text-sm px-4 py-2 border border-black/5">Program</Link>
+                    <Link href="/abstracts" className="rounded-full bg-white/70 text-midnight-700 text-sm px-4 py-2 border border-black/5">Abstracts</Link>
+                    <Link href="/venue" className="rounded-full bg-white/70 text-midnight-700 text-sm px-4 py-2 border border-black/5">Venue</Link>
+                    <Link href="/contact" className="rounded-full bg-white/70 text-midnight-700 text-sm px-4 py-2 border border-black/5">Contact</Link>
+                    <Link href="/auth/login" className="rounded-full bg-white/70 text-midnight-700 text-sm px-4 py-2 border border-black/5">Log in</Link>
+                    <button
+                      aria-label="Toggle theme"
+                      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                      className="rounded-full bg-white/70 text-midnight-700 text-sm px-4 py-2 border border-black/5 inline-flex items-center gap-1.5"
+                    >
+                      <Sun className="w-4 h-4" /> Theme
+                </button>
+                    <a href="/register" className="rounded-full bg-midnight-900 text-white text-sm px-5 py-2 border border-black/5">Register</a>
+                </div>
+              </div>
+                {/* Mobile sheet */}
+                {isMobileMenuOpen && (
+                  <div className="fixed inset-0 z-[1000] md:hidden">
+                    <div className="absolute inset-0 bg-midnight-900/50 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)} />
+                    <div className="absolute top-4 left-4 right-4 rounded-3xl bg-white p-4 shadow-elevation-3">
+                      <div className="grid grid-cols-1 gap-2">
+                        {[
+                          { label: 'Committee', href: '/committee' },
+                          { label: 'Program', href: '/program' },
+                          { label: 'Abstracts', href: '/abstracts' },
+                          { label: 'Venue', href: '/venue' },
+                          { label: 'Contact', href: '/contact' },
+                          { label: 'Log in', href: '/auth/login' },
+                        ].map((item) => (
+                          <Link key={item.href} href={item.href} onClick={() => setIsMobileMenuOpen(false)} className="rounded-xl bg-gray-50 border border-gray-200 text-midnight-800 text-base px-4 py-3 text-center">
+                            {item.label}
+                          </Link>
+                        ))}
+                        <div className="flex items-center justify-between pt-2">
+                          <button
+                            aria-label="Toggle theme"
+                            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                            className="rounded-xl bg-gray-50 border border-gray-200 text-midnight-800 text-base px-4 py-3 inline-flex items-center gap-2"
+                          >
+                            <Sun className="w-4 h-4" /> Theme
+                </button>
+                          <a href="/register" onClick={() => setIsMobileMenuOpen(false)} className="rounded-xl bg-midnight-900 text-white text-base px-4 py-3">
+                            Register
+                          </a>
+              </div>
+                        <button onClick={() => setIsMobileMenuOpen(false)} className="w-full rounded-xl border mt-2 py-3 text-midnight-700">Close</button>
+            </div>
+              </div>
+            </div>
+                )}
+          </div>
         </div>
 
-        {/* Main Content Container */}
-        <div className="container mx-auto px-6 relative z-20">
-          <div className="text-center space-y-12">
-            {/* Conference Badge */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="inline-block"
-            >
-              <div className="px-8 py-4 bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-emerald-100/50 dark:bg-slate-800/80 dark:border-slate-700/50">
-                <div className="flex items-center justify-center space-x-6 text-sm font-semibold text-slate-700 dark:text-slate-300">
-                  <div className="flex items-center">
-                    <Calendar className="w-5 h-5 mr-3 text-emerald-600" />
-                    August 7-9, 2026
+            {/* Main content grid inside gradient: left text, right visual */}
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 p-6 sm:p-8 lg:p-12 items-center">
+              {/* Left text block (first on mobile) */}
+              <div className="text-white space-y-7 order-1 lg:order-1">
+                <div className="text-white/90 text-sm md:text-base font-medium leading-snug [text-wrap:balance]">— Annual Conference of the Orthopedic Surgeons Society of Andhra Pradesh</div>
+                <h1 className="font-display text-6xl sm:text-7xl lg:text-8xl leading-tight tracking-[-0.02em] break-words">
+                  OSSAPCON 2026
+                </h1>
+                <p className="text-white/90 text-xl sm:text-2xl md:text-3xl font-medium">Excellence in Orthopedic Care</p>
+                <div className="flex items-center gap-4">
+                  <div className="flex -space-x-2">
+                    <div className="w-8 h-8 bg-white/20 rounded-full border-2 border-white/40 flex items-center justify-center"><Users className="w-4 h-4 text-white" /></div>
+                    <div className="w-8 h-8 bg-white/20 rounded-full border-2 border-white/40 flex items-center justify-center"><Award className="w-4 h-4 text-white" /></div>
+                    <div className="w-8 h-8 bg-white/20 rounded-full border-2 border-white/40 flex items-center justify-center"><Stethoscope className="w-4 h-4 text-white" /></div>
+                </div>
+                  <span className="inline-flex items-center text-white/95 text-lg md:text-xl font-semibold bg-white/10 backdrop-blur border border-white/30 rounded-full px-4 py-2">Kurnool • Feb 4–6, 2026</span>
+                </div>
+                <p className="text-white/90 max-w-xl text-base sm:text-lg">Join India’s premier orthopedic conference advancing care through innovation, collaboration, and clinical excellence.</p>
+                <div className="flex items-center gap-5">
+                  <a href="/register">
+                    <Button size="lg" variant="secondary" className="bg-white text-midnight-900 rounded-full h-14 px-8 text-base">
+                      Register now
+                      <Plus className="w-5 h-5 ml-2" />
+                    </Button>
+                  </a>
+                  <Link href="/program" className="text-white/95 underline text-base">Program</Link>
+              </div>
+            </div>
+              {/* Right visual block (second on mobile) */}
+              <div className="relative order-2 lg:order-2">
+                <div className="relative h-[55vh] sm:h-[50vh] lg:h-[65vh] rounded-2xl overflow-hidden bg-white/10">
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/0" />
+                  {/* Conference Stats Visualization */}
+                  <ConferenceStats />
+                </div>
+                <div className="mt-6 flex flex-col gap-3 max-w-sm ml-auto">
+                  <div className="flex items-center justify-between rounded-2xl bg-white/20 backdrop-blur border border-white/30 px-4 py-3 text-white">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-white/30" />
+                      <div className="leading-tight">
+                        <div className="text-sm font-medium">Watch conference overview</div>
+                        <div className="text-[11px] text-white/80">What to expect at OSSAPCON 2026 • 2 min</div>
                   </div>
-                  <div className="h-6 w-px bg-slate-300 dark:bg-slate-600"></div>
-                  <div className="flex items-center">
-                    <MapPin className="w-5 h-5 mr-3 text-emerald-600" />
-                    Kurnool, Andhra Pradesh
+                </div>
+                    <Play className="w-4 h-4 opacity-90" />
+              </div>
+                  <div className="rounded-2xl bg-white/15 backdrop-blur border border-white/25 px-4 py-4 text-white text-sm">
+                    OSSAPCON 2026 brings together leading orthopedic surgeons and researchers for three days of clinical updates, hands‑on workshops, and collaborative discussions. Explore trauma, arthroplasty, spine, sports medicine, and pediatric orthopedics with experts from across India.
+            </div>
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
 
-            {/* Main Title - Ultra Modern Typography */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-              className="space-y-6"
-            >
-              <h1 className="text-7xl lg:text-8xl xl:text-9xl font-black leading-none tracking-tight">
-                <span className="block bg-gradient-to-r from-slate-900 via-slate-700 to-slate-900 bg-clip-text text-transparent dark:from-white dark:via-slate-200 dark:to-white">
-                  OSSAP
-                </span>
-                <span className="block bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-700 bg-clip-text text-transparent">
-                  CON
-                </span>
-                <span className="block text-6xl lg:text-7xl xl:text-8xl bg-gradient-to-r from-emerald-500 to-emerald-600 bg-clip-text text-transparent">
-                  2026
-                </span>
-              </h1>
-            </motion.div>
-
-            {/* Subtitle */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
-              className="max-w-4xl mx-auto"
-            >
-              <p className="text-2xl lg:text-3xl text-slate-600 dark:text-slate-300 font-light leading-relaxed mb-4">
-                Annual Conference of Orthopedic Surgeons Society of Andhra Pradesh
-              </p>
-              <p className="text-xl text-emerald-600 dark:text-emerald-400 font-medium">
-                Pioneering the Future of Orthopedic Excellence
-              </p>
-            </motion.div>
-
-            {/* CTA Buttons - Modern Design */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
-              className="flex flex-col sm:flex-row gap-6 justify-center items-center"
-            >
-              <motion.div 
-                whileHover={{ scale: 1.05, y: -3 }} 
-                whileTap={{ scale: 0.95 }}
-                className="relative group"
-              >
-                <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-emerald-700 rounded-2xl blur opacity-30 group-hover:opacity-70 transition duration-500"></div>
-                <Link href="/register">
-                  <Button className="relative px-10 py-6 text-xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white rounded-2xl shadow-2xl hover:shadow-emerald-200/50 transition-all duration-500 border-0 font-semibold">
-                    <Zap className="mr-3 h-6 w-6 group-hover:animate-pulse" />
-                    Register Now
-                  </Button>
-                </Link>
-              </motion.div>
-              
-              <motion.div 
-                whileHover={{ scale: 1.05, y: -3 }} 
-                whileTap={{ scale: 0.95 }}
-                className="relative group"
-              >
-                <Link href="/program">
-                  <Button variant="outline" className="px-10 py-6 text-xl border-2 border-slate-300 text-slate-700 hover:bg-slate-50 rounded-2xl transition-all duration-500 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-800/50 group-hover:border-emerald-400 group-hover:shadow-xl font-semibold">
-                    <Globe className="mr-3 h-6 w-6 group-hover:rotate-12 transition-transform duration-500" />
-                    Explore Program
-                  </Button>
-                </Link>
-              </motion.div>
-            </motion.div>
-
-            {/* Stats Section - Modern Cards */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
-              className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto mt-20"
-            >
-              {[
-                { number: "500+", label: "Medical Experts", icon: Users, color: "emerald" },
-                { number: "50+", label: "Research Papers", icon: Award, color: "slate" },
-                { number: "3", label: "Days of Learning", icon: Calendar, color: "emerald" },
-                { number: "25+", label: "Countries", icon: Globe, color: "slate" },
-              ].map((stat, index) => (
-                <motion.div
-                  key={index}
-                  className="relative group"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.9 + index * 0.1, duration: 0.5 }}
-                  whileHover={{ y: -5, scale: 1.02 }}
-                >
-                  <div className={`absolute -inset-1 bg-gradient-to-r ${stat.color === 'emerald' ? 'from-emerald-500/20 to-emerald-600/20' : 'from-slate-400/20 to-slate-500/20'} rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500`}></div>
-                  <div className="relative bg-white/70 dark:bg-slate-800/70 backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/50 rounded-2xl p-8 text-center transition-all duration-500 group-hover:bg-white/90 dark:group-hover:bg-slate-800/90 group-hover:shadow-2xl">
-                    <stat.icon className={`w-8 h-8 ${stat.color === 'emerald' ? 'text-emerald-600' : 'text-slate-600'} mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`} />
-                    <div className={`text-4xl font-black mb-2 bg-gradient-to-r ${stat.color === 'emerald' ? 'from-emerald-600 to-emerald-700' : 'from-slate-700 to-slate-800'} bg-clip-text text-transparent`}>
-                      {stat.number}
-                    </div>
-                    <div className="text-sm font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">{stat.label}</div>
+          {/* RIGHT: Content column */}
+          <aside className="flex flex-col gap-4 md:gap-6 min-h-[78vh] xl:pl-4">
+            {/* Designed for easy access card – add depth/glass */}
+            <div className="relative overflow-hidden rounded-3xl bg-white/85 backdrop-blur-xl border border-white/60 shadow-glass-lg ring-1 ring-sapphire-200/50 p-5 md:p-6">
+              <div className="pointer-events-none absolute -top-10 -right-6 h-40 w-40 rounded-full bg-gradient-to-br from-ocean-300/30 to-transparent blur-2xl" />
+              <div className="pointer-events-none absolute -bottom-12 -left-8 h-44 w-44 rounded-full bg-gradient-to-tr from-sapphire-400/25 to-transparent blur-3xl" />
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-xs text-midnight-500">About</span>
+                <Link href="/committee" className="rounded-full border px-2 py-1 text-xs text-midnight-600">Committee</Link>
+                </div>
+              <h3 className="text-xl font-semibold text-midnight-900 mb-2">Annual conference of the Orthopedic Surgeons Society of Andhra Pradesh.</h3>
+              <p className="text-sm text-midnight-600">Organised by Department of Orthopaedics, Kurnool Medical College. Three days of high‑impact talks, cadaveric demos, trauma & arthroplasty updates, hands‑on workshops, and networking with leaders across India.</p>
                   </div>
-                </motion.div>
-              ))}
+            {/* Video card (portrait playlist) */}
+            <div className="rounded-3xl overflow-hidden bg-midnight-900/90 relative text-white flex-1 min-h-[320px]">
+              <HeroVideoPlaylist
+                sources={[
+                  { src: "/video1.webm", type: "video/webm", poster: "/placeholder.jpg", title: "Conference overview" },
+                ]}
+              />
+              <div className="relative p-5 h-full flex flex-col justify-end">
+                <a href="#discover-kurnool" className="flex items-center gap-3 bg-black/45 hover:bg-black/55 transition-colors backdrop-blur rounded-full px-4 py-2 w-max">
+                  <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center"><Play className="w-4 h-4" /></div>
+                  <div className="text-sm font-medium">Explore Kurnool City</div>
+                </a>
+                </div>
+              </div>
+          </aside>
+      </div>
+
+        {/* BELOW-HERO STRIP removed per request */}
+      </section>
+
+
+      {/* Pricing Section - Horizontal Layout */}
+      <section className="snap-start min-h-screen flex items-center py-16 bg-gradient-to-r from-emerald-900 via-ocean-900 to-sapphire-900">
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial={shouldReduceMotion ? undefined : { opacity: 0, y: 30 }}
+            whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="font-display text-fluid-5xl font-bold text-white mb-4 drop-shadow-2xl">
+              Registration Pricing
+            </h2>
+            <p className="text-white/90 max-w-3xl mx-auto font-medium drop-shadow-lg">
+              Current Tier: <span className="font-bold text-emerald-300">{currentTier}</span> — {tierSummary}
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {[
+              { 
+                type: "OSSAP Member", 
+                price: "₹8,250", 
+                description: "Early Bird (Inclusive 18% GST)",
+                features: ["Full conference access", "Conference materials", "Networking events"]
+              },
+              { 
+                type: "OSSAP Non-Member", 
+                price: "₹9,440", 
+                description: "Early Bird (Inclusive 18% GST)",
+                features: ["Full conference access", "Conference materials", "Networking events"]
+              },
+              { 
+                type: "PG Student", 
+                price: "₹5,900", 
+                description: "Early Bird (Inclusive 18% GST)",
+                features: ["Full conference access", "Conference materials", "Career guidance"]
+              }
+            ].map((plan, index) => (
+              <motion.div
+                key={index}
+                initial={shouldReduceMotion ? undefined : { opacity: 0, y: 40 }}
+                whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="relative"
+              >
+                
+                <Card 
+                  className={`h-[500px] text-center bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all duration-300 shadow-2xl hover:shadow-white/5 flex flex-col`}
+                >
+                  <CardHeader className="pb-4 flex-shrink-0">
+                    <CardTitle className="text-2xl font-bold text-white mb-2 drop-shadow-lg">{plan.type}</CardTitle>
+                    <div className="text-4xl font-black text-emerald-300 mb-2 drop-shadow-lg">{plan.price}</div>
+                    <CardDescription className="text-white/90 text-sm font-medium">{plan.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex-1 flex flex-col">
+                    <ul className="space-y-3 mb-6 flex-1">
+                      {plan.features.map((feature, idx) => (
+                        <li key={idx} className="flex items-center text-white/95 font-medium">
+                          <Shield className="w-4 h-4 mr-3 text-emerald-300 flex-shrink-0" />
+                          <span className="drop-shadow-sm">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <Button 
+                      size="lg" 
+                      className="w-full h-14 text-lg bg-white/15 hover:bg-white/25 text-white border-white/20 hover:border-white/30 font-bold transition-all duration-300 shadow-lg hover:shadow-xl"
+                      variant="outline"
+                      asChild
+                    >
+                      <a href="/register">
+                        Register Now
+                        <ArrowRight className="w-5 h-5 ml-2" />
+                      </a>
+                    </Button>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section - unified layout (no overlays) */}
+      <section className="snap-start min-h-screen py-16 flex items-center bg-white dark:bg-gray-900">
+        
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            {/* Left Content */}
+            <motion.div
+              initial={shouldReduceMotion ? undefined : { opacity: 0, x: -50 }}
+              whileInView={shouldReduceMotion ? undefined : { opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <h2 className="font-display text-fluid-5xl font-bold text-gray-900 dark:text-white mb-8">
+                Why Attend OSSAPCON 2026?
+              </h2>
+              <p className="text-fluid-xl text-gray-700 dark:text-gray-300 mb-12 leading-relaxed">
+                Join the most comprehensive orthopedic conference in South India, featuring cutting-edge research, innovative techniques, and networking opportunities.
+              </p>
+              
+              <div className="space-y-6">
+                {[
+                  { icon: Brain, title: "Advanced Learning", desc: "Latest surgical techniques and medical innovations" },
+                  { icon: Users, title: "Expert Network", desc: "Connect with leading orthopedic surgeons" },
+                  { icon: Trophy, title: "CME Credits", desc: "Earn continuing medical education credits" },
+                  { icon: Target, title: "Practical Skills", desc: "Hands-on workshops and live demonstrations" }
+                ].map((feature, index) => (
+                  <motion.div
+                    key={index}
+                    initial={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}
+                    whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    className="flex items-start space-x-4"
+                  >
+                    <div className="p-3 rounded-xl bg-gradient-to-br from-ocean-500 to-sapphire-600 text-white shadow-lg">
+                      <feature.icon className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h3 className="font-display text-fluid-lg font-bold text-gray-900 dark:text-white mb-2">
+                        {feature.title}
+                      </h3>
+                      <p className="text-gray-700 dark:text-gray-300">{feature.desc}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Right Visual */}
+            <motion.div
+              initial={shouldReduceMotion ? undefined : { opacity: 0, x: 50 }}
+              whileInView={shouldReduceMotion ? undefined : { opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="relative"
+            >
+              <div className="grid grid-cols-2 gap-6">
+                {[
+                  { number: "500+", label: "Attendees", color: "ocean" },
+                  { number: "50+", label: "Speakers", color: "emerald" },
+                  { number: "25+", label: "Sessions", color: "sapphire" },
+                  { number: "15+", label: "Workshops", color: "coral" }
+                ].map((stat, index) => (
+                  <motion.div
+                    key={index}
+                    initial={shouldReduceMotion ? undefined : { opacity: 0, scale: 0.9 }}
+                    whileInView={shouldReduceMotion ? undefined : { opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    <Card className="text-center bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 shadow-lg hover:shadow-xl transition-all duration-300">
+                      <CardContent className="p-6">
+                        <div className={`text-fluid-4xl font-black mb-2 ${
+                          stat.color === 'ocean' ? 'text-ocean-600 dark:text-ocean-400' :
+                          stat.color === 'emerald' ? 'text-emerald-600 dark:text-emerald-400' :
+                          stat.color === 'sapphire' ? 'text-sapphire-600 dark:text-sapphire-400' :
+                          'text-coral-500 dark:text-coral-400'
+                        }`}>
+                          {stat.number}
+                        </div>
+                        <div className="text-fluid-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                          {stat.label}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Holographic Countdown */}
-      <section className="py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-white via-white to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-900"></div>
+      {/* Call to Action - Full Width */}
+      <section className="py-20 bg-gradient-to-r from-midnight-900 via-ocean-800 to-emerald-800">
+        <div className="container mx-auto px-6 text-center">
+          <motion.div
+            initial={shouldReduceMotion ? undefined : { opacity: 0, y: 30 }}
+            whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="max-w-4xl mx-auto"
+          >
+            <h2 className="font-display text-fluid-5xl font-bold text-white mb-8">
+              Ready to Advance Your Practice?
+            </h2>
+            <p className="text-fluid-xl text-white/80 mb-12 leading-relaxed">
+              Join hundreds of orthopedic professionals at OSSAPCON 2026. Register now and be part of the future of orthopedic medicine.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <Button size="xl" className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700" asChild>
+                <a href="/register">
+                  <Zap className="w-5 h-5 mr-2" />
+                  Register Today
+                </a>
+              </Button>
+              <Button size="xl" variant="outline" className="border-white/50 text-white hover:bg-white/20 hover:text-white bg-transparent font-semibold" asChild>
+                <Link href="/committee">
+                  <Users className="w-5 h-5 mr-2" />
+                  Meet the Team
+                </Link>
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+
+
+      {/* Enhanced Holographic Countdown - simplified */}
+      <section className="snap-start py-4 bg-white dark:bg-gray-900" id="countdown-section">
+        
         <motion.div className="relative z-10">
           <div className="container mx-auto px-6 text-center">
             <motion.h2
-              className="text-5xl font-bold mb-16 bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent"
+              className="text-fluid-4xl font-display font-bold mb-4 text-gradient-ocean dark:text-white"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
             >
               Conference Countdown
             </motion.h2>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-              {[
-                { label: "Days", value: timeLeft.days },
-                { label: "Hours", value: timeLeft.hours },
-                { label: "Minutes", value: timeLeft.minutes },
-                { label: "Seconds", value: timeLeft.seconds },
-              ].map((item, index) => (
-                <motion.div
-                  key={item.label}
-                  className="relative group"
-                  initial={{ scale: 0, rotateY: 180 }}
-                  whileInView={{ scale: 1, rotateY: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1, duration: 0.4, ease: "easeOut" }}
-                  whileHover={{ scale: 1.08, rotateY: 8, y: -5 }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/30 to-blue-700/30 rounded-3xl blur-xl group-hover:blur-2xl group-hover:from-blue-400/40 group-hover:to-blue-600/40 transition-all duration-500"></div>
-                  <div className="relative bg-white/90 backdrop-blur-xl border border-blue-100 p-6 sm:p-8 rounded-3xl hover:border-blue-300 transition-all duration-500 shadow-lg hover:shadow-blue-200/30 dark:bg-gray-800/90 dark:border-gray-700 dark:hover:border-blue-500/50 dark:hover:shadow-blue-500/20 group-hover:bg-white dark:group-hover:bg-gray-800">
-                    <div className="text-4xl sm:text-5xl lg:text-6xl font-black bg-gradient-to-b from-blue-600 via-blue-700 to-blue-800 bg-clip-text text-transparent dark:from-blue-400 dark:via-blue-500 dark:to-blue-600 mb-2 leading-none py-2 group-hover:animate-pulse">
+            <div className="max-w-6xl mx-auto">
+              {/* Circular Countdown Timers */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 py-6">
+                {[
+                  { 
+                    label: "DAYS", 
+                    value: timeLeft.days, 
+                    maxValue: 365,
+                    textColor: "text-blue-600",
+                    ringColor: "#3B82F6"
+                  },
+                  { 
+                    label: "HOURS", 
+                    value: timeLeft.hours, 
+                    maxValue: 24,
+                    textColor: "text-cyan-600",
+                    ringColor: "#06B6D4"
+                  },
+                  { 
+                    label: "MINUTES", 
+                    value: timeLeft.minutes, 
+                    maxValue: 60,
+                    textColor: "text-teal-600",
+                    ringColor: "#14B8A6"
+                  },
+                  { 
+                    label: "SECONDS", 
+                    value: timeLeft.seconds, 
+                    maxValue: 60,
+                    textColor: "text-emerald-600",
+                    ringColor: "#10B981"
+                  },
+                ].map((item, index) => {
+                  const progress = (item.value / item.maxValue) * 100;
+                  const radius = 50;
+                  const circumference = 2 * Math.PI * radius;
+                  const strokeDasharray = circumference;
+                  const strokeDashoffset = circumference - (progress / 100) * circumference;
+                  
+                  return (
+                    <div key={item.label} className="flex flex-col items-center">
+                      {/* Circular Timer */}
+                      <div className="relative w-32 h-32 md:w-36 md:h-36 mb-4">
+                        {/* Progress Ring Background */}
+                        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
+                          <circle
+                            cx="60"
+                            cy="60"
+                            r={radius}
+                            fill="none"
+                            stroke="#E5E7EB"
+                            strokeWidth="8"
+                            className="dark:stroke-gray-600"
+                          />
+                        </svg>
+                        
+                        {/* Progress Ring */}
+                        <svg className="absolute inset-0 w-full h-full transform -rotate-90" viewBox="0 0 120 120">
+                          <circle
+                            cx="60"
+                            cy="60"
+                            r={radius}
+                            fill="none"
+                            stroke={item.ringColor}
+                            strokeWidth="8"
+                            strokeLinecap="round"
+                            strokeDasharray={strokeDasharray}
+                            strokeDashoffset={strokeDashoffset}
+                          />
+                        </svg>
+                        
+                        {/* Center Content */}
+                        <div className="absolute inset-0 flex flex-col items-center justify-center">
+                          <div className={`text-3xl md:text-4xl font-bold ${item.textColor} dark:text-white mb-1`}>
                       {item.value.toString().padStart(2, "0")}
                     </div>
-                    <div className="text-xs sm:text-sm uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400 font-medium group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-300">{item.label}</div>
+                          <div className={`text-xs font-semibold ${item.textColor} dark:text-gray-300 tracking-wider`}>
+                      {item.label}
+                          </div>
+                        </div>
+                    </div>
                     
-                    {/* Decorative elements */}
-                    <div className="absolute top-2 right-2 w-2 h-2 bg-blue-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse"></div>
-                    <div className="absolute bottom-2 left-2 w-1 h-1 bg-blue-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse delay-100"></div>
+                      {/* Progress Percentage */}
+                      <div className="text-center">
+                        <div className={`text-sm font-medium ${item.textColor} dark:text-gray-300`}>
+                          {Math.round(progress)}% Complete
                   </div>
-                </motion.div>
-              ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </motion.div>
       </section>
 
-      {/* Welcome Message Section */}
-      <section className="py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-white dark:bg-gray-900"></div>
+      {/* Enhanced Welcome Message Section - simplified */}
+      <section className="snap-start py-6 bg-white dark:bg-gray-900" id="welcome-section">
 
-        <div className="container mx-auto px-6 relative z-10">
+        <div className="container mx-auto px-4 relative z-10">
           <motion.h2
-            className="text-6xl font-bold text-center mb-20 bg-gradient-to-r from-gray-800 via-blue-600 to-blue-700 bg-clip-text text-transparent"
+            className="text-fluid-4xl font-display font-bold text-center mb-4 text-gradient-ocean dark:text-white"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -338,53 +750,51 @@ export default function HomePage() {
             WELCOME MESSAGE
           </motion.h2>
 
-          <div className="max-w-7xl mx-auto">
-            {/* Welcome Content with Spine Model - 30-70 Split */}
-            <div className="flex flex-col lg:flex-row gap-8 items-stretch">
-              {/* Left side: 3D Spine Model - 35% */}
-              <div className="lg:w-[35%] flex justify-center items-center">
-                <div className="three-canvas-container mobile-3d-model w-full max-w-md">
+          <div className="max-w-8xl mx-auto">
+            {/* Welcome Content with Spine Model - 25-75 Split */}
+            <div className="flex flex-col lg:flex-row gap-4 items-stretch">
+              {/* 3D Spine Model - 25% on desktop, appears second on mobile */}
+              <div className="order-2 lg:order-1 lg:w-[25%] flex justify-center items-center">
+                <div className="three-canvas-container mobile-3d-model w-full max-w-sm">
                   <SpineModel />
                 </div>
               </div>
 
-              {/* Right side: Welcome Content - 65% */}
-              <div className="lg:w-[65%]">
+              {/* Welcome Content - 75% on desktop, appears first on mobile */}
+              <div className="order-1 lg:order-2 lg:w-[75%]">
                 <motion.div
-                  className="bg-white rounded-3xl p-8 shadow-2xl border border-blue-100 dark:bg-gray-800 dark:border-gray-700 dark:shadow-gray-900/50 flex flex-col justify-center min-h-[600px]"
+                  className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-4xl p-4 shadow-2xl border border-gray-200/50 dark:border-gray-700/50 flex flex-col justify-center min-h-[350px] interactive"
                   initial={{ opacity: 0, y: 50 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.8, delay: 0.2 }}
                 >
-                  <h3 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-8 bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+                  <h3 className="text-fluid-3xl font-display font-bold text-gradient-ocean dark:text-white mb-6">
                     Welcome to OSSAPCON 2026
                   </h3>
-                  <div className="prose prose-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-                    <p className="mb-6 text-xl font-medium text-blue-700 dark:text-blue-300">
+                  <div className="prose prose-base text-gray-800 dark:text-gray-200 leading-tight">
+                    <p className="mb-3 text-fluid-base font-semibold text-emerald-600 dark:text-emerald-400">
                       Dear Orthopedic Surgeons, Healthcare Professionals, and Medical Innovators,
                     </p>
-                    <p className="mb-6">
-                      We are thrilled to welcome you to <strong>OSSAPCON 2026</strong>, the premier annual conference of the Orthopedic Surgeons Society of Andhra Pradesh. This landmark event represents the convergence of excellence in orthopedic care, bringing together the most distinguished minds in orthopedic surgery, spine care, joint replacement, and trauma management.
+                    <p className="mb-2 text-fluid-sm text-gray-700 dark:text-gray-300">
+                      We are thrilled to welcome you to <strong className="text-gray-900 dark:text-white">OSSAPCON 2026</strong>, the premier annual conference of the Orthopedic Surgeons Society of Andhra Pradesh. This landmark event represents the convergence of excellence in orthopedic care, bringing together the most distinguished minds in orthopedic surgery, spine care, joint replacement, and trauma management.
                     </p>
-                    <p className="mb-6">
+                    <p className="mb-2 text-fluid-sm text-gray-700 dark:text-gray-300">
                       Over three transformative days in Kurnool, we will delve deep into the latest advances in orthopedic medicine. From revolutionary surgical techniques and minimally invasive procedures to breakthrough research in spine surgery, joint arthroplasty, and sports medicine rehabilitation. Our comprehensive program features internationally renowned keynote speakers, hands-on workshops, live surgical demonstrations, and exceptional networking opportunities.
                     </p>
-                    <p className="mb-6">
-                      <strong>Kurnool Medical College</strong>, our host institution, stands as a beacon of medical education and healthcare excellence in Andhra Pradesh. The college's commitment to advancing orthopedic care and its state-of-the-art facilities provide the perfect environment for this prestigious gathering of orthopedic professionals.
+                    <p className="mb-2 text-fluid-sm text-gray-700 dark:text-gray-300">
+                      <strong className="text-gray-900 dark:text-white">Kurnool Medical College</strong>, our host institution, stands as a beacon of medical education and healthcare excellence in Andhra Pradesh. The college's commitment to advancing orthopedic care and its state-of-the-art facilities provide the perfect environment for this prestigious gathering of orthopedic professionals.
                     </p>
-                    <p className="mb-6">
-                      The interactive <strong>3D spine model</strong> you see here represents our focus on anatomical precision and innovative approaches to spine surgery - a cornerstone of modern orthopedic practice. This conference will explore how technology, research, and clinical expertise combine to deliver superior patient outcomes.
-                    </p>
-                    <p className="mb-8">
+
+                    <p className="mb-3 text-fluid-sm text-gray-700 dark:text-gray-300">
                       Whether you are a practicing orthopedic surgeon, spine specialist, sports medicine physician, resident in training, or allied healthcare professional, OSSAPCON 2026 offers unparalleled opportunities for professional growth, knowledge exchange, and collaborative advancement of orthopedic care across Andhra Pradesh and beyond.
                     </p>
 
-                    <div className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-lg p-6 border-l-4 border-blue-500">
-                      <p className="font-bold text-gray-800 dark:text-gray-100 text-lg mb-2">Join us in shaping the future of orthopedic excellence!</p>
-                      <p className="text-blue-700 dark:text-blue-300 font-medium">The Organizing Committee</p>
-                      <p className="text-blue-600 dark:text-blue-400">Orthopedic Surgeons Society of Andhra Pradesh</p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">Department of Orthopedics, Kurnool Medical College</p>
+                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-2xl p-3 border border-gray-200 dark:border-gray-600 border-l-4 border-l-ocean-500">
+                      <p className="font-bold text-gray-900 dark:text-white text-fluid-sm mb-1">Join us in shaping the future of orthopedic excellence!</p>
+                      <p className="text-ocean-600 dark:text-ocean-400 font-semibold text-fluid-xs">The Organizing Committee</p>
+                      <p className="text-ocean-600 dark:text-ocean-400 font-medium text-fluid-xs">Orthopedic Surgeons Society of Andhra Pradesh</p>
+                      <p className="text-fluid-xs text-gray-600 dark:text-gray-400 mt-1">Department of Orthopedics, Kurnool Medical College</p>
                     </div>
                   </div>
                 </motion.div>
@@ -394,8 +804,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Organizing Committee Members Section */}
-      <section className="py-20 relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-gray-800 dark:via-gray-900 dark:to-gray-900">
+      {/* Organizing Committee Members Section - unified */}
+      <section className="py-16 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
             className="text-center mb-16"
@@ -409,7 +819,7 @@ export default function HomePage() {
                 🏥 OSSAPCON 2026 Leadership
               </span>
             </div>
-            <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-800 via-blue-600 to-blue-700 bg-clip-text text-transparent">
+            <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-gray-900 dark:text-white">
               Meet Our Organizing Committee
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
@@ -417,24 +827,84 @@ export default function HomePage() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
             {[
               {
-                name: "Dr. Manas Panigrahi",
-                title: "Organising Chairman"
+                name: "DR. K. SRINIVAS",
+                title: "Organizing Chairman",
+                credentials: "MS ORTHO",
+                position: "PROF AND HOD DEPT OF ORTHOPAEDICS",
+                institution: "KURNOOL MEDICAL COLLEGE",
+                photo: "/Srinivas_DR.png",
               },
               {
-                name: "Dr. Raghavendra H",
-                title: "Organising Secretary"
+                name: "DR. Y. RAMANA",
+                title: "Co‑Organizing Chairman",
+                credentials: "MS ORTHO",
+                position: "SENIOR ORTHOPAEDIC SURGEON",
+                institution: "KURNOOL MEDICAL COLLEGE",
+                photo: "/RAMANA_DR.png",
               },
               {
-                name: "Dr. Swetha P",
-                title: "Treasurer"
+                name: "DR. K. VENKATESWARLU",
+                title: "Organizing Secretary",
+                credentials: "MS ORTHO",
+                position: "SUPERINTENDENT",
+                institution: "GGH KURNOOL",
+                photo: "/Venkateshwalu_DR.png",
+              },
+              {
+                name: "DR A.M. ILIAS BASHA",
+                title: "Organizing Secretary",
+                credentials: "MS ORTHO",
+                position: "PROF OF ORTHOPAEDICS",
+                institution: "KURNOOL MEDICAL COLLEGE",
+                photo: "/Iliyas_DR.png",
+              },
+              {
+                name: "DR. K. VIJAYMOHAN REDDY",
+                title: "Treasurer",
+                credentials: "MS ORTHO",
+                position: "PROF OF ORTHOPAEDICS",
+                institution: "KURNOOL MEDICAL COLLEGE",
+                photo: "/Vijay_DR.png",
+              },
+              {
+                name: "DR. M. RAJESH KUMAR",
+                title: "Joint Secretary",
+                credentials: "MS ORTHO",
+                position: "—",
+                institution: "—",
+                photo: "/RAJESH_DR.png",
+              },
+              {
+                name: "DR. N. R. S. MURTHY",
+                title: "Joint Secretary",
+                credentials: "MS ORTHO",
+                position: "—",
+                institution: "—",
+                photo: "/placeholder-user.jpg",
+              },
+              {
+                name: "DR. RAGHUNATHA REDDY",
+                title: "Joint Secretary",
+                credentials: "MS ORTHO",
+                position: "—",
+                institution: "—",
+                photo: "/placeholder-user.jpg",
+              },
+              {
+                name: "DR. D. RAJAIAH",
+                title: "Scientific Committee Chairman",
+                credentials: "MS ORTHO",
+                position: "—",
+                institution: "—",
+                photo: "/Rajayya_DR.png",
               }
             ].map((member, index) => (
               <motion.div
                 key={index}
-                className="relative group bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl border border-blue-100 dark:border-gray-700 hover:shadow-2xl hover:shadow-blue-200/30 dark:hover:shadow-blue-500/20 transition-all duration-500 overflow-hidden"
+                className="relative group bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl border border-gray-200 dark:border-gray-700 hover:shadow-2xl hover:shadow-blue-200/30 dark:hover:shadow-blue-500/20 transition-all duration-500 overflow-hidden"
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -448,35 +918,15 @@ export default function HomePage() {
                 <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-blue-500/10 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-blue-400/10 to-transparent rounded-tr-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100"></div>
                 <div className="text-center">
-                  <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
-                    {member.name === "Dr. Manas Panigrahi" ? (
-                      <img
-                        src="/Dr. Manas P.jpg"
-                        alt="Dr. Manas Panigrahi"
-                        className="w-full h-full object-cover"
-                      />
-                    ) : member.name === "Dr. Raghavendra H" ? (
-                      <img
-                        src="/Dr. R H.jpg"
-                        alt="Dr. Raghavendra H"
-                        className="w-full h-full object-cover"
-                      />
-                    ) : member.name === "Dr. Swetha P" ? (
-                      <img
-                        src="/Dr S P.jpg"
-                        alt="Dr. Swetha P"
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <span className="text-2xl font-bold text-white">
-                        {member.name.split(' ').map(n => n[0]).join('')}
-                      </span>
-                    )}
+                  {/* Profile Photo */}
+                  <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={member.photo} alt={member.name} className="w-full h-full object-cover" />
                   </div>
-                  <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">
+                  <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100">
                     {member.name}
                   </h3>
-                  <p className="text-blue-600 font-semibold">{member.title}</p>
+                  <p className="text-blue-600 dark:text-blue-400 font-semibold">{member.title}</p>
                 </div>
               </motion.div>
             ))}
@@ -489,15 +939,6 @@ export default function HomePage() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-blue-100 dark:border-gray-700 max-w-md mx-auto mb-8">
-              <h4 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-4">Contact Information</h4>
-              <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-                <p><strong>Contact Person:</strong> LAXMI PRABHA</p>
-                <p><strong>Email:</strong> <a href="mailto:contact@ossapcon2026.com" className="text-blue-600 hover:text-blue-800">contact@ossapcon2026.com</a></p>
-                <p><strong>Phone:</strong> <a href="tel:+919052192744" className="text-blue-600 hover:text-blue-800">+91 9052192744</a></p>
-              </div>
-            </div>
-            
             <Link href="/committee">
               <Button className="px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white rounded-full shadow-lg hover:shadow-blue-200/50 transition-all duration-300">
                 View Complete Committee
@@ -508,13 +949,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Explore Kurnool - Premium Horizontal Scrolling */}
-      <section className="py-32 relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-        {/* Background Elements */}
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-blue-300 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-400 rounded-full blur-3xl"></div>
-        </div>
+      {/* Explore Kurnool - unified (full viewport, dark-ready) */}
+      <div id="discover-kurnool"></div>
+      <section className="snap-start min-h-screen py-16 bg-gradient-to-b from-white to-slate-50 dark:from-[#0a0a0a] dark:to-[#0a0a0a] flex items-center">
 
         <div className="container mx-auto px-6 relative z-10">
           {/* Header */}
@@ -526,13 +963,13 @@ export default function HomePage() {
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
             >
-              <span className="text-blue-600 dark:text-blue-400 font-semibold text-sm uppercase tracking-wide">
+              <span className="text-blue-600 dark:text-blue-300 font-semibold text-sm uppercase tracking-wide">
                 🏛️ Gateway of Rayalaseema
               </span>
             </motion.div>
 
             <motion.h2
-              className="text-6xl lg:text-7xl font-black mb-6 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 bg-clip-text text-transparent"
+              className="text-6xl lg:text-7xl font-black mb-6 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 bg-clip-text text-transparent dark:text-white"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -542,7 +979,7 @@ export default function HomePage() {
             </motion.h2>
 
             <motion.p
-              className="text-xl lg:text-2xl text-gray-600 dark:text-gray-400 max-w-4xl mx-auto leading-relaxed"
+              className="text-xl lg:text-2xl text-gray-700 dark:text-gray-200 max-w-4xl mx-auto leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -611,7 +1048,7 @@ export default function HomePage() {
                     bestTime: "Evening",
                     highlights: ["Historic Architecture", "Night Illumination", "Local Markets"],
                     icon: "🏛️",
-                    image: "/Charminar.png"
+                    image: "/kurnoolfort.png"
                   },
                   {
                     name: "Kurnool Medical College",
@@ -622,7 +1059,7 @@ export default function HomePage() {
                     bestTime: "Morning",
                     highlights: ["Medical Excellence", "Modern Facilities", "Conference Venue"],
                     icon: "🏥",
-                    image: "/KIMS.png"
+                    image: "/kurnoolcollege.png"
                   },
                   {
                     name: "Belum Caves",
@@ -633,7 +1070,7 @@ export default function HomePage() {
                     bestTime: "Morning",
                     highlights: ["Underground Formations", "Natural Wonder", "Geological Marvel"],
                     icon: "🕳️",
-                    image: "/placeholder.jpg"
+                    image: "/belum.png"
                   },
                   {
                     name: "Tungabhadra River",
@@ -644,7 +1081,7 @@ export default function HomePage() {
                     bestTime: "Evening",
                     highlights: ["River Views", "Peaceful Atmosphere", "Photography"],
                     icon: "🌊",
-                    image: "/placeholder.jpg"
+                    image: "/Tugabadhra.png"
                   },
                   {
                     name: "Alampur Temples",
@@ -655,29 +1092,7 @@ export default function HomePage() {
                     bestTime: "Morning",
                     highlights: ["Ancient Architecture", "Spiritual Significance", "Historical Value"],
                     icon: "🛕",
-                    image: "/placeholder.jpg"
-                  },
-                  {
-                    name: "Kurnool City Center",
-                    description: "Modern commercial hub with shopping and dining options",
-                    category: "Modern",
-                    rating: "4.2",
-                    time: "2-3 hours",
-                    bestTime: "Evening",
-                    highlights: ["Shopping Centers", "Local Cuisine", "Urban Experience"],
-                    icon: "🏢",
-                    image: "/placeholder.jpg"
-                  },
-                  {
-                    name: "Kondareddy Buruju",
-                    description: "Historic watchtower offering panoramic views of Kurnool",
-                    category: "Heritage",
-                    rating: "4.3",
-                    time: "1-2 hours",
-                    bestTime: "Evening",
-                    highlights: ["Historic Architecture", "City Views", "Photography Spot"],
-                    icon: "🏗️",
-                    image: "/placeholder.jpg"
+                    image: "/alampur.png"
                   }
                 ].map((place, index) => (
                   <div
@@ -759,211 +1174,150 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Registration Section */}
-      <section className="py-20 relative overflow-hidden bg-white dark:bg-gray-900">
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto text-center">
+      {/* CTA Section with Grid Beams */}
+      <section className="relative">
+        <GridBeams 
+          className="py-20 sm:py-24"
+          rayCount={25}
+          rayOpacity={0.7}
+          raySpeed={1.5}
+          backgroundColor="#0f172a"
+          gridColor="rgba(200, 220, 255, 0.25)"
+          rayLength="60vh"
+        >
+          <div className="max-w-4xl mx-auto text-center px-6">
             <motion.div
-              className="inline-block px-6 py-3 bg-blue-100 dark:bg-blue-900/30 rounded-full mb-6"
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              <span className="text-blue-600 dark:text-blue-400 font-semibold text-sm uppercase tracking-wide">
-                Independence Day Offer
-              </span>
-            </motion.div>
-
-            <motion.h2
-              className="text-5xl lg:text-6xl font-black mb-6 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 bg-clip-text text-transparent"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
-              Secure Your Spot
-            </motion.h2>
-
-            <motion.p
-              className="text-xl text-gray-600 dark:text-gray-400 mb-12 max-w-3xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              className="space-y-8"
             >
-              Join leading orthopedic professionals for three days of groundbreaking sessions, hands-on workshops, and networking opportunities.
-            </motion.p>
-
-            {/* Registration Card */}
-            <motion.div
-              className="bg-gradient-to-br from-blue-50 to-blue-50 dark:from-gray-800 dark:to-gray-800 rounded-3xl p-8 shadow-2xl border border-blue-200 dark:border-gray-700 max-w-2xl mx-auto"
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-            >
-              <div className="text-center mb-8">
-                <div className="text-6xl font-black bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent mb-4">
-                  ₹5,000
-                </div>
-                <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">Independence Day Offer</h3>
-                <p className="text-gray-600 dark:text-gray-400">Independence Day special offer - Register now to secure your spot!</p>
+              {/* Headline */}
+              <div className="space-y-4">
+                <motion.h2 
+                  className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  viewport={{ once: true }}
+                >
+                  Ready to Join
+                  <span className="bg-gradient-to-r from-ocean-400 via-sapphire-500 to-ocean-600 bg-clip-text text-transparent block">
+                    OSSAPCON 2026?
+                  </span>
+                </motion.h2>
+                
+                <motion.p 
+                  className="text-xl sm:text-2xl text-white/80 max-w-3xl mx-auto leading-relaxed"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                  viewport={{ once: true }}
+                >
+                  Don't miss this opportunity to connect with leading orthopedic surgeons, 
+                  learn cutting-edge techniques, and advance your practice.
+                </motion.p>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-6 mb-8 text-left">
-                <div className="space-y-3">
-                  <div className="flex items-center space-x-3">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                    <span className="text-gray-700 dark:text-gray-300">3 Days Full Access</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                    <span className="text-gray-700 dark:text-gray-300">Welcome Kit</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                    <span className="text-gray-700 dark:text-gray-300">All Meals Included</span>
-                  </div>
+              {/* Stats Row */}
+              <motion.div 
+                className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-2xl mx-auto"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                viewport={{ once: true }}
+              >
+                <div className="text-center">
+                  <div className="text-3xl sm:text-4xl font-bold text-white mb-2">300+</div>
+                  <div className="text-white/70 text-sm sm:text-base">Attendees</div>
                 </div>
-                <div className="space-y-3">
-                  <div className="flex items-center space-x-3">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                    <span className="text-gray-700 dark:text-gray-300">Conference Certificate</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                    <span className="text-gray-700 dark:text-gray-300">CME Credits</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                    <span className="text-gray-700 dark:text-gray-300">Networking Sessions</span>
-                  </div>
+                <div className="text-center">
+                  <div className="text-3xl sm:text-4xl font-bold text-white mb-2">50+</div>
+                  <div className="text-white/70 text-sm sm:text-base">Expert Speakers</div>
                 </div>
-              </div>
+                <div className="text-center">
+                  <div className="text-3xl sm:text-4xl font-bold text-white mb-2">3</div>
+                  <div className="text-white/70 text-sm sm:text-base">Days</div>
+                </div>
+              </motion.div>
 
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <Link href="/register">
-                  <button className="w-full py-4 bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white font-bold text-lg rounded-xl transition-all duration-300 shadow-lg hover:shadow-blue-200/50 dark:hover:shadow-blue-900/50">
-                    Register Now - ₹5,000
-                  </button>
+              {/* CTA Buttons */}
+              <motion.div 
+                className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.8 }}
+                viewport={{ once: true }}
+              >
+                <a href="/register">
+                  <Button 
+                    size="lg" 
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold px-8 py-4 text-lg rounded-2xl shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-105"
+                  >
+                    Register Now
+                    <ArrowRight className="ml-2 w-5 h-5" />
+                  </Button>
+                </a>
+                
+                <Link href="/program">
+                  <Button 
+                    variant="outline" 
+                    size="lg"
+                    className="border-white/50 bg-white/90 text-slate-900 hover:bg-white hover:text-slate-900 font-semibold px-8 py-4 text-lg rounded-2xl backdrop-blur-sm transition-all duration-300 hover:border-white"
+                  >
+                    View Program
+                  </Button>
                 </Link>
               </motion.div>
 
-              <p className="text-xs text-gray-500 dark:text-gray-500 mt-4 text-center">
-                *Independence Day offer now live! Early Bird registration starts from August 16.
-              </p>
+              {/* Additional Info */}
+              <motion.div 
+                className="flex flex-wrap justify-center gap-6 text-white/80 text-sm"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 0.8, delay: 1.0 }}
+                viewport={{ once: true }}
+              >
+                <div className="flex items-center gap-2">
+                  <Award className="w-4 h-4" />
+                  <span>CME Credits Available</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <MapPin className="w-4 h-4" />
+                  <span>Kurnool Medical College</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  <span>Feb 4-6, 2026</span>
+                </div>
+              </motion.div>
             </motion.div>
           </div>
-        </div>
+        </GridBeams>
       </section>
 
-      {/* Spectacular CTA */}
-      <section className="py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700"></div>
-        <div className="absolute inset-0 bg-white/10"></div>
-
-        <motion.div
-          className="relative z-10 container mx-auto px-6 text-center"
-          initial={{ opacity: 0, y: 100 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          <h2 className="text-7xl font-black mb-8 text-white">
-            Ready to Shape
-            <br />
-            <span className="bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">The Future?</span>
-          </h2>
-
-          <p className="text-2xl text-white/90 mb-12 max-w-3xl mx-auto leading-relaxed">
-            Join the most revolutionary orthopedic conference ever conceived. Where advanced orthopedic surgery meets clinical
-            excellence.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-8 justify-center">
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link href="/register">
-                <Button className="px-12 py-6 text-xl bg-white text-blue-600 hover:bg-gray-100 rounded-full shadow-2xl font-bold">
-                  <Sparkles className="mr-3 h-6 w-6" />
-                  Register Now
-                  <ArrowRight className="ml-3 h-6 w-6" />
-                </Button>
-              </Link>
-            </motion.div>
-
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link href="/abstracts">
-                <Button
-                  variant="outline"
-                  className="px-12 py-6 text-xl border-2 border-white text-white bg-white/20 hover:bg-white/30 rounded-full backdrop-blur-sm font-bold shadow-lg"
-                >
-                  Submit Abstract
-                </Button>
-              </Link>
-            </motion.div>
-          </div>
-        </motion.div>
-      </section>
-
-      {/* Comprehensive Footer */}
-      <footer className="bg-gradient-to-br from-gray-900 to-black text-white py-20">
-        <div className="container mx-auto px-6">
-          {/* Organizers Section */}
-          <div className="mb-16">
-            <div className="text-center">
-              <h3 className="text-3xl font-bold mb-8 text-blue-400 leading-relaxed">Organized By</h3>
-              <div className="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-12">
-                {/* Orthopedic Surgeons Society of Andhra Pradesh */}
-                <div className="flex flex-col items-center space-y-4">
-                  <div className="h-20 w-20 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center text-white font-bold text-xl">
-                    OSSAP
-                  </div>
-                  <p className="text-gray-300 text-center font-medium">Orthopedic Surgeons Society of Andhra Pradesh</p>
-                </div>
-
-                {/* Kurnool Medical College */}
-                <div className="flex flex-col items-center space-y-4">
-                  <img
-                    src="/KIMS.png"
-                    alt="Kurnool Medical College"
-                    className="h-20 w-auto object-contain"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = 'none';
-                      const parent = target.parentElement;
-                      if (parent && !parent.querySelector('.fallback-logo')) {
-                        const fallback = document.createElement('div');
-                        fallback.className = 'fallback-logo h-20 w-20 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center text-white font-bold text-xl';
-                        fallback.textContent = 'KMC';
-                        parent.appendChild(fallback);
-                      }
-                    }}
-                  />
-                  <p className="text-gray-300 text-center font-medium">Kurnool Medical College</p>
-                </div>
-
-                {/* Department of Orthopedics */}
-                <div className="flex flex-col items-center space-y-4">
-                  <div className="h-20 w-20 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center text-white font-bold text-xl">
-                    DO
-                  </div>
-                  <p className="text-gray-300 text-center font-medium">Department of Orthopedics</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
+      {/* Comprehensive Footer with Animated Grid Background */}
+      <footer className="text-white py-12 sm:py-16 relative overflow-hidden bg-[#0a0a0a]">
+        <AnimatedGridPattern
+          numSquares={30}
+          maxOpacity={0.1}
+          duration={3}
+          repeatDelay={1}
+          className="absolute -inset-40 h-[260%] w-[160%] skew-y-12"
+        />
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           {/* Main Footer Content */}
-          <div className="grid md:grid-cols-4 lg:grid-cols-5 gap-8 mb-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-10 md:gap-12 items-start mb-12 sm:mb-16">
             {/* Conference Info */}
-            <div className="md:col-span-2 lg:col-span-1">
-              <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent leading-tight py-2">
+            <div>
+              <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent leading-tight py-2">
                 OSSAPCON 2026
               </h3>
-              <p className="text-gray-300 leading-relaxed mb-6">
+              <p className="text-gray-300 leading-relaxed mb-4 sm:mb-6 text-sm sm:text-base">
                 Excellence in Orthopedic Care through innovation, collaboration, and excellence. Join us in Kurnool for three transformative days of medical learning.
               </p>
-              <div className="space-y-2 text-gray-400">
+              <div className="space-y-2 text-gray-400 text-sm sm:text-base">
                 <p className="flex items-center">
                   <Calendar className="w-4 h-4 mr-2 text-blue-500" />
                   August 7-9, 2026
@@ -981,8 +1335,8 @@ export default function HomePage() {
 
             {/* Quick Links */}
             <div>
-              <h4 className="font-bold mb-6 text-blue-400 uppercase tracking-wide">Quick Links</h4>
-              <ul className="space-y-3 text-gray-300">
+              <h4 className="font-bold mb-4 sm:mb-6 text-blue-400 uppercase tracking-wide text-sm sm:text-base">Quick Links</h4>
+              <ul className="space-y-2 sm:space-y-3 text-gray-300 text-sm sm:text-base">
                 {[
                   "About Conference",
                   "Scientific Program",
@@ -1003,57 +1357,27 @@ export default function HomePage() {
 
             {/* Contact Information */}
             <div>
-              <h4 className="font-bold mb-6 text-blue-400 uppercase tracking-wide">Contact Information</h4>
+              <h4 className="font-bold mb-4 sm:mb-6 text-blue-400 uppercase tracking-wide text-sm sm:text-base">Contact Information</h4>
 
-              <div className="mb-6">
-                <h5 className="font-semibold text-white mb-2">Conference Secretariat</h5>
-                <p className="text-gray-300 text-sm">Dr. Raghavendra H</p>
-                <p className="text-gray-400 text-sm">Conference Secretariat</p>
-                <p className="text-gray-400 text-sm">Kurnool, Andhra Pradesh 518001</p>
+              <div className="mb-4 sm:mb-6">
+                <h5 className="font-semibold text-white mb-2 text-sm sm:text-base">Conference Manager</h5>
+                <p className="text-gray-300 text-xs sm:text-sm">Ms. Lakhshmi Prabha</p>
+                <p className="text-gray-400 text-xs sm:text-sm">+91 9052192744</p>
+                <p className="text-gray-400 text-xs sm:text-sm">contact@ossapcon2026.com</p>
+                <p className="text-gray-400 text-xs sm:text-sm">Kurnool, Andhra Pradesh</p>
               </div>
 
-              {/* <div className="mb-6">
-                <h5 className="font-semibold text-white mb-2">Registration Inquiries</h5>
-                <p className="text-gray-300 text-sm">+91 9876 543 210</p>
-                <p className="text-gray-300 text-sm">+91 9876 543 211</p>
-                <p className="text-gray-300 text-sm">register@ossapcon2026.com</p>
-                <p className="text-gray-400 text-xs">Mon-Fri: 9:00 AM - 6:00 PM</p>
-              </div>
-
-              <div>
-                <h5 className="font-semibold text-white mb-2">Technical Support</h5>
-                <p className="text-gray-300 text-sm">+91 9876 543 212</p>
-                <p className="text-gray-300 text-sm">support@ossapcon2026.com</p>
-                <p className="text-gray-300 text-sm">abstracts@ossapcon2026.com</p>
-                <p className="text-gray-400 text-xs">Available 24/7</p>
-              </div> */}
-            </div>
-
-            {/* Conference Manager */}
-            <div>
-              <h4 className="font-bold mb-6 text-blue-400 uppercase tracking-wide">Conference Manager</h4>
-
-              <div className="mb-6">
-                <h5 className="font-semibold text-white mb-2">Mr. Kiran Kumar Lella</h5>
-                <p className="text-gray-400 text-sm mb-2">Conference Manager</p>
-                <p className="text-gray-300 text-sm mb-1">Mobile: +91 – 9676541985</p>
-                <p className="text-gray-300 text-sm mb-4">Email: kiran@cmchyd.com</p>
-
-                {/* CMC Logo under Conference Manager */}
-                <div className="flex items-center mt-4">
-                  <img
-                    src="/CMC Logo Footer.png"
-                    alt="CMC Logo"
-                    className="h-36 w-auto object-contain"
-                  />
-                </div>
+              <div className="mb-4 sm:mb-6">
+                <h5 className="font-semibold text-white mb-2 text-sm sm:text-base">Apple Events</h5>
+                <p className="text-gray-300 text-xs sm:text-sm">Lakhshmi Prabha: +91 9052192744</p>
+                <p className="text-gray-400 text-xs sm:text-sm">Conference Management</p>
               </div>
             </div>
 
             {/* Social Media & Follow */}
             <div>
-              <h4 className="font-bold mb-6 text-blue-400 uppercase tracking-wide">Follow Us</h4>
-              <div className="flex space-x-4 mb-8">
+              <h4 className="font-bold mb-4 sm:mb-6 text-blue-400 uppercase tracking-wide text-sm sm:text-base">Follow Us</h4>
+              <div className="flex flex-wrap gap-3 sm:gap-4 mb-6 sm:mb-8">
                 {[
                   { logo: "/LinkedIn_logo_initials.png", label: "LinkedIn" },
                   { logo: "/Logo_of_Twitter.png", label: "Twitter" },
@@ -1078,9 +1402,9 @@ export default function HomePage() {
               </div>
 
               <div>
-                <h5 className="font-semibold text-white mb-4">Tech Partner</h5>
+                <h5 className="font-semibold text-white mb-3 sm:mb-4 text-sm sm:text-base">Tech Partner</h5>
                 <div className="flex items-center space-x-2">
-                  <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent">
+                  <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent">
                     PurpleHat Events
                   </span>
                 </div>
@@ -1089,13 +1413,13 @@ export default function HomePage() {
           </div>
 
           {/* Bottom Footer */}
-          <div className="border-t border-gray-700 pt-8">
+          <div className="border-t border-gray-700 pt-6 sm:pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-              <div className="text-gray-400 text-sm">
+              <div className="text-gray-400 text-sm text-center md:text-left">
                 <p>&copy; 2026 OSSAPCON Conference. All rights reserved.</p>
                 <p>Kurnool, Andhra Pradesh</p>
               </div>
-              <div className="flex space-x-6 text-gray-400 text-sm">
+              <div className="flex flex-wrap justify-center md:justify-end gap-4 md:gap-6 text-gray-400 text-sm">
                 <Link href="/privacy-policy" className="hover:text-blue-400 transition-colors">Privacy Policy</Link>
                 <Link href="/terms-conditions" className="hover:text-blue-400 transition-colors">Terms & Conditions</Link>
                 <Link href="/cookies-policy" className="hover:text-blue-400 transition-colors">Cookies Policy</Link>
@@ -1120,82 +1444,52 @@ export default function HomePage() {
 
           {selectedLocation && (
             <div className="space-y-6">
-              {/* Location Image */}
-              <div className="w-full h-48 sm:h-64 rounded-lg overflow-hidden">
+              <div className="relative h-64 sm:h-80 rounded-xl overflow-hidden">
                 <img
                   src={selectedLocation.image}
                   alt={selectedLocation.name}
                   className="w-full h-full object-cover"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
               </div>
 
-              {/* Location Details */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div className="space-y-4">
                   <div>
-                    <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">Category</h3>
-                    <div className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full text-sm font-medium">
-                      {selectedLocation.category}
-                    </div>
+                  <h4 className="font-semibold text-lg mb-2">About this location</h4>
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                    {selectedLocation.fullDescription}
+                  </p>
                   </div>
 
                   <div>
-                    <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">Visit Duration</h3>
-                    <div className="flex items-center text-gray-600 dark:text-gray-400">
-                      <span className="text-blue-500 mr-2">⏰</span>
-                      {selectedLocation.time}
-                    </div>
+                  <h4 className="font-semibold text-lg mb-2">How to reach</h4>
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                    {selectedLocation.directions}
+                  </p>
                   </div>
 
                   <div>
-                    <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">Best Time to Visit</h3>
-                    <div className="flex items-center text-gray-600 dark:text-gray-400">
-                      <span className="text-blue-500 mr-2">🌅</span>
+                  <h4 className="font-semibold text-lg mb-2">Best time to visit</h4>
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
                       {selectedLocation.bestTime}
+                  </p>
                     </div>
                   </div>
 
-                  <div>
-                    <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">Rating</h3>
-                    <div className="flex items-center text-gray-600 dark:text-gray-400">
-                      <span className="text-yellow-500 mr-2">⭐</span>
-                      {selectedLocation.rating}/5.0
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-3">Key Highlights</h3>
-                  <div className="space-y-2">
-                    {selectedLocation.highlights?.map((highlight: string, idx: number) => (
-                      <div key={idx} className="flex items-center text-gray-600 dark:text-gray-400">
-                        <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
-                        {highlight}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex flex-col gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+              <div className="flex flex-col sm:flex-row gap-3 pt-4">
                 <Button
-                  onClick={() => handleGetDirections(selectedLocation.name)}
-                  className="w-full bg-blue-500 hover:bg-blue-600 text-white h-12"
+                  onClick={() => window.open(selectedLocation.mapsUrl, '_blank')}
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white h-12"
                 >
-                  <NavigationIcon className="w-4 h-4 mr-2" />
-                  Get Directions
+                  <MapPin className="w-4 h-4 mr-2" />
+                  View on Maps
                 </Button>
 
                 <Button
-                  onClick={() => {
-                    const searchQuery = encodeURIComponent(`${selectedLocation.name} Kurnool tourism`)
-                    window.open(`https://www.google.com/search?q=${searchQuery}`, '_blank')
-                  }}
+                  onClick={() => window.open(`https://www.google.com/search?q=${encodeURIComponent(selectedLocation.name + ' Kurnool')}`, '_blank')}
                   variant="outline"
-                  className="w-full border-blue-500 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 h-12"
+                  className="flex-1 border-gray-300 text-gray-600 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-800 h-12"
                 >
-                  <ExternalLink className="w-4 h-4 mr-2" />
                   Learn More Online
                 </Button>
 

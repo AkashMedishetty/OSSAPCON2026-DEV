@@ -4,8 +4,8 @@ import { BulkEmailForm } from "@/components/admin/BulkEmailForm"
 import { Navigation } from "@/components/navigation"
 
 export const metadata: Metadata = {
-  title: "Email Management | NeuroTrauma 2026",
-  description: "Send bulk emails to conference participants and manage communications",
+  title: "Email Management | OSSAPCON 2026",
+  description: "Manage email communications and bulk email campaigns for OSSAPCON 2026",
 }
 
 export default function EmailsPage() {

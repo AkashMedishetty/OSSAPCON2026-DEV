@@ -1,6 +1,7 @@
 "use client"
 
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
+import { MainLayout } from '@/components/layout/MainLayout'
 import { useEffect, useRef, useState } from 'react'
 import useSWR from 'swr'
 
@@ -46,37 +47,41 @@ export default function SubmitInitialAbstractPage() {
 
   return (
     <ProtectedRoute requiredRole="user">
-      <div className="container mx-auto py-8 space-y-4">
-        <h1 className="text-xl font-semibold">Submit Initial Abstract</h1>
-        <input value={title} onChange={e => setTitle(e.target.value)} className="border p-2 w-full" placeholder="Title" />
-        <select value={track} onChange={e => { setTrack(e.target.value); setCategory(''); setSubcategory('') }} className="border p-2">
-          <option value="">Select Track</option>
-          {(cfg?.data?.tracks || []).filter((t: any) => t.enabled).map((t: any) => (
-            <option key={t.key} value={t.key}>{t.label}</option>
-          ))}
-        </select>
-        {track && (
-          <select value={category} onChange={e => { setCategory(e.target.value); setSubcategory('') }} className="border p-2">
-            <option value="">Select Category (optional)</option>
-            {(cfg?.data?.tracks?.find((t: any) => t.key === track)?.categories || []).filter((c: any) => c.enabled).map((c: any) => (
-              <option key={c.key} value={c.key}>{c.label}</option>
-            ))}
-          </select>
-        )}
-        {category && (
-          <select value={subcategory} onChange={e => setSubcategory(e.target.value)} className="border p-2">
-            <option value="">Select Subcategory (optional)</option>
-            {(cfg?.data?.tracks?.find((t: any) => t.key === track)?.categories?.find((c: any) => c.key === category)?.subcategories || []).filter((s: any) => s.enabled).map((s: any) => (
-              <option key={s.key} value={s.key}>{s.label}</option>
-            ))}
-          </select>
-        )}
-        <input type="file" accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" onChange={e => setFile(e.target.files?.[0] || null)} />
-        <button disabled={loading} onClick={submit} className="px-4 py-2 bg-blue-600 text-white rounded">
-          {loading ? 'Submitting...' : 'Submit'}
-        </button>
-        {message && <p className="text-sm text-gray-600">{message}</p>}
-      </div>
+      <MainLayout currentPage="abstracts" showSearch={true}>
+        <div className="container mx-auto py-8 space-y-4">
+          <div className="max-w-4xl mx-auto">
+            <h1 className="text-xl font-semibold">Submit Initial Abstract</h1>
+            <input value={title} onChange={e => setTitle(e.target.value)} className="border p-2 w-full" placeholder="Title" />
+            <select value={track} onChange={e => { setTrack(e.target.value); setCategory(''); setSubcategory('') }} className="border p-2">
+              <option value="">Select Track</option>
+              {(cfg?.data?.tracks || []).filter((t: any) => t.enabled).map((t: any) => (
+                <option key={t.key} value={t.key}>{t.label}</option>
+              ))}
+            </select>
+            {track && (
+              <select value={category} onChange={e => { setCategory(e.target.value); setSubcategory('') }} className="border p-2">
+                <option value="">Select Category (optional)</option>
+                {(cfg?.data?.tracks?.find((t: any) => t.key === track)?.categories || []).filter((c: any) => c.enabled).map((c: any) => (
+                  <option key={c.key} value={c.key}>{c.label}</option>
+                ))}
+              </select>
+            )}
+            {category && (
+              <select value={subcategory} onChange={e => setSubcategory(e.target.value)} className="border p-2">
+                <option value="">Select Subcategory (optional)</option>
+                {(cfg?.data?.tracks?.find((t: any) => t.key === track)?.categories?.find((c: any) => c.key === category)?.subcategories || []).filter((s: any) => s.enabled).map((s: any) => (
+                  <option key={s.key} value={s.key}>{s.label}</option>
+                ))}
+              </select>
+            )}
+            <input type="file" accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" onChange={e => setFile(e.target.files?.[0] || null)} />
+            <button disabled={loading} onClick={submit} className="px-4 py-2 bg-blue-600 text-white rounded">
+              {loading ? 'Submitting...' : 'Submit'}
+            </button>
+            {message && <p className="text-sm text-gray-600">{message}</p>}
+          </div>
+        </div>
+      </MainLayout>
     </ProtectedRoute>
   )
 }

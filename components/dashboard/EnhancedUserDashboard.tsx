@@ -2,14 +2,14 @@
 
 import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 import { 
   User, 
   CreditCard, 
@@ -34,10 +34,19 @@ import {
   DollarSign,
   Receipt,
   QrCode,
-  Share2
+  Share2,
+  Activity,
+  TrendingUp,
+  Zap,
+  Shield,
+  Target,
+  Sparkles
 } from "lucide-react"
 import Link from "next/link"
 import { useToast } from "@/hooks/use-toast"
+import { RegistrationCard } from "./RegistrationCard"
+import { PaymentStatus } from "./PaymentStatus"
+import { ProfileForm } from "./ProfileForm"
 
 interface UserData {
   _id: string
@@ -113,11 +122,13 @@ interface PaymentData {
 export function EnhancedUserDashboard() {
   const { data: session } = useSession()
   const { toast } = useToast()
+  const shouldReduceMotion = useReducedMotion()
   const [userData, setUserData] = useState<UserData | null>(null)
   const [paymentData, setPaymentData] = useState<PaymentData[]>([])
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
   const [isDownloading, setIsDownloading] = useState(false)
+  const [activeView, setActiveView] = useState('overview')
 
   const fetchUserData = async (showRefreshMessage = false) => {
     try {
@@ -324,44 +335,384 @@ export function EnhancedUserDashboard() {
   }
 
   const latestPayment = paymentData.length > 0 ? paymentData[0] : null
-  const isRegistrationComplete = userData.registration.status === 'paid'
+  const isRegistrationComplete = ['paid','confirmed'].includes(userData.registration.status?.toLowerCase()) || ['completed','verified','paid'].includes(latestPayment?.status?.toLowerCase() || '')
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      {/* Header with Welcome and Quick Actions */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
-      >
-        <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent">
-            Welcome back, {userData.profile.title} {userData.profile.firstName} {userData.profile.lastName}!
-          </h1>
-          <p className="text-muted-foreground mt-1">
-            Registration ID: <span className="font-semibold">{userData.registration.registrationId}</span>
-          </p>
-        </div>
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            onClick={() => fetchUserData(true)}
-            disabled={refreshing}
-            className="flex items-center gap-2"
+    <div className="min-h-screen bg-gradient-to-br from-midnight-50 via-ocean-50/30 to-sapphire-50/20 dark:from-midnight-900 dark:to-midnight-800">
+      {/* Sidebar Navigation - Mobile Responsive Layout */}
+      <div className="flex flex-col lg:flex-row">
+        {/* Left Sidebar */}
+        <div className="w-full lg:w-80 min-h-screen bg-gradient-to-b from-midnight-900 via-ocean-900 to-sapphire-900 p-4 lg:p-6 text-white">
+          <motion.div
+            initial={shouldReduceMotion ? undefined : { opacity: 0, x: -20 }}
+            animate={shouldReduceMotion ? undefined : { opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
           >
-            <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
-            Refresh
-          </Button>
-          {userData.role === 'admin' && (
-            <Link href="/admin">
-              <Button variant="outline">
-                <Award className="h-4 w-4 mr-2" />
-                Admin Panel
+            {/* User Profile Card */}
+            <Card variant="glass" className="mb-8 border-white/20">
+              <CardContent className="p-6 text-center">
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-400 to-ocean-500 flex items-center justify-center text-2xl font-bold text-white mx-auto mb-4">
+                  {userData.profile.firstName.charAt(0)}{userData.profile.lastName.charAt(0)}
+                </div>
+                <h2 className="font-display text-fluid-lg font-bold text-white mb-2">
+                  {userData.profile.title} {userData.profile.firstName} {userData.profile.lastName}
+                </h2>
+                <Badge variant="success" size="sm" className="mb-3">
+                  {userData.registration.registrationId}
+                </Badge>
+                <p className="text-fluid-sm text-white/70">
+                  {userData.profile.institution}
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Navigation Menu */}
+            <nav className="space-y-2 lg:space-y-2 lg:space-x-0">
+              <div className="grid grid-cols-2 lg:grid-cols-1 gap-2">
+                {[
+                  { id: 'overview', label: 'Overview', icon: Activity },
+                  { id: 'registration', label: 'Registration', icon: FileText },
+                  { id: 'payment', label: 'Payment', icon: CreditCard },
+                  { id: 'profile', label: 'Profile', icon: User },
+                ].map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => setActiveView(item.id)}
+                    className={`w-full flex items-center justify-center lg:justify-start space-x-2 lg:space-x-3 px-2 lg:px-4 py-2 lg:py-3 rounded-xl transition-all duration-200 text-sm lg:text-base ${
+                      activeView === item.id
+                        ? 'bg-white/20 text-white shadow-lg'
+                        : 'text-white/70 hover:text-white hover:bg-white/10'
+                    }`}
+                  >
+                    <item.icon className="w-4 h-4 lg:w-5 lg:h-5" />
+                    <span className="font-medium">{item.label}</span>
+                  </button>
+                ))}
+              </div>
+            </nav>
+
+            {/* Quick Actions */}
+            <div className="mt-8 space-y-3">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="w-full border-white/30 text-white hover:bg-white/10"
+                onClick={() => fetchUserData(true)}
+                disabled={refreshing}
+              >
+                <RefreshCw className={`w-4 h-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
+                Refresh Data
               </Button>
-            </Link>
-          )}
+              
+              {userData.role === 'admin' && (
+                <Button variant="glass" size="sm" className="w-full" asChild>
+                  <Link href="/admin">
+                    <Shield className="w-4 h-4 mr-2" />
+                    Admin Panel
+                  </Link>
+                </Button>
+              )}
+            </div>
+          </motion.div>
         </div>
-      </motion.div>
+
+        {/* Main Content Area */}
+        <div className="flex-1 p-4 lg:p-8">
+          <AnimatePresence mode="wait">
+            {activeView === 'overview' && (
+              <motion.div
+                key="overview"
+                initial={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}
+                animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+                exit={shouldReduceMotion ? undefined : { opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="space-y-8"
+              >
+                {/* Header */}
+                <div className="mb-8">
+                  <h1 className="font-display text-fluid-5xl font-bold text-midnight-800 dark:text-white mb-2">
+                    Dashboard Overview
+                  </h1>
+                  <p className="text-fluid-lg text-midnight-600 dark:text-midnight-300">
+                    Welcome back! Here's your OSSAPCON 2026 registration status.
+                  </p>
+                </div>
+
+                {/* Stats Grid - Horizontal Layout */}
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                  {[
+                    {
+                      title: 'Registration',
+                      value: userData.registration.status === 'paid' ? 'Complete' : 'Pending',
+                      icon: CheckCircle,
+                      color: userData.registration.status === 'paid' ? 'emerald' : 'amber',
+                      progress: userData.registration.status === 'paid' ? 100 : 75
+                    },
+                    {
+                      title: 'Payment',
+                      value: latestPayment ? formatCurrency(latestPayment.amount.total, latestPayment.amount.currency) : 'Pending',
+                      icon: DollarSign,
+                      color: latestPayment?.status === 'completed' ? 'emerald' : 'coral',
+                      progress: latestPayment?.status === 'completed' ? 100 : 0
+                    },
+                    {
+                      title: 'Workshops',
+                      value: userData.registration.workshopSelections?.length || 0,
+                      icon: BookOpen,
+                      color: 'ocean',
+                      progress: (userData.registration.workshopSelections?.length || 0) * 25
+                    },
+                    {
+                      title: 'Days Left',
+                      value: Math.max(0, Math.ceil((new Date('2026-02-06').getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))),
+                      icon: Calendar,
+                      color: 'sapphire',
+                      progress: 85
+                    }
+                  ].map((stat, index) => (
+                    <motion.div
+                      key={index}
+                      initial={shouldReduceMotion ? undefined : { opacity: 0, scale: 0.9 }}
+                      animate={shouldReduceMotion ? undefined : { opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.4, delay: index * 0.1 }}
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      <Card variant="glass" className="relative overflow-hidden">
+                        <CardContent className="p-6">
+                          <div className="flex items-center justify-between mb-4">
+                            <div className={`p-3 rounded-xl bg-gradient-to-br ${
+                              stat.color === 'emerald' ? 'from-emerald-500 to-emerald-600' :
+                              stat.color === 'amber' ? 'from-amber-400 to-amber-500' :
+                              stat.color === 'coral' ? 'from-coral-400 to-coral-500' :
+                              stat.color === 'ocean' ? 'from-ocean-500 to-ocean-600' :
+                              'from-sapphire-500 to-sapphire-600'
+                            } text-white`}>
+                              <stat.icon className="w-6 h-6" />
+                            </div>
+                            <div className="text-right">
+                              <div className={`text-fluid-2xl font-black ${
+                                stat.color === 'emerald' ? 'text-emerald-600' :
+                                stat.color === 'amber' ? 'text-amber-600' :
+                                stat.color === 'coral' ? 'text-coral-500' :
+                                stat.color === 'ocean' ? 'text-ocean-600' :
+                                'text-sapphire-600'
+                              }`}>
+                                {stat.value}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <div className="flex justify-between items-center">
+                              <span className="text-fluid-sm font-semibold text-midnight-700 dark:text-midnight-300">
+                                {stat.title}
+                              </span>
+                              <span className="text-fluid-xs text-midnight-500">
+                                {stat.progress}%
+                              </span>
+                            </div>
+                            <Progress 
+                              value={stat.progress} 
+                              className="h-2"
+                              indicatorVariant={stat.color === 'emerald' ? 'success' : stat.color === 'coral' ? 'danger' : 'default'}
+                            />
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Conference Info - Wide Card */}
+                <motion.div
+                  initial={shouldReduceMotion ? undefined : { opacity: 0, y: 30 }}
+                  animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                >
+                  <Card variant="gradient" className="relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-r from-ocean-600/10 to-sapphire-600/10"></div>
+                    <CardContent className="p-8 relative">
+                      <div className="flex items-center justify-between mb-6">
+                        <div>
+                          <h3 className="font-display text-fluid-2xl font-bold text-midnight-800 dark:text-white mb-2">
+                            OSSAPCON 2026
+                          </h3>
+                          <p className="text-midnight-600 dark:text-midnight-300">
+                            Annual Conference of Orthopedic Surgeons Society of Andhra Pradesh
+                          </p>
+                        </div>
+                        <div className="flex space-x-4">
+                          <Button variant="default" size="lg" asChild>
+                            <Link href="/program">
+                              <BookOpen className="w-5 h-5 mr-2" />
+                              View Program
+                            </Link>
+                          </Button>
+                          {latestPayment && latestPayment.status === 'completed' && (
+                            <Button 
+                              variant="outline" 
+                              size="lg"
+                              onClick={() => handleDownloadInvoice(latestPayment._id, userData.registration.registrationId)}
+                              disabled={isDownloading}
+                            >
+                              <Download className="w-5 h-5 mr-2" />
+                              {isDownloading ? 'Opening...' : 'Invoice'}
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div className="flex items-center space-x-4">
+                          <div className="p-3 rounded-xl bg-ocean-500 text-white">
+                            <Calendar className="w-6 h-6" />
+                          </div>
+                          <div>
+                            <p className="font-semibold text-midnight-800 dark:text-white">Conference Dates</p>
+                            <p className="text-midnight-600 dark:text-midnight-300">February 6-8, 2026</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center space-x-4">
+                          <div className="p-3 rounded-xl bg-emerald-500 text-white">
+                            <MapPin className="w-6 h-6" />
+                          </div>
+                          <div>
+                            <p className="font-semibold text-midnight-800 dark:text-white">Location</p>
+                            <p className="text-midnight-600 dark:text-midnight-300">Kurnool, Andhra Pradesh</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center space-x-4">
+                          <div className="p-3 rounded-xl bg-sapphire-500 text-white">
+                            <Users className="w-6 h-6" />
+                          </div>
+                          <div>
+                            <p className="font-semibold text-midnight-800 dark:text-white">Expected Attendees</p>
+                            <p className="text-midnight-600 dark:text-midnight-300">500+ Medical Professionals</p>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+
+                {/* Quick Actions Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <Card variant="glass">
+                    <CardHeader>
+                      <CardTitle className="flex items-center space-x-2">
+                        <Target className="w-5 h-5 text-ocean-600" />
+                        <span>Registration Status</span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <span>Profile Complete</span>
+                          <CheckCircle className="w-5 h-5 text-emerald-500" />
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span>Registration Created</span>
+                          <CheckCircle className="w-5 h-5 text-emerald-500" />
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span>Payment Status</span>
+                          {isRegistrationComplete ? (
+                            <CheckCircle className="w-5 h-5 text-emerald-500" />
+                          ) : (
+                            <Clock className="w-5 h-5 text-amber-500" />
+                          )}
+                        </div>
+                        {!isRegistrationComplete && (
+                          <Button 
+                            className="w-full mt-4 bg-gray-400 text-gray-600 cursor-not-allowed" 
+                            disabled
+                          >
+                            <CreditCard className="w-4 h-4 mr-2" />
+                            Payment Temporarily Disabled
+                          </Button>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card variant="glass">
+                    <CardHeader>
+                      <CardTitle className="flex items-center space-x-2">
+                        <Sparkles className="w-5 h-5 text-emerald-600" />
+                        <span>Quick Actions</span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3">
+                        <Button variant="outline" size="sm" className="w-full justify-start" asChild>
+                          <Link href="/dashboard/profile">
+                            <Edit className="w-4 h-4 mr-2" />
+                            Edit Profile
+                          </Link>
+                        </Button>
+                        <Button variant="outline" size="sm" className="w-full justify-start" asChild>
+                          <Link href="/program">
+                            <BookOpen className="w-4 h-4 mr-2" />
+                            Conference Program
+                          </Link>
+                        </Button>
+                        <Button variant="outline" size="sm" className="w-full justify-start" asChild>
+                          <Link href="/venue">
+                            <MapPin className="w-4 h-4 mr-2" />
+                            Venue Information
+                          </Link>
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </motion.div>
+            )}
+
+            {/* Other views would go here with similar motion animations */}
+            {activeView === 'registration' && (
+              <motion.div
+                key="registration"
+                initial={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}
+                animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+                exit={shouldReduceMotion ? undefined : { opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <RegistrationCard userData={userData} onUpdate={fetchUserData} />
+              </motion.div>
+            )}
+
+            {activeView === 'payment' && (
+              <motion.div
+                key="payment"
+                initial={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}
+                animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+                exit={shouldReduceMotion ? undefined : { opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <PaymentStatus 
+                  registrationStatus={userData?.registration?.status || 'pending'}
+                  paymentData={paymentData}
+                  detailed={true}
+                />
+              </motion.div>
+            )}
+
+            {activeView === 'profile' && (
+              <motion.div
+                key="profile"
+                initial={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}
+                animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+                exit={shouldReduceMotion ? undefined : { opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <ProfileForm />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
 
       {/* Registration Progress */}
       <motion.div
@@ -418,7 +769,7 @@ export function EnhancedUserDashboard() {
         transition={{ delay: 0.2 }}
       >
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4">
             <TabsTrigger value="overview" className="flex items-center gap-2">
               <User className="h-4 w-4" />
               Overview
@@ -495,11 +846,14 @@ export function EnhancedUserDashboard() {
                   ) : (
                     <div className="space-y-2">
                       <div className="text-2xl font-bold text-muted-foreground">Pending</div>
-                      <Link href="/dashboard/payment">
-                        <Button size="sm" className="w-full bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800">
-                          Complete Payment
-                        </Button>
-                      </Link>
+                      <Button 
+                        size="sm" 
+                        className="w-full bg-gray-400 text-gray-600 cursor-not-allowed" 
+                        disabled
+                      >
+                        <CreditCard className="w-4 h-4 mr-2" />
+                        Payment Temporarily Disabled
+                      </Button>
                     </div>
                   )}
                 </CardContent>
@@ -651,7 +1005,7 @@ export function EnhancedUserDashboard() {
                       {userData.registration.accompanyingPersons.map((person, index) => (
                         <div key={index} className="flex items-center gap-2 p-2 bg-muted rounded">
                           <User className="h-4 w-4 text-blue-600" />
-                          <span>{person.name} ({person.age} years, {person.relationship})</span>
+                          <span>{person.name} ({person.relationship})</span>
                         </div>
                       ))}
                     </div>

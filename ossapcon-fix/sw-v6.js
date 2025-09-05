@@ -7,7 +7,7 @@ const DYNAMIC_CACHE_NAME = 'ossapcon-2026-dynamic-v6';
 const STATIC_ASSETS = [ 
   '/offline.html', 
   '/ossapcon-logo.png', 
-  '/KIMS.png', 
+  '/ossapcon-logo.png', 
 ]; 
 
 // Install event - cache static assets 

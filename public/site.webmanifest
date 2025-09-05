@@ -1,0 +1,13 @@
+{
+  "name": "OSSAPCON 2026",
+  "short_name": "OSSAPCON",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#020412",
+  "theme_color": "#020412",
+  "icons": []
+}
+
+
+

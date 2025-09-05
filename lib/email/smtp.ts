@@ -1,10 +1,8 @@
 import nodemailer from 'nodemailer'
-import { getEmailConfig } from '@/lib/config'
 
 // Create reusable transporter object using SMTP
 export async function createSMTPTransporter() {
-  const emailConfig = await getEmailConfig()
-  
+  // Always use environment variables for SMTP configuration
   // Check if SMTP is configured
   const smtpHost = process.env.SMTP_HOST || process.env.EMAIL_HOST
   const smtpUser = process.env.SMTP_USER || process.env.EMAIL_USER
@@ -89,15 +87,20 @@ export async function sendEmail({
 }) {
   try {
     const transporter = await createSMTPTransporter()
-    const emailConfig = await getEmailConfig()
+    
+    // Always use environment variables for SMTP settings
+    const fromEmail = process.env.SMTP_USER || process.env.EMAIL_USER
+    const fromName = process.env.APP_NAME || 'OSSAPCON 2026'
+
+    console.log(`📧 Sending email using SMTP: ${fromEmail}`)
 
     const mailOptions = {
       from: {
-        name: emailConfig?.fromName || process.env.APP_NAME || 'OSSAPCON 2026',
-        address: emailConfig?.fromEmail || process.env.SMTP_USER || process.env.EMAIL_USER
+        name: fromName,
+        address: fromEmail
       },
       to: Array.isArray(to) ? to.join(', ') : to,
-      replyTo: emailConfig?.replyTo || process.env.SMTP_USER || process.env.EMAIL_USER,
+      replyTo: fromEmail,
       subject,
       html,
       text,

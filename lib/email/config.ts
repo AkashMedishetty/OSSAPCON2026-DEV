@@ -35,8 +35,8 @@ export const emailTemplateConfig = {
   // Global email settings
   settings: {
     fromName: "OSSAPCON 2026",
-    fromEmail: "contact@ossapcon2026.com", // This should match your SMTP username
-    replyTo: "contact@ossapcon2026.com",
+    fromEmail: process.env.SMTP_USER || "noreply@ossapcon.com", // Use env variable
+    replyTo: process.env.SMTP_USER || "noreply@ossapcon.com",
     enableTracking: true,
     enableAutoResponder: true
   }

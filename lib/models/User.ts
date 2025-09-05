@@ -45,6 +45,17 @@ export interface IUser extends Document {
     sponsorCategory?: string
     paymentRemarks?: string
   }
+  payment?: {
+    method: 'bank-transfer' | 'online' | 'cash'
+    status: 'pending' | 'verified' | 'rejected'
+    amount: number
+    bankTransferUTR?: string
+    transactionId?: string
+    paymentDate?: Date
+    verifiedBy?: string
+    verificationDate?: Date
+    remarks?: string
+  }
   activeSessions: Array<{
     sessionId: string
     deviceId: string
@@ -114,6 +125,7 @@ const UserSchema = new Schema<IUser>({
     },
     profilePicture: String,
     dietaryRequirements: String,
+    mciNumber: { type: String, required: true },
     specialNeeds: String
   },
   reviewer: {
@@ -138,11 +150,11 @@ const UserSchema = new Schema<IUser>({
       enum: ['pending', 'confirmed', 'paid', 'cancelled'],
       default: 'pending'
     },
+    tier: { type: String },
     membershipNumber: String,
     workshopSelections: [String],
     accompanyingPersons: [{
       name: { type: String, required: true },
-      age: { type: Number, required: true },
       dietaryRequirements: String,
       relationship: { type: String, required: true }
     }],
@@ -162,6 +174,31 @@ const UserSchema = new Schema<IUser>({
       enum: ['platinum', 'gold', 'silver', 'bronze', 'exhibitor', 'other']
     },
     paymentRemarks: String
+  },
+  payment: {
+    method: {
+      type: String,
+      enum: ['bank-transfer', 'online', 'cash'],
+      default: 'bank-transfer'
+    },
+    status: {
+      type: String,
+      enum: ['pending', 'verified', 'rejected'],
+      default: 'pending'
+    },
+    amount: {
+      type: Number,
+      required: function() { return this.payment != null; }
+    },
+    bankTransferUTR: String,
+    transactionId: String,
+    paymentDate: {
+      type: Date,
+      default: Date.now
+    },
+    verifiedBy: String,
+    verificationDate: Date,
+    remarks: String
   },
   activeSessions: [{
     sessionId: {

@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
           endDate: '2026-06-30',
           isActive: true,
           categories: {
-            'ntsi-member': { amount: 10000, currency: 'INR', label: 'NTSI Member' },
+            'ossap-member': { amount: 10000, currency: 'INR', label: 'OSSAP Member' },
             'non-member': { amount: 14000, currency: 'INR', label: 'Non Member' },
             'pg-student': { amount: 8000, currency: 'INR', label: 'PG Student' },
             'accompanying': { amount: 2500, currency: 'INR', label: 'Accompanying Person' }
@@ -57,7 +57,7 @@ export async function GET(request: NextRequest) {
           endDate: '2026-08-05',
           isActive: true,
           categories: {
-            'ntsi-member': { amount: 12000, currency: 'INR', label: 'NTSI Member' },
+            'ossap-member': { amount: 12000, currency: 'INR', label: 'OSSAP Member' },
             'non-member': { amount: 17000, currency: 'INR', label: 'Non Member' },
             'pg-student': { amount: 10000, currency: 'INR', label: 'PG Student' },
             'accompanying': { amount: 3000, currency: 'INR', label: 'Accompanying Person' }
@@ -70,7 +70,7 @@ export async function GET(request: NextRequest) {
           endDate: '2026-08-09',
           isActive: true,
           categories: {
-            'ntsi-member': { amount: 15000, currency: 'INR', label: 'NTSI Member' },
+            'ossap-member': { amount: 15000, currency: 'INR', label: 'OSSAP Member' },
             'non-member': { amount: 20000, currency: 'INR', label: 'Non Member' },
             'pg-student': { amount: 12000, currency: 'INR', label: 'PG Student' },
             'accompanying': { amount: 4000, currency: 'INR', label: 'Accompanying Person' }
@@ -141,16 +141,23 @@ export async function PUT(request: NextRequest) {
         }, { status: 400 })
       }
 
-      // Validate categories
-      const requiredCategories = ['ntsi-member', 'non-member', 'pg-student', 'accompanying']
-      for (const category of requiredCategories) {
-        if (!tier.categories[category] || 
-            typeof tier.categories[category].amount !== 'number' ||
-            !tier.categories[category].currency ||
-            !tier.categories[category].label) {
+      // Validate categories - flexible validation for any category names
+      if (!tier.categories || typeof tier.categories !== 'object') {
+        return NextResponse.json({
+          success: false,
+          message: `Invalid categories data in tier ${tier.name}`
+        }, { status: 400 })
+      }
+      
+      // Check that each category has required fields
+      for (const [categoryKey, categoryData] of Object.entries(tier.categories)) {
+        if (!categoryData || 
+            typeof (categoryData as any).amount !== 'number' ||
+            !(categoryData as any).currency ||
+            !(categoryData as any).label) {
           return NextResponse.json({
             success: false,
-            message: `Invalid category data for ${category} in tier ${tier.name}`
+            message: `Invalid category data for ${categoryKey} in tier ${tier.name}`
           }, { status: 400 })
         }
       }

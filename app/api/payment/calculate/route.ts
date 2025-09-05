@@ -4,7 +4,7 @@ import { authOptions } from '@/lib/auth'
 import connectDB from '@/lib/mongodb'
 import Configuration from '@/lib/models/Configuration'
 import Workshop from '@/lib/models/Workshop'
-import { getCurrentPricingTier } from '@/lib/utils/pricingTiers'
+import { getCurrentTier, getTierPricing } from '@/lib/registration'
 
 interface CalculatePaymentRequest {
   registrationType: string
@@ -27,18 +27,45 @@ export async function POST(request: NextRequest) {
 
     await connectDB()
 
-    // Get current pricing tier based on date
-    const currentTier = await getCurrentPricingTier()
-    
-    if (!currentTier) {
-      return NextResponse.json({
-        success: false,
-        message: 'Pricing configuration not available'
-      }, { status: 500 })
-    }
+    // Prefer admin-configured pricing; fallback to centralized config
+    let currentTierName = getCurrentTier()
+    let registrationCategories = getTierPricing(currentTierName)
 
-    // Use current tier pricing
-    const registrationCategories = currentTier.categories
+    try {
+      const adminPricingConfig = await Configuration.findOne({ type: 'pricing', key: 'pricing_tiers', isActive: true })
+      const tiers = adminPricingConfig?.value
+      if (tiers?.regular?.categories) {
+        const today = new Date()
+        const iso = today.toISOString().split('T')[0]
+        const hasWindow = (t: any) => t && t.startDate && t.endDate
+        const pickInWindow = (t: any) => t && t.isActive && hasWindow(t) && iso >= t.startDate && iso <= t.endDate
+
+        if (pickInWindow(tiers.earlyBird)) {
+          currentTierName = 'Early Bird'
+          registrationCategories = tiers.earlyBird.categories
+        } else if (pickInWindow(tiers.regular)) {
+          currentTierName = 'Regular'
+          registrationCategories = tiers.regular.categories
+        } else if (pickInWindow(tiers.onsite)) {
+          currentTierName = 'Late / Spot'
+          registrationCategories = tiers.onsite.categories
+        } else {
+          // If no valid windows provided in DB, fall back to centralized current tier
+          const map: Record<string, any> = {
+            'Early Bird': tiers.earlyBird?.categories,
+            'Regular': tiers.regular?.categories,
+            'Late / Spot': tiers.onsite?.categories,
+          }
+          const cats = map[currentTierName]
+          if (cats) {
+            registrationCategories = cats
+          } else {
+            registrationCategories = tiers.regular.categories
+            currentTierName = 'Regular'
+          }
+        }
+      }
+    } catch {}
 
     // Fetch active workshops from Workshop model
     const workshops = await Workshop.find({ isActive: true }).lean()
@@ -105,7 +132,7 @@ export async function POST(request: NextRequest) {
     })
     
     if (accompanyingPersonConfig?.value) {
-      const tierId = currentTier.id || 'regular'
+      const tierId = currentTierName.replace(/\s+/g, '-').toLowerCase() || 'regular'
       accompanyingPersonRate = accompanyingPersonConfig.value.tierPricing?.[tierId] || accompanyingPersonConfig.value.basePrice || 3000
     }
     
@@ -126,20 +153,25 @@ export async function POST(request: NextRequest) {
     // Check for time-based discounts (Independence Day, Early Bird)
     const currentDate = new Date()
     
+    // Apply only explicitly active, bounded time-based discounts
     discountConfigs.forEach(config => {
       if (config.key === 'active_discounts' && Array.isArray(config.value)) {
         config.value.forEach((discount: any) => {
           if (discount.type === 'time-based') {
+            const isActive = discount.isActive === true
             const startDate = discount.startDate ? new Date(discount.startDate) : null
             const endDate = discount.endDate ? new Date(discount.endDate) : null
-            
-            const isInDateRange = (!startDate || currentDate >= startDate) && 
-                                 (!endDate || currentDate <= endDate)
-            
-            const isApplicableCategory = discount.applicableCategories.includes('all') || 
-                                       discount.applicableCategories.includes(registrationType)
-            
-            if (isInDateRange && isApplicableCategory) {
+
+            // Require both start and end dates to avoid perpetual discounts
+            const hasValidWindow = !!startDate && !!endDate
+            const isInDateRange = hasValidWindow && currentDate >= startDate && currentDate <= endDate
+
+            const isApplicableCategory = Array.isArray(discount.applicableCategories) && (
+              discount.applicableCategories.includes('all') ||
+              discount.applicableCategories.includes(registrationType)
+            )
+
+            if (isActive && hasValidWindow && isInDateRange && isApplicableCategory) {
               const discountAmount = Math.floor(subtotal * discount.percentage / 100)
               totalDiscount += discountAmount
               appliedDiscounts.push({
@@ -189,10 +221,8 @@ export async function POST(request: NextRequest) {
       total,
       currency,
       currentTier: {
-        id: currentTier.id,
-        name: currentTier.name,
-        description: currentTier.description,
-        endDate: currentTier.endDate
+        id: currentTierName.replace(/\s+/g, '-').toLowerCase(),
+        name: currentTierName,
       },
       breakdown: {
         registrationType,

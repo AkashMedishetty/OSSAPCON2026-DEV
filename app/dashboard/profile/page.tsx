@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute"
 import { ProfileForm } from "@/components/dashboard/ProfileForm"
-import { Navigation } from "@/components/navigation"
+import { MainLayout } from "@/components/layout/MainLayout"
 
 export const metadata: Metadata = {
   title: "Profile | OSSAPCON 2026",
@@ -11,10 +11,8 @@ export const metadata: Metadata = {
 export default function ProfilePage() {
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <Navigation />
-        
-        <main className="container mx-auto px-4 py-8">
+      <MainLayout currentPage="profile" showSearch={true}>
+        <div className="container mx-auto px-4 py-8">
           <div className="max-w-4xl mx-auto">
             <div className="mb-8">
               <h1 className="text-3xl font-bold">Profile Settings</h1>
@@ -25,8 +23,8 @@ export default function ProfilePage() {
             
             <ProfileForm />
           </div>
-        </main>
-      </div>
+        </div>
+      </MainLayout>
     </ProtectedRoute>
   )
 }

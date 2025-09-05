@@ -18,6 +18,33 @@ export const authRoutes = [
 
 export async function middleware(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl
+
+  // Debug RSC requests
+  const isRSCRequest = searchParams.has('_rsc')
+  const acceptHeader = request.headers.get('accept') || ''
+  const isServerComponent = acceptHeader.includes('text/x-component')
+  
+  if (isRSCRequest || isServerComponent) {
+    console.log(`🔍 RSC Request: ${pathname}${searchParams.toString() ? '?' + searchParams.toString() : ''}`)
+    console.log(`🔍 Accept: ${acceptHeader}`)
+    console.log(`🔍 Headers:`, Object.fromEntries(request.headers.entries()))
+  }
+
+  // Bypass all auth/middleware logic for the public registration page to fix first-load issues
+  if (pathname === '/register' || pathname.startsWith('/register/')) {
+    const res = NextResponse.next()
+    res.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0')
+    res.headers.set('Pragma', 'no-cache')
+    res.headers.set('Expires', '0')
+    res.headers.set('Vary', 'Cookie, Authorization')
+    
+    if (isRSCRequest || isServerComponent) {
+      console.log(`✅ RSC Request allowed through for /register`)
+    }
+    
+    return res
+  }
+
   const token = await getToken({ req: request })
   const isAuthenticated = !!token
 
@@ -73,6 +100,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico).*)',
+    '/((?!_next/static|_next/image|favicon.ico|Favicons|android-chrome|apple-touch-icon|site.webmanifest|browserconfig.xml).*)',
   ],
 }

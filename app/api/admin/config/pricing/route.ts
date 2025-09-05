@@ -26,16 +26,30 @@ export async function GET(request: NextRequest) {
       }, { status: 403 })
     }
 
-    // Get pricing configuration
-    const pricingConfig = await Configuration.findOne({ 
+    // Get pricing configuration from the comprehensive config
+    const pricingTiersConfig = await Configuration.findOne({ 
       type: 'pricing', 
-      key: 'registration_categories' 
+      key: 'pricing_tiers' 
     })
 
-    const workshopConfig = await Configuration.findOne({ 
-      type: 'pricing', 
-      key: 'workshops' 
-    })
+    // Extract the needed parts from the comprehensive config
+    let pricingData = null
+    let workshopData = null
+    
+    if (pricingTiersConfig?.value) {
+      // Extract registration categories from earlyBird/regular tiers
+      const tiers = pricingTiersConfig.value
+      if (tiers.earlyBird?.categories) {
+        pricingData = tiers.earlyBird.categories
+      } else if (tiers.regular?.categories) {
+        pricingData = tiers.regular.categories
+      }
+      
+      // Extract workshops
+      if (tiers.workshops) {
+        workshopData = tiers.workshops
+      }
+    }
 
     // Default pricing if not found
     const defaultPricing = {
@@ -55,8 +69,8 @@ export async function GET(request: NextRequest) {
     }
 
     const result = {
-      registration_categories: pricingConfig?.value || defaultPricing.registration_categories,
-      workshops: workshopConfig?.value || defaultPricing.workshops
+      registration_categories: pricingData || defaultPricing.registration_categories,
+      workshops: workshopData || defaultPricing.workshops
     }
 
     return NextResponse.json({

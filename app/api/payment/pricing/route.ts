@@ -1,15 +1,31 @@
 import { NextResponse } from 'next/server'
 import connectDB from '@/lib/mongodb'
 import Configuration from '@/lib/models/Configuration'
-import { getCurrentPricingTier, getNextPricingTier } from '@/lib/utils/pricingTiers'
+import { getCurrentTier, getTierSummary, getTierPricing } from '@/lib/registration'
 
 export async function GET() {
   try {
     await connectDB()
 
-    // Get current pricing tier
-    const currentTier = await getCurrentPricingTier()
-    const nextTier = await getNextPricingTier()
+    // Prefer admin-configured pricing if available; fallback to centralized config
+    let currentTierName = getCurrentTier()
+    let categories = getTierPricing(currentTierName)
+
+    // Try DB-driven tier config
+    try {
+      const adminPricingConfig = await Configuration.findOne({ type: 'pricing', key: 'pricing_tiers', isActive: true })
+      if (adminPricingConfig?.value?.regular?.categories) {
+        // Choose tier by date if defined; fallback to regular
+        const today = new Date()
+        const iso = today.toISOString().split('T')[0]
+        const tiers = adminPricingConfig.value
+        const pick = (t: any) => t && t.isActive && iso >= t.startDate && iso <= t.endDate
+        if (pick(tiers.earlyBird)) { currentTierName = 'Early Bird'; categories = tiers.earlyBird.categories }
+        else if (pick(tiers.regular)) { currentTierName = 'Regular'; categories = tiers.regular.categories }
+        else if (pick(tiers.onsite)) { currentTierName = 'Late / Spot'; categories = tiers.onsite.categories }
+        else { currentTierName = 'Regular'; categories = tiers.regular.categories }
+      }
+    } catch {}
 
     // Fetch workshop configuration
     const workshopConfig = await Configuration.findOne({
@@ -37,27 +53,18 @@ export async function GET() {
     return NextResponse.json({
       success: true,
       data: {
-        currentTier: currentTier ? {
-          id: currentTier.id,
-          name: currentTier.name,
-          description: currentTier.description,
-          startDate: currentTier.startDate,
-          endDate: currentTier.endDate,
-          categories: currentTier.categories
-        } : null,
-        nextTier: nextTier ? {
-          tier: {
-            id: nextTier.tier.id,
-            name: nextTier.tier.name,
-            description: nextTier.tier.description,
-            startDate: nextTier.tier.startDate,
-            endDate: nextTier.tier.endDate
-          },
-          daysUntil: nextTier.daysUntil
-        } : null,
+        currentTier: {
+          id: currentTierName.replace(/\s+/g, '-').toLowerCase(),
+          name: currentTierName,
+          description: getTierSummary(),
+          startDate: null,
+          endDate: null,
+          categories
+        },
+        nextTier: null,
         workshops,
         // Legacy format for backward compatibility
-        registration_categories: currentTier?.categories || {},
+        registration_categories: categories || {},
       }
     })
 

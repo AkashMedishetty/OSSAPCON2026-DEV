@@ -35,6 +35,8 @@ import { useTheme } from "next-themes"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { FooterPWAInstallButton } from "@/components/ServiceWorkerUpdate"
+import { AnimatedGridPattern } from "@/components/magicui/animated-grid-pattern"
+import Footer from "@/components/Footer"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -254,32 +256,31 @@ export function MainLayout({ children, currentPage, showSearch = false }: MainLa
   const navigationItems = session ? authNavigationItems : publicNavigationItems
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950">
+    <div className="min-h-screen bg-gradient-to-br from-ocean-50 via-white to-sapphire-50 dark:from-midnight-950 dark:via-midnight-900 dark:to-midnight-950">
       {/* Top Navigation */}
       <motion.nav
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="sticky top-0 z-50 bg-white/90 dark:bg-gray-950/90 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-800/50 shadow-sm"
+        className="sticky top-0 z-50 glass border-b border-white/20 shadow-lg"
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20">
-            {/* Logo */}
+            {/* Enhanced Logo */}
             <Link href="/" className="flex items-center space-x-3">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center"
+                className="flex items-center interactive-spring"
               >
-                {/* Use the same logo as main page */}
-                <OptimizedImage
-                  src="/ossapcon-logo.png"
-                  alt="OSSAPCON 2026 Logo"
-                  width={160}
-                  height={64}
-                  className="h-12 lg:h-16 w-auto object-contain"
-                  priority
-                />
+                <div className="flex items-center">
+                  <div className="text-lg lg:text-xl font-display font-bold text-gradient-ocean">
+                    OSSAPCON
+                  </div>
+                  <div className="ml-2 text-xs text-midnight-600 dark:text-midnight-400 font-medium">
+                    2026
+                  </div>
+                </div>
               </motion.div>
             </Link>
 
@@ -338,11 +339,11 @@ export function MainLayout({ children, currentPage, showSearch = false }: MainLa
                       Log in
                     </Button>
                   </Link>
-                  <Link href="/register">
+                  <a href="/register">
                     <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg">
                       Register Now
                     </Button>
-                  </Link>
+                  </a>
                 </div>
               )}
             </div>
@@ -427,12 +428,12 @@ export function MainLayout({ children, currentPage, showSearch = false }: MainLa
                             Log in
                           </Button>
                         </Link>
-                        <Link href="/register" onClick={() => setIsMenuOpen(false)}>
+                        <a href="/register" onClick={() => setIsMenuOpen(false)}>
                           <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white h-12 shadow-lg">
                             <UserCheck className="w-4 h-4 mr-3" />
                             Register Now
                           </Button>
-                        </Link>
+                        </a>
                       </motion.div>
                     </>
                   )}
@@ -513,193 +514,8 @@ export function MainLayout({ children, currentPage, showSearch = false }: MainLa
         {children}
       </main>
 
-      {/* Comprehensive Footer - Same as main page */}
-      <footer className="bg-gradient-to-br from-gray-900 to-black text-white py-20">
-        <div className="container mx-auto px-6">
-          {/* Organizers Section */}
-          <div className="mb-16">
-            <div className="text-center">
-              <h3 className="text-3xl font-bold mb-8 text-blue-400 leading-relaxed">Organized By</h3>
-              <div className="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-12">
-                {/* Orthopedic Surgeons Society of Andhra Pradesh */}
-                <div className="flex flex-col items-center space-y-4">
-                  <OptimizedImage
-                    src="/ossapcon-logo.png"
-                    alt="Orthopedic Surgeons Society of Andhra Pradesh"
-                    width={200}
-                    height={80}
-                    className="h-20 w-auto object-contain"
-                  />
-                  <p className="text-gray-300 text-center font-medium">Orthopedic Surgeons Society of Andhra Pradesh</p>
-                </div>
-
-                {/* Department of Orthopedics */}
-                <div className="flex flex-col items-center space-y-4">
-                  <OptimizedImage
-                    src="/ossapcon-logo.png"
-                    alt="Department of Orthopedics, Kurnool Medical College"
-                    width={200}
-                    height={80}
-                    className="h-20 w-auto object-contain"
-                  />
-                  <p className="text-gray-300 text-center font-medium">Department of Orthopedics, Kurnool Medical College</p>
-                </div>
-
-                {/* KIMS Hospitals */}
-                <div className="flex flex-col items-center space-y-4">
-                  <OptimizedImage
-                    src="/KIMS.png"
-                    alt="KIMS Hospitals"
-                    width={200}
-                    height={80}
-                    className="h-20 w-auto object-contain"
-                  />
-                  <p className="text-gray-300 text-center font-medium">KIMS Hospitals</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Main Footer Content */}
-          <div className="grid md:grid-cols-4 lg:grid-cols-5 gap-8 mb-16">
-            {/* Conference Info */}
-            <div className="md:col-span-2 lg:col-span-1">
-              <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-6 bg-gradient-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent leading-tight py-2">
-                OSSAPCON 2026
-              </h3>
-              <p className="text-gray-300 leading-relaxed mb-6">
-                Excellence in Orthopedic Care through innovation, collaboration, and excellence. Join us in Kurnool for three transformative days of medical learning.
-              </p>
-              <div className="space-y-2 text-gray-400">
-                <p className="flex items-center">
-                  <Calendar className="w-4 h-4 mr-2 text-blue-600" />
-                  August 7-9, 2026
-                </p>
-                <p className="flex items-center">
-                  <MapPin className="w-4 h-4 mr-2 text-blue-600" />
-                  Kurnool, Andhra Pradesh
-                </p>
-                <p className="flex items-center">
-                  <Users className="w-4 h-4 mr-2 text-blue-600" />
-                  400+ Expected Delegates
-                </p>
-              </div>
-            </div>
-
-            {/* Quick Links */}
-            <div>
-              <h4 className="font-bold mb-6 text-blue-400 uppercase tracking-wide">Quick Links</h4>
-              <ul className="space-y-3 text-gray-300">
-                {[
-                  { name: "About Conference", href: "/" },
-                  { name: "Scientific Program", href: "/program" },
-                  { name: "Registration", href: "/register" },
-                  { name: "Abstracts", href: "/abstracts" },
-                  { name: "Venue Information", href: "/venue" },
-                  { name: "Local Tourism", href: "/" }
-                ].map((item) => (
-                  <li key={item.name}>
-                    <Link href={item.href} className="hover:text-blue-400 transition-colors duration-300 flex items-center">
-                      <ArrowRight className="w-3 h-3 mr-2" />
-                      {item.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Contact Information */}
-            <div>
-              <h4 className="font-bold mb-6 text-blue-400 uppercase tracking-wide">Contact Information</h4>
-
-              <div className="mb-6">
-                <h5 className="font-semibold text-white mb-2">Conference Secretariat</h5>
-                <p className="text-gray-300 text-sm">Dr. Raghavendra H</p>
-                <p className="text-gray-400 text-sm">Conference Secretariat</p>
-                <p className="text-gray-400 text-sm">Kurnool, Andhra Pradesh 518002</p>
-              </div>
-            </div>
-
-            {/* Conference Manager */}
-            <div>
-              <h4 className="font-bold mb-6 text-blue-400 uppercase tracking-wide">Conference Manager</h4>
-
-              <div className="mb-6">
-                <h5 className="font-semibold text-white mb-2">Mr. Kiran Kumar Lella</h5>
-                <p className="text-gray-400 text-sm mb-2">Conference Manager</p>
-                <p className="text-gray-300 text-sm mb-1">Mobile: +91 – 9676541985</p>
-                <p className="text-gray-300 text-sm mb-4">Email: kiran@cmchyd.com</p>
-
-                {/* CMC Logo under Conference Manager */}
-                <div className="flex items-center mt-4">
-                  <img
-                    src="/CMC Logo Footer.png"
-                    alt="CMC Logo"
-                    className="h-36 w-auto object-contain"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Social Media & Follow */}
-            <div>
-              <h4 className="font-bold mb-6 text-blue-400 uppercase tracking-wide">Follow Us</h4>
-              <div className="flex space-x-4 mb-8">
-                {[
-                  { logo: "/LinkedIn_logo_initials.png", label: "LinkedIn" },
-                  { logo: "/Logo_of_Twitter.png", label: "Twitter" },
-                  { logo: "/Facebook_Logo_(2019).png", label: "Facebook" },
-                  { logo: "/Instagram_icon.png", label: "Instagram" },
-                  { logo: "/Youtube_logo.png", label: "YouTube" }
-                ].map((social, index) => (
-                  <motion.div
-                    key={index}
-                    className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors cursor-pointer p-1"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    title={social.label}
-                  >
-                    <img
-                      src={social.logo}
-                      alt={social.label}
-                      className="w-6 h-6 object-contain"
-                    />
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* PWA Install Button */}
-              <div className="mt-4">
-                <FooterPWAInstallButton />
-              </div>
-
-              <div>
-                <h5 className="font-semibold text-white mb-4">Tech Partner</h5>
-                <div className="flex items-center space-x-2">
-                  <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent">
-                    PurpleHat Events
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom Footer */}
-          <div className="border-t border-gray-700 pt-8">
-            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-              <div className="text-gray-400 text-sm">
-                <p>&copy; 2026 OSSAPCON Conference. All rights reserved.</p>
-                <p>Kurnool, Andhra Pradesh, India</p>
-              </div>
-              <div className="flex space-x-6 text-gray-400 text-sm">
-                <Link href="/privacy-policy" className="hover:text-blue-400 transition-colors">Privacy Policy</Link>
-                <Link href="/terms-conditions" className="hover:text-blue-400 transition-colors">Terms & Conditions</Link>
-                <Link href="/cookies-policy" className="hover:text-blue-400 transition-colors">Cookies Policy</Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
+      {/* Footer - hidden on homepage to avoid duplicate */}
+      {currentPage !== "home" && <Footer />}
     </div>
   )
 }

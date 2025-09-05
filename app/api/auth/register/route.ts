@@ -12,11 +12,12 @@ export async function POST(request: NextRequest) {
       email,
       password,
       profile,
-      registration
+      registration,
+      payment
     } = body
 
     // Validate required fields
-    if (!email || !password || !profile?.firstName || !profile?.lastName) {
+    if (!email || !password || !profile?.firstName || !profile?.lastName || !profile?.mciNumber) {
       return NextResponse.json({
         success: false,
         message: 'Missing required fields'
@@ -107,17 +108,32 @@ export async function POST(request: NextRequest) {
           pincode: profile.address?.pincode || ''
         },
         dietaryRequirements: profile.dietaryRequirements || '',
+        mciNumber: profile.mciNumber,
         specialNeeds: profile.specialNeeds || ''
       },
       registration: {
         registrationId,
-        type: registration?.type || 'ntsi-member',
+        type: registration?.type || 'non-member',
         status: 'pending',
+        tier: body?.payment?.tier || body?.currentTier || undefined,
         membershipNumber: registration?.membershipNumber || '',
         workshopSelections: registration?.workshopSelections || [],
-        accompanyingPersons: registration?.accompanyingPersons || [],
+        // Backward compatibility: if model still requires age, provide a sensible default
+        accompanyingPersons: (registration?.accompanyingPersons || []).map((p: any) => ({
+          name: p.name,
+          relationship: p.relationship,
+          dietaryRequirements: p.dietaryRequirements || '',
+          age: p.age ?? 18
+        })),
         registrationDate: new Date()
       },
+      payment: payment ? {
+        method: payment.method || 'bank-transfer',
+        status: payment.status || 'pending',
+        amount: payment.amount || 0,
+        bankTransferUTR: payment.bankTransferUTR,
+        paymentDate: new Date()
+      } : undefined,
       role: 'user',
       isActive: true
     })

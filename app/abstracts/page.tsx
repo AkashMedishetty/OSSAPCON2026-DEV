@@ -1,8 +1,6 @@
 "use client"
 
-import type React from "react"
-
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -10,10 +8,14 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Navigation } from "@/components/navigation"
-import { Calendar, FileText, Award, Upload, CheckCircle, Bell, Mail, X, Zap, Clock } from "lucide-react"
+import { Calendar, FileText, Award, Upload, CheckCircle, Bell, Mail, X, Zap, Clock, Phone } from "lucide-react"
 import Link from "next/link"
 
 export default function AbstractsPage() {
+  // Update page title for OSSAPCON 2026
+  useEffect(() => {
+    document.title = "Abstract Submission | OSSAPCON 2026"
+  }, [])
   const [isNotifyOpen, setIsNotifyOpen] = useState(false)
   const [email, setEmail] = useState("")
   const [isSubmitted, setIsSubmitted] = useState(false)
@@ -82,20 +84,20 @@ export default function AbstractsPage() {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-white dark:from-midnight-900 dark:to-midnight-800 flex items-center justify-center px-4">
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ duration: 0.5 }}
-          className="text-center p-8 lg:p-12 bg-white dark:bg-gray-800 rounded-2xl shadow-xl max-w-md w-full"
+          className="text-center p-8 lg:p-12 bg-white dark:bg-midnight-800 rounded-2xl shadow-xl max-w-md w-full"
         >
-          <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-6" />
-          <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">You're All Set!</h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-6">
+          <CheckCircle className="w-16 h-16 text-emerald-500 mx-auto mb-6" />
+          <h2 className="text-2xl font-bold text-midnight-800 dark:text-white mb-4">You're All Set!</h2>
+          <p className="text-midnight-600 dark:text-midnight-300 mb-6">
             We'll notify you as soon as abstract submissions open. Keep an eye on your inbox!
           </p>
           <div className="flex gap-3">
-            <Button onClick={() => setIsSubmitted(false)} className="flex-1 bg-orange-600 hover:bg-orange-700">
+            <Button onClick={() => setIsSubmitted(false)} className="flex-1 bg-emerald-600 hover:bg-emerald-700">
               Back to Page
             </Button>
             <Link href="/" className="flex-1">
@@ -110,12 +112,12 @@ export default function AbstractsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-white dark:from-midnight-900 dark:to-midnight-800">
       <Navigation currentPage="abstracts" />
 
       <div className="pt-24 pb-12">
         {/* Header */}
-        <section className="py-12 md:py-16 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
+        <section className="py-12 md:py-16 bg-gradient-to-r from-emerald-600 to-ocean-600 text-white">
           <div className="container mx-auto px-4 text-center">
             <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6">Abstract Submission</h1>
@@ -134,14 +136,14 @@ export default function AbstractsPage() {
               <p className="text-lg md:text-xl max-w-3xl mx-auto">
                   Abstract submissions will open soon! Be among the first to share your groundbreaking research
                   <br />
-                  <span className="text-orange-200">with the global neurotrauma community.</span>
+                  <span className="text-emerald-200">with the global orthopedic surgery community.</span>
                 </p>
               </div>
 
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button 
                   onClick={() => setIsNotifyOpen(true)}
-                  className="px-8 py-4 text-lg bg-white text-orange-600 hover:bg-orange-50 rounded-full shadow-2xl font-bold"
+                  className="px-8 py-4 text-lg bg-emerald-600 hover:bg-emerald-700 text-white rounded-full shadow-2xl font-bold"
                 >
                   <Bell className="w-5 h-5 mr-2" />
                   Notify Me When Open
@@ -161,10 +163,10 @@ export default function AbstractsPage() {
               transition={{ duration: 0.8 }}
               className="text-center mb-16"
             >
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-800 via-blue-600 to-blue-800 bg-clip-text text-transparent">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-midnight-800 via-emerald-600 to-ocean-600 bg-clip-text text-transparent">
                 Submission Timeline
               </h2>
-              <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+              <p className="text-xl text-midnight-600 dark:text-midnight-400 max-w-3xl mx-auto">
                 Here's what to expect when abstract submissions open
               </p>
             </motion.div>
@@ -199,14 +201,14 @@ export default function AbstractsPage() {
                   className="relative group"
                   whileHover={{ scale: 1.05, y: -5 }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-blue-600/10 rounded-2xl blur-xl opacity-50 group-hover:opacity-70 transition-all duration-300"></div>
-                  <div className="relative text-center p-8 bg-white dark:bg-gray-800 backdrop-blur-xl border border-blue-100 dark:border-gray-700 rounded-2xl hover:border-blue-200 dark:hover:border-gray-600 transition-all duration-300 shadow-lg hover:shadow-xl">
-                    <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-ocean-500/10 rounded-2xl blur-xl opacity-50 group-hover:opacity-70 transition-all duration-300"></div>
+                  <div className="relative text-center p-8 bg-white dark:bg-midnight-800 backdrop-blur-xl border border-emerald-100 dark:border-midnight-700 rounded-2xl hover:border-emerald-200 dark:hover:border-midnight-600 transition-all duration-300 shadow-lg hover:shadow-xl">
+                    <div className="w-16 h-16 bg-gradient-to-r from-emerald-500 to-ocean-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
                       <item.icon className="w-8 h-8 text-white" />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">{item.title}</h3>
-                    <p className="text-2xl font-bold text-orange-600 dark:text-orange-400 mb-3">{item.date}</p>
-                    <p className="text-gray-600 dark:text-gray-300">{item.desc}</p>
+                    <h3 className="text-xl font-bold text-midnight-800 dark:text-midnight-100 mb-2">{item.title}</h3>
+                    <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mb-3">{item.date}</p>
+                    <p className="text-midnight-600 dark:text-midnight-300">{item.desc}</p>
                   </div>
                 </motion.div>
                 ))}
@@ -215,7 +217,7 @@ export default function AbstractsPage() {
         </section>
 
         {/* Research Categories Preview */}
-        <section className="py-16 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-800 dark:to-gray-900">
+        <section className="py-16 bg-gradient-to-br from-emerald-50 to-ocean-50 dark:from-midnight-800 dark:to-midnight-900">
           <div className="container mx-auto px-6">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -224,22 +226,22 @@ export default function AbstractsPage() {
               transition={{ duration: 0.8 }}
               className="text-center mb-16"
             >
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-800 via-blue-600 to-blue-800 bg-clip-text text-transparent">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-midnight-800 via-emerald-600 to-ocean-600 bg-clip-text text-transparent">
                 Research Categories
               </h2>
-              <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-                We welcome abstracts across all areas of neurotrauma research and clinical practice
+              <p className="text-xl text-midnight-600 dark:text-midnight-400 max-w-3xl mx-auto">
+                We welcome abstracts across all areas of orthopedic surgery research and clinical practice
               </p>
             </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[
                 { title: "Clinical Research", desc: "Patient outcomes and treatment efficacy studies", icon: FileText },
-                { title: "Surgical Techniques", desc: "Innovative surgical approaches and technologies", icon: Award },
-                { title: "Rehabilitation", desc: "Recovery protocols and therapeutic interventions", icon: Clock },
-                { title: "Emergency Care", desc: "Acute management and trauma response", icon: Zap },
-                { title: "Neuroimaging", desc: "Advanced imaging techniques and diagnostics", icon: Upload },
-                { title: "Case Studies", desc: "Unique cases and clinical presentations", icon: CheckCircle },
+                { title: "Surgical Techniques", desc: "Innovative orthopedic surgical approaches", icon: Award },
+                { title: "Rehabilitation", desc: "Post-operative recovery and physical therapy", icon: Clock },
+                { title: "Trauma & Emergency", desc: "Acute orthopedic injury management", icon: Zap },
+                { title: "Joint Replacement", desc: "Advanced joint reconstruction techniques", icon: Upload },
+                { title: "Case Studies", desc: "Unique orthopedic cases and presentations", icon: CheckCircle },
               ].map((category, index) => (
                 <motion.div
                   key={index}
@@ -250,19 +252,21 @@ export default function AbstractsPage() {
                   className="relative group"
                   whileHover={{ scale: 1.05, y: -5 }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-blue-600/10 rounded-2xl blur-xl opacity-50 group-hover:opacity-70 transition-all duration-300"></div>
-                  <div className="relative bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-blue-100 dark:border-gray-700 hover:border-blue-200 dark:hover:border-gray-600">
-                    <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-6">
+                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-ocean-500/10 rounded-2xl blur-xl opacity-50 group-hover:opacity-70 transition-all duration-300"></div>
+                  <div className="relative bg-white dark:bg-midnight-800 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-emerald-100 dark:border-midnight-700 hover:border-emerald-200 dark:hover:border-midnight-600">
+                    <div className="w-12 h-12 bg-gradient-to-r from-emerald-500 to-ocean-600 rounded-xl flex items-center justify-center mb-6">
                       <category.icon className="w-6 h-6 text-white" />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-3">{category.title}</h3>
-                    <p className="text-gray-600 dark:text-gray-300">{category.desc}</p>
+                    <h3 className="text-xl font-bold text-midnight-800 dark:text-midnight-100 mb-3">{category.title}</h3>
+                    <p className="text-midnight-600 dark:text-midnight-300">{category.desc}</p>
                   </div>
                 </motion.div>
               ))}
             </div>
           </div>
         </section>
+
+
 
         {/* COMMENTED OUT - Detailed Submission Form and Guidelines 
         <section className="py-12 lg:py-16">
@@ -277,20 +281,20 @@ export default function AbstractsPage() {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full p-8 relative"
+              className="bg-white dark:bg-midnight-800 rounded-2xl shadow-2xl max-w-md w-full p-8 relative"
             >
               <button
                 onClick={() => setIsNotifyOpen(false)}
-                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                className="absolute top-4 right-4 text-midnight-400 hover:text-midnight-600 dark:hover:text-midnight-300"
               >
                 <X className="w-6 h-6" />
-              </button>
+                </button>
 
               <div className="text-center mb-6">
-                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-gradient-to-r from-emerald-500 to-ocean-600 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Mail className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">
+                <h3 className="text-2xl font-bold text-midnight-800 dark:text-midnight-100 mb-2">
                   Get Notified
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400">
@@ -306,7 +310,7 @@ export default function AbstractsPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-gray-700 dark:text-gray-100"
+                    className="w-full px-4 py-3 border border-midnight-300 dark:border-midnight-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent dark:bg-midnight-700 dark:text-midnight-100"
                   />
                 </div>
 
@@ -315,13 +319,13 @@ export default function AbstractsPage() {
                     type="button"
                     variant="outline"
                     onClick={() => setIsNotifyOpen(false)}
-                    className="flex-1 py-3 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
+                    className="flex-1 py-3 border-midnight-300 dark:border-midnight-600 hover:bg-midnight-50 dark:hover:bg-midnight-700"
                   >
                     Cancel
                   </Button>
                   <Button
                     type="submit"
-                    className="flex-1 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
+                    className="flex-1 py-3 bg-gradient-to-r from-emerald-500 to-ocean-600 hover:from-emerald-600 hover:to-ocean-700 text-white"
                   >
                     <Bell className="w-4 h-4 mr-2" />
                     Notify Me

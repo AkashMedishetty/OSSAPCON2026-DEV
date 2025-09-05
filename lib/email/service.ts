@@ -8,6 +8,7 @@ import {
   getCustomMessageTemplate
 } from './templates'
 import { getEmailConfig } from '@/lib/config'
+import { emailTemplateConfig } from './config'
 
 export class EmailService {
   /**
@@ -22,8 +23,17 @@ export class EmailService {
     accompanyingPersons?: number
   }) {
     try {
-      const emailConfig = await getEmailConfig()
-      const template = emailConfig?.templates?.registration
+      // Use static config by default, but allow database override for template content
+      let template = emailTemplateConfig.templates.registration
+      
+      try {
+        const dbEmailConfig = await getEmailConfig()
+        if (dbEmailConfig?.templates?.registration) {
+          template = { ...template, ...dbEmailConfig.templates.registration }
+        }
+      } catch (error) {
+        console.log('Using static email config - database config unavailable')
+      }
       
       if (!template?.enabled) {
         console.log('Registration email template is disabled')
@@ -34,7 +44,7 @@ export class EmailService {
       
       return await sendEmail({
         to: userData.email,
-        subject: template.subject || 'Registration Confirmation - OSSAPCON 2026',
+        subject: template.subject || 'Application Received - OSSAPCON 2026',
         html,
         text: `Registration confirmation for ${userData.name}. Registration ID: ${userData.registrationId}`
       })
@@ -52,14 +62,24 @@ export class EmailService {
     name: string
     registrationId: string
     amount: number
-    currency: string
-    transactionId: string
-    paymentDate: string
-    breakdown: any
+    verificationDate?: Date
+    currency?: string
+    transactionId?: string
+    paymentDate?: string
+    breakdown?: any
   }) {
     try {
-      const emailConfig = await getEmailConfig()
-      const template = emailConfig?.templates?.payment
+      // Use static config by default, but allow database override for template content
+      let template = emailTemplateConfig.templates.payment
+      
+      try {
+        const dbEmailConfig = await getEmailConfig()
+        if (dbEmailConfig?.templates?.payment) {
+          template = { ...template, ...dbEmailConfig.templates.payment }
+        }
+      } catch (error) {
+        console.log('Using static email config - database config unavailable')
+      }
       
       if (!template?.enabled) {
         console.log('Payment email template is disabled')
@@ -76,6 +96,44 @@ export class EmailService {
       })
     } catch (error) {
       console.error('Error sending payment confirmation:', error)
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  }
+
+  /**
+   * Send payment rejection email
+   */
+  static async sendPaymentRejection(rejectionData: {
+    email: string
+    name: string
+    registrationId: string
+    reason: string
+    rejectionDate: Date
+  }) {
+    try {
+      const html = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #dc3545;">Payment Verification Failed - OSSAPCON 2026</h2>
+          <p>Dear ${rejectionData.name},</p>
+          <p>We regret to inform you that your payment verification for OSSAPCON 2026 has not been successful.</p>
+          <div style="background-color: #f8f9fa; padding: 20px; border-left: 4px solid #dc3545; margin: 20px 0;">
+            <strong>Registration ID:</strong> ${rejectionData.registrationId}<br>
+            <strong>Rejection Date:</strong> ${rejectionData.rejectionDate.toLocaleDateString()}<br>
+            <strong>Reason:</strong> ${rejectionData.reason}
+          </div>
+          <p>Please contact our team at <a href="mailto:support@ossapcon2026.com">support@ossapcon2026.com</a> if you believe this is an error or need assistance.</p>
+          <p>Best regards,<br>OSSAPCON 2026 Team</p>
+        </div>
+      `;
+      
+      return await sendEmail({
+        to: rejectionData.email,
+        subject: 'Payment Verification Failed - OSSAPCON 2026',
+        html,
+        text: `Payment verification failed for registration ${rejectionData.registrationId}. Reason: ${rejectionData.reason}`
+      })
+    } catch (error) {
+      console.error('Error sending payment rejection:', error)
       return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
     }
   }

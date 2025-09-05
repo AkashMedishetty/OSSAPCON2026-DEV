@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -107,9 +107,23 @@ export function ConfigManager() {
         emailRes.json()
       ])
 
-      if (pricingData.success) setPricingConfig(pricingData.data)
-      if (discountData.success) setDiscountConfig(discountData.data)
-      if (emailData.success) setEmailConfig(emailData.data)
+      if (pricingData.success) {
+        setPricingConfig(pricingData.data)
+      } else {
+        console.error('Pricing config error:', pricingData.message)
+      }
+      
+      if (discountData.success) {
+        setDiscountConfig(discountData.data)
+      } else {
+        console.error('Discount config error:', discountData.message)
+      }
+      
+      if (emailData.success) {
+        setEmailConfig(emailData.data)
+      } else {
+        console.error('Email config error:', emailData.message)
+      }
 
     } catch (error) {
       console.error('Config fetch error:', error)
@@ -287,33 +301,44 @@ export function ConfigManager() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
+      className="space-y-6"
     >
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Settings className="h-5 w-5 text-blue-500" />
-            System Configuration
-          </CardTitle>
-          <CardDescription>
-            Manage pricing, discounts, email settings, and other system configurations
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="pricing" className="flex items-center gap-2">
-                <DollarSign className="h-4 w-4" />
-                Pricing
-              </TabsTrigger>
-              <TabsTrigger value="discounts" className="flex items-center gap-2">
-                <Tag className="h-4 w-4" />
-                Discounts
-              </TabsTrigger>
-              <TabsTrigger value="email" className="flex items-center gap-2">
-                <Mail className="h-4 w-4" />
-                Email
-              </TabsTrigger>
-            </TabsList>
+      <div className="bg-white/60 backdrop-blur-xl rounded-2xl border border-slate-200/50 shadow-lg p-6">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="p-2 bg-blue-500/10 rounded-xl">
+            <Settings className="h-6 w-6 text-blue-600" />
+          </div>
+          <div>
+            <h2 className="text-xl font-bold text-slate-900">System Configuration</h2>
+            <p className="text-slate-600 text-sm">
+              Manage pricing, discounts, email settings, and other system configurations
+            </p>
+          </div>
+        </div>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
+          <TabsList className="grid w-full grid-cols-3 bg-slate-100/60 p-1 rounded-xl">
+            <TabsTrigger 
+              value="pricing" 
+              className="flex items-center gap-2 rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all duration-200"
+            >
+              <DollarSign className="h-4 w-4" />
+              Pricing
+            </TabsTrigger>
+            <TabsTrigger 
+              value="discounts" 
+              className="flex items-center gap-2 rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all duration-200"
+            >
+              <Tag className="h-4 w-4" />
+              Discounts
+            </TabsTrigger>
+            <TabsTrigger 
+              value="email" 
+              className="flex items-center gap-2 rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all duration-200"
+            >
+              <Mail className="h-4 w-4" />
+              Email
+            </TabsTrigger>
+          </TabsList>
 
             {/* Pricing Configuration */}
             <TabsContent value="pricing" className="space-y-6">
@@ -323,37 +348,42 @@ export function ConfigManager() {
                   <div className="space-y-4">
                     <h3 className="text-lg font-semibold">Registration Categories</h3>
                     <div className="grid gap-4">
-                      {Object.entries(pricingConfig.registration_categories).map(([type, config]) => (
-                        <Card key={type}>
-                          <CardHeader>
-                            <CardTitle className="capitalize">{config.label}</CardTitle>
+                      {pricingConfig?.registration_categories && Object.entries(pricingConfig.registration_categories).map(([type, config]) => (
+                        <Card key={type} className="bg-white/60 backdrop-blur-sm border-slate-200/50 hover:shadow-lg transition-all duration-200">
+                          <CardHeader className="pb-4">
+                            <CardTitle className="capitalize text-slate-900 flex items-center gap-2">
+                              <div className="w-3 h-3 bg-blue-500 rounded-full" />
+                              {config.label}
+                            </CardTitle>
                           </CardHeader>
                           <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div className="space-y-2">
-                              <Label>Label</Label>
+                              <Label className="text-slate-700 font-medium">Label</Label>
                               <Input
                                 value={config.label}
                                 onChange={(e) => updateRegistrationCategory(type, 'label', e.target.value)}
+                                className="bg-white/60 border-slate-200/50 focus:bg-white/80"
                               />
                             </div>
                             <div className="space-y-2">
-                              <Label>Amount</Label>
+                              <Label className="text-slate-700 font-medium">Amount</Label>
                               <Input
                                 type="number"
                                 value={config.amount}
                                 onChange={(e) => updateRegistrationCategory(type, 'amount', parseFloat(e.target.value) || 0)}
+                                className="bg-white/60 border-slate-200/50 focus:bg-white/80"
                               />
                             </div>
                             <div className="space-y-2">
-                              <Label>Currency</Label>
+                              <Label className="text-slate-700 font-medium">Currency</Label>
                               <Select 
                                 value={config.currency} 
                                 onValueChange={(value) => updateRegistrationCategory(type, 'currency', value)}
                               >
-                                <SelectTrigger>
+                                <SelectTrigger className="bg-white/60 border-slate-200/50 focus:bg-white/80">
                                   <SelectValue />
                                 </SelectTrigger>
-                                <SelectContent>
+                                <SelectContent className="bg-white/95 backdrop-blur-xl border-slate-200/50">
                                   <SelectItem value="INR">INR (₹)</SelectItem>
                                   <SelectItem value="USD">USD ($)</SelectItem>
                                 </SelectContent>
@@ -377,7 +407,7 @@ export function ConfigManager() {
                       </Button>
                     </div>
                     <div className="space-y-3">
-                      {pricingConfig.workshops.map((workshop, index) => (
+                      {pricingConfig?.workshops?.map((workshop, index) => (
                         <Card key={workshop.id}>
                           <CardContent className="pt-6">
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
@@ -415,11 +445,11 @@ export function ConfigManager() {
                     </div>
                   </div>
 
-                  <div className="flex justify-end pt-4 border-t">
+                  <div className="flex justify-end pt-6 border-t border-slate-200/50">
                     <Button
                       onClick={() => saveConfiguration('pricing', pricingConfig)}
                       disabled={isSaving}
-                      className="bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800"
+                      className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
                     >
                       {isSaving ? (
                         <>
@@ -451,7 +481,7 @@ export function ConfigManager() {
                   </div>
 
                   <div className="space-y-4">
-                    {discountConfig.active_discounts.map((discount, index) => (
+                    {discountConfig?.active_discounts?.map((discount, index) => (
                       <Card key={discount.id}>
                         <CardHeader>
                           <div className="flex items-center justify-between">
@@ -623,7 +653,7 @@ export function ConfigManager() {
                           type="email"
                           value={emailConfig.fromEmail}
                           onChange={(e) => setEmailConfig(prev => ({ ...prev!, fromEmail: e.target.value }))}
-                          placeholder="noreply@neurotrauma2026.com"
+                          placeholder="noreply@ossapcon2026.com"
                         />
                       </div>
                       <div className="space-y-2">
@@ -632,7 +662,7 @@ export function ConfigManager() {
                           type="email"
                           value={emailConfig.replyTo}
                           onChange={(e) => setEmailConfig(prev => ({ ...prev!, replyTo: e.target.value }))}
-                          placeholder="support@neurotrauma2026.com"
+                          placeholder="support@ossapcon2026.com"
                         />
                       </div>
                     </div>
@@ -644,7 +674,7 @@ export function ConfigManager() {
                   <div className="space-y-4">
                     <h3 className="text-lg font-semibold">Email Templates</h3>
                     <div className="space-y-4">
-                      {Object.entries(emailConfig.templates).map(([template, config]) => (
+                      {emailConfig?.templates && Object.entries(emailConfig.templates).map(([template, config]) => (
                         <Card key={template}>
                           <CardHeader>
                             <div className="flex items-center justify-between">
@@ -735,8 +765,7 @@ export function ConfigManager() {
               )}
             </TabsContent>
           </Tabs>
-        </CardContent>
-      </Card>
+      </div>
     </motion.div>
   )
 }

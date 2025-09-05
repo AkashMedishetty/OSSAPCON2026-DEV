@@ -1,7 +1,7 @@
 // Force Update Service Worker - v8
 // This service worker forces cache invalidation and ensures users get fresh content
 
-const CACHE_VERSION = 'ossapcon-2026-v1756719664938-350cd2d';
+const CACHE_VERSION = 'ossapcon-2026-v1757088289229-e704bc6';
 const STATIC_CACHE_NAME = `${CACHE_VERSION}-static`;
 const DYNAMIC_CACHE_NAME = `${CACHE_VERSION}-dynamic`;
 
@@ -9,7 +9,7 @@ const DYNAMIC_CACHE_NAME = `${CACHE_VERSION}-dynamic`;
 const STATIC_ASSETS = [
   '/offline.html',
   '/ossapcon-logo.png',
-  '/KIMS.png'
+  '/ossapcon-logo.png'
 ];
 
 // Install event - aggressive cache clearing
