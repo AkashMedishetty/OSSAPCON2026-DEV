@@ -32,11 +32,11 @@ export async function POST(
         }
 
         // Get payment information
-        const payment = await Payment.findOne({
-            userId: user._id
-        }).sort({ createdAt: -1 })
+        let payment = await Payment.findOne({ userId: user._id }).sort({ createdAt: -1 })
 
-        if (!payment) {
+        // Fallback to embedded bank-transfer payment on user document
+        const useEmbedded = !payment && user.payment && typeof user.payment.amount === 'number'
+        if (!payment && !useEmbedded) {
             return NextResponse.json(
                 { success: false, message: "No payment found for this registration" },
                 { status: 404 }
@@ -47,21 +47,39 @@ export async function POST(
         try {
             const { EmailService } = await import('@/lib/email/service')
 
-            await EmailService.sendPaymentConfirmation({
-                email: user.email,
-                name: `${user.profile.firstName} ${user.profile.lastName}`,
-                registrationId: user.registration.registrationId,
-                amount: payment.amount.total,
-                currency: payment.amount.currency,
-                transactionId: payment.razorpayPaymentId,
-                paymentDate: payment.transactionDate.toLocaleDateString('en-IN'),
-                breakdown: {
-                    registration: payment.amount.registration,
-                    workshops: payment.amount.workshops,
-                    accompanyingPersons: payment.amount.accompanyingPersons,
-                    discount: payment.amount.discount
-                }
-            })
+            if (useEmbedded) {
+                await EmailService.sendPaymentConfirmation({
+                    email: user.email,
+                    name: `${user.profile.firstName} ${user.profile.lastName}`,
+                    registrationId: user.registration.registrationId,
+                    amount: user.payment.amount,
+                    currency: 'INR',
+                    transactionId: user.payment.bankTransferUTR || user.payment.transactionId || 'BANK-TRANSFER',
+                    paymentDate: (user.payment.paymentDate || new Date()).toLocaleDateString('en-IN'),
+                    breakdown: {
+                        registration: user.payment.amount,
+                        workshops: 0,
+                        accompanyingPersons: 0,
+                        discount: 0
+                    }
+                })
+            } else {
+                await EmailService.sendPaymentConfirmation({
+                    email: user.email,
+                    name: `${user.profile.firstName} ${user.profile.lastName}`,
+                    registrationId: user.registration.registrationId,
+                    amount: payment.amount.total,
+                    currency: payment.amount.currency,
+                    transactionId: payment.razorpayPaymentId,
+                    paymentDate: payment.transactionDate.toLocaleDateString('en-IN'),
+                    breakdown: {
+                        registration: payment.amount.registration,
+                        workshops: payment.amount.workshops,
+                        accompanyingPersons: payment.amount.accompanyingPersons,
+                        discount: payment.amount.discount
+                    }
+                })
+            }
 
             return NextResponse.json({
                 success: true,

@@ -1241,7 +1241,7 @@ Dr.,Alice,Johnson,alice.johnson@example.com,+1122334455,PG/Student,University Ho
                               <DollarSign className="h-4 w-4 mr-2" />
                               Mark as Paid
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="text-red-600">
+                            <DropdownMenuItem className="text-red-600" onClick={() => handleStatusUpdate(registration._id, 'cancelled')}>
                               <Trash2 className="h-4 w-4 mr-2" />
                               Cancel Registration
                             </DropdownMenuItem>
