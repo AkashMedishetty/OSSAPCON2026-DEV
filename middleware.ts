@@ -44,7 +44,14 @@ export async function middleware(request: NextRequest) {
   }
 
   const token = await getToken({ req: request })
-  const isAuthenticated = !!token
+  let isAuthenticated = !!token
+  // Fallback: if NextAuth JWT not parsed yet but session cookie exists, allow pass-through
+  if (!isAuthenticated) {
+    const hasSessionCookie = request.cookies.has('__Secure-next-auth.session-token') || request.cookies.has('next-auth.session-token')
+    if (hasSessionCookie) {
+      isAuthenticated = true
+    }
+  }
 
   // Enhanced cache control for auth-related routes
   const response = NextResponse.next()

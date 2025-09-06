@@ -1,4 +1,4 @@
-// Force Update Service Worker - v8
+// Force Update Service Worker - v8 (auth-safe)
 // This service worker forces cache invalidation and ensures users get fresh content
 
 const CACHE_VERSION = 'ossapcon-2026-v1757088289229-e704bc6';
@@ -109,24 +109,24 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // BYPASS SERVICE WORKER FOR DYNAMIC CONTENT:
+  // BYPASS SERVICE WORKER FOR DYNAMIC CONTENT AND AUTH:
   // 1. All API routes
   if (url.pathname.startsWith('/api/')) {
     return;
   }
 
   // 2. All auth routes
-  if (url.pathname.startsWith('/auth/') || 
-      url.pathname.includes('auth') ||
+  if (url.pathname.startsWith('/auth/') ||
+      url.pathname === '/dashboard' ||
+      url.pathname.startsWith('/dashboard') ||
       url.pathname.includes('login') ||
       url.pathname.includes('signin') ||
       url.pathname.includes('signout')) {
     return;
   }
 
-  // 3. All dashboard and protected routes
-  if (url.pathname.startsWith('/dashboard') ||
-      url.pathname.startsWith('/admin') ||
+  // 3. All admin/profile/protected routes
+  if (url.pathname.startsWith('/admin') ||
       url.pathname.startsWith('/profile')) {
     return;
   }
