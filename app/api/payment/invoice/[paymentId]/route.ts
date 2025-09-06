@@ -22,12 +22,45 @@ export async function GET(
     await connectDB()
 
     // Get payment details
-    const payment = await Payment.findById(params.paymentId)
+    let payment = await Payment.findById(params.paymentId)
+    const isEmbedded = !payment
     if (!payment) {
-      return NextResponse.json({
-        success: false,
-        message: 'Payment not found'
-      }, { status: 404 })
+      // Support embedded user payment via pseudo id: userpay_<userId>
+      if (params.paymentId.startsWith('userpay_')) {
+        const userId = params.paymentId.replace('userpay_', '')
+        const embeddedUser = await User.findById(userId)
+        if (!embeddedUser || !embeddedUser.payment) {
+          return NextResponse.json({ success: false, message: 'Payment not found' }, { status: 404 })
+        }
+        // Compose a shim payment object
+        payment = {
+          _id: params.paymentId,
+          userId: embeddedUser._id,
+          registrationId: embeddedUser.registration?.registrationId || 'N/A',
+          razorpayOrderId: 'N/A',
+          razorpayPaymentId: embeddedUser.payment.bankTransferUTR || embeddedUser.payment.transactionId || 'BANK-TRANSFER',
+          amount: {
+            registration: embeddedUser.payment.amount,
+            workshops: 0,
+            accompanyingPersons: 0,
+            discount: 0,
+            total: embeddedUser.payment.amount,
+            currency: 'INR'
+          },
+          breakdown: {
+            registrationType: embeddedUser.registration?.type || 'ossap-member',
+            baseAmount: embeddedUser.payment.amount,
+            workshopFees: [],
+            accompanyingPersonFees: 0,
+            discountsApplied: []
+          },
+          status: embeddedUser.payment.status === 'verified' ? 'completed' : 'pending',
+          transactionDate: embeddedUser.payment.paymentDate || new Date(),
+          invoiceGenerated: true
+        } as any
+      } else {
+        return NextResponse.json({ success: false, message: 'Payment not found' }, { status: 404 })
+      }
     }
 
     // Get user details
@@ -149,7 +182,7 @@ export async function GET(
             <div>
                 <strong>Invoice Number:</strong> ${payment.registrationId}<br>
                 <strong>Invoice Date:</strong> ${new Date(payment.transactionDate).toLocaleDateString()}<br>
-                <strong>Status:</strong> <span class="status">Completed</span>
+                <strong>Status:</strong> <span class="status">${payment.status === 'completed' ? 'Paid' : 'Pending'}</span>
             </div>
             <div style="text-align: right;">
                 <strong>Payment ID:</strong> ${payment.razorpayPaymentId || 'N/A'}<br>
@@ -225,10 +258,11 @@ export async function GET(
     </html>
     `
 
+    const fileName = `${payment.registrationId}-INV-OSSAPCON2026.html`
     return new NextResponse(invoiceHtml, {
       headers: {
         'Content-Type': 'text/html',
-        'Content-Disposition': `inline; filename="OSSAPCON2026-Invoice-${payment.registrationId}.html"`,
+        'Content-Disposition': `inline; filename="${fileName}"`,
       },
     })
 

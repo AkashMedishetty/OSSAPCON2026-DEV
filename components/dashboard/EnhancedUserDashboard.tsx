@@ -547,7 +547,7 @@ export function EnhancedUserDashboard() {
                               View Program
                             </Link>
                           </Button>
-                          {latestPayment && latestPayment.status === 'completed' && (
+                          {latestPayment && ['completed','verified','paid'].includes(latestPayment.status?.toLowerCase()) && (
                             <Button 
                               variant="outline" 
                               size="lg"
@@ -846,14 +846,7 @@ export function EnhancedUserDashboard() {
                   ) : (
                     <div className="space-y-2">
                       <div className="text-2xl font-bold text-muted-foreground">Pending</div>
-                      <Button 
-                        size="sm" 
-                        className="w-full bg-gray-400 text-gray-600 cursor-not-allowed" 
-                        disabled
-                      >
-                        <CreditCard className="w-4 h-4 mr-2" />
-                        Payment Temporarily Disabled
-                      </Button>
+                      {/* Pay Now temporarily disabled */}
                     </div>
                   )}
                 </CardContent>
@@ -869,7 +862,7 @@ export function EnhancedUserDashboard() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="relative space-y-3">
-                  {latestPayment && latestPayment.status === 'completed' && (
+                  {latestPayment && ['completed','verified','paid'].includes(latestPayment.status?.toLowerCase()) && (
                     <Button
                       variant="outline"
                       size="sm"

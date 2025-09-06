@@ -87,12 +87,23 @@ export class EmailService {
       }
 
       const html = getPaymentConfirmationTemplate(paymentData)
+
+      // Build simple text-based PDF attachment as HTML-to-PDF is not available here; send HTML invoice file
+      const fileName = `${paymentData.registrationId}-INV-OSSAPCON2026.html`
+      const invoiceHtml = `<html><body><pre>${JSON.stringify(paymentData, null, 2)}</pre></body></html>`
       
       return await sendEmail({
         to: paymentData.email,
         subject: template.subject || 'Payment Confirmation & Invoice - OSSAPCON 2026',
         html,
-        text: `Payment confirmation for ${paymentData.name}. Amount: ${paymentData.currency} ${paymentData.amount}`
+        text: `Payment confirmation for ${paymentData.name}. Amount: ${paymentData.currency} ${paymentData.amount}`,
+        attachments: [
+          {
+            filename: fileName,
+            content: invoiceHtml,
+            contentType: 'text/html'
+          }
+        ]
       })
     } catch (error) {
       console.error('Error sending payment confirmation:', error)
