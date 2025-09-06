@@ -268,6 +268,11 @@ export default function RootLayout({
         <link rel="preconnect" href="https://api.fontshare.com" />
         <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,300,400,500,600,700&display=swap" rel="stylesheet" />
         
+        {/* PWA Manifest and Icons */}
+        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="apple-touch-icon" href="/placeholder-logo.png" />
+        
         {/* Service Worker Registration with Force Update (prod only) */}
         <script
           dangerouslySetInnerHTML={{
@@ -304,7 +309,8 @@ export default function RootLayout({
                   console.log('✅ All caches cleared');
                   
                   // Only register new service worker in production
-                  if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+                  const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+                  if (!isLocal) {
                     console.log('🚀 Registering force-update service worker...');
                     return navigator.serviceWorker.register('/sw-force-update.js?' + Date.now(), {
                       scope: '/',
@@ -312,10 +318,8 @@ export default function RootLayout({
                     });
                   }
                   // In development, register the main SW so testing works
-                  else {
-                    console.log('🧪 Dev: registering /sw.js for testing');
-                    return navigator.serviceWorker.register('/sw.js?' + Date.now(), { scope: '/' });
-                  }
+                  console.log('🧪 Dev: registering /sw.js for testing');
+                  return navigator.serviceWorker.register('/sw.js?' + Date.now(), { scope: '/' });
                 }).then(function(registration) {
                   if (registration) {
                     console.log('✅ Force-update SW registered:', registration.scope);
@@ -335,20 +339,7 @@ export default function RootLayout({
                 });
               }
               
-              // Initialize Auto Cache Updater for production
-              if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
-                // Dynamic import to avoid SSR issues
-                import('@/lib/utils/auto-cache-updater').then(function(module) {
-                  const autoCacheUpdater = module.autoCacheUpdater;
-                  autoCacheUpdater.initialize().then(function() {
-                    console.log('🚀 Auto Cache Updater initialized');
-                  }).catch(function(error) {
-                    console.error('❌ Auto Cache Updater failed:', error);
-                  });
-                }).catch(function(error) {
-                  console.warn('⚠️ Could not load Auto Cache Updater:', error);
-                });
-              }
+              // Auto Cache Updater disabled to avoid dynamic import errors in browsers
               
               // Add cache busting to all fetch requests (disabled for development to fix 3D models)
               if (typeof window !== 'undefined' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {

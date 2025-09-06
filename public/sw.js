@@ -153,15 +153,9 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Skip missing favicon and logo requests to prevent 404 errors
-  if (url.pathname.includes('favicon') || 
-      url.pathname.includes('logo') ||
-      url.pathname.includes('Favicons/') ||
-      url.pathname.endsWith('.ico') ||
-      url.pathname.includes('android-chrome') ||
-      url.pathname.includes('apple-touch-icon') ||
-      url.pathname.includes('ossapcon-logo')) {
-    event.respondWith(new Response(null, { status: 204 })); // Return empty response for missing assets
+  // Serve a valid icon for /favicon.ico to avoid 404s
+  if (url.pathname === '/favicon.ico') {
+    event.respondWith(fetch('/placeholder-logo.png'));
     return;
   }
 
@@ -184,6 +178,13 @@ self.addEventListener('fetch', (event) => {
         }
 
         // Otherwise fetch from network and cache
+        // For media/video and range requests, do not cache
+        const isMedia = request.destination === 'video' || request.destination === 'audio' || request.url.endsWith('.webm');
+        const hasRange = request.headers.get('range');
+        if (isMedia || hasRange) {
+          return fetch(request);
+        }
+
         return fetch(request)
           .then((networkResponse) => {
             // Don't cache non-successful responses
@@ -220,7 +221,7 @@ self.addEventListener('fetch', (event) => {
         
         // Offline fallback for images
         if (request.destination === 'image') {
-          return caches.match('/offline-image.svg');
+          return caches.match('/placeholder.svg');
         }
       })
   );

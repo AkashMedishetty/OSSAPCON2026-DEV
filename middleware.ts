@@ -100,6 +100,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|Favicons|android-chrome|apple-touch-icon|site.webmanifest|browserconfig.xml).*)',
+    '/((?!_next/static|_next/image|favicon.ico|Favicons|android-chrome|apple-touch-icon|site.webmanifest|browserconfig.xml|sw.js|sw-force-update.js).*)',
   ],
 }

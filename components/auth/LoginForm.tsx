@@ -237,12 +237,12 @@ export function LoginForm({ callbackUrl = "/dashboard" }: LoginFormProps) {
 
             <div className="text-center text-sm text-gray-600">
               Don&apos;t have an account?{" "}
-              <Link
+              <a
                 href="/register"
                 className="font-medium text-blue-600 hover:text-blue-700 hover:underline"
               >
                 Create account
-              </Link>
+              </a>
             </div>
           </form>
         </CardContent>

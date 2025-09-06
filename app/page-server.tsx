@@ -188,12 +188,12 @@ export default function HomePage() {
                 {/* CTA Buttons */}
                 <div>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                    <Link href="/register">
+                    <a href="/register">
                       <Button className="px-8 py-4 text-lg bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white rounded-full shadow-lg hover:shadow-blue-200/50 transition-all duration-300 border-0">
                         <Sparkles className="mr-2 h-5 w-5" />
                         Register Now
                       </Button>
-                    </Link>
+                    </a>
                   </div>
                 </div>
 

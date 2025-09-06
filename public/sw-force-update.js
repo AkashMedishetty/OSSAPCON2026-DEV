@@ -7,9 +7,7 @@ const DYNAMIC_CACHE_NAME = `${CACHE_VERSION}-dynamic`;
 
 // Minimal static assets - only truly essential ones
 const STATIC_ASSETS = [
-  '/offline.html',
-  '/ossapcon-logo.png',
-  '/ossapcon-logo.png'
+  '/offline.html'
 ];
 
 // Install event - aggressive cache clearing
@@ -103,6 +101,11 @@ self.addEventListener('fetch', (event) => {
 
   // Skip non-GET requests
   if (request.method !== 'GET') {
+    return;
+  }
+
+  // Skip range requests (media streaming)
+  if (request.headers.has('range')) {
     return;
   }
 

@@ -77,13 +77,13 @@ export default function VenuePage() {
 
               <div className="flex justify-center mb-6">
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Link href="/register">
+                  <a href="/register">
                     <Button 
                       className="px-8 py-4 text-lg bg-emerald-600 hover:bg-emerald-700 text-white rounded-full shadow-2xl font-bold"
                     >
                       Register Now
                     </Button>
-                  </Link>
+                  </a>
                 </motion.div>
               </div>
 
@@ -378,11 +378,11 @@ export default function VenuePage() {
               <p className="text-lg md:text-xl mb-6 md:mb-8 max-w-2xl mx-auto">
                 Register now to secure your spot at this premier orthopedic conference.
               </p>
-              <Link href="/register">
+              <a href="/register">
                 <Button className="bg-white text-ossapcon-700 hover:bg-ossapcon-50 hover:text-ossapcon-800 px-6 md:px-8 py-3 md:py-4 text-base md:text-lg rounded-full font-bold shadow-lg border-2 border-white">
                   Register Now
                 </Button>
-              </Link>
+              </a>
             </motion.div>
           </div>
         </section>
