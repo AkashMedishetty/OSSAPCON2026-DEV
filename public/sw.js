@@ -97,6 +97,40 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
+  // High-priority cache-first for 3D model
+  if (url.pathname === '/spine_model.glb') {
+    event.respondWith(
+      caches.match(request).then((cached) => {
+        if (cached) return cached;
+        return fetch(request).then((resp) => {
+          if (resp && resp.ok) {
+            caches.open(DYNAMIC_CACHE_NAME).then((cache) => cache.put(request, resp.clone()));
+          }
+          return resp;
+        });
+      })
+    );
+    return;
+  }
+
+  // Prefer cache for video if no range; let network handle range requests
+  if (url.pathname === '/video1.webm') {
+    if (request.headers.get('range')) {
+      return; // let the browser fetch with 206
+    }
+    event.respondWith(
+      caches.match(request).then((cached) => {
+        if (cached) return cached;
+        return fetch(request).then((resp) => {
+          if (resp && resp.ok) {
+            caches.open(DYNAMIC_CACHE_NAME).then((cache) => cache.put(request, resp.clone()));
+          }
+          return resp;
+        });
+      })
+    );
+    return;
+  }
 
   // Skip non-GET requests
   if (request.method !== 'GET') {

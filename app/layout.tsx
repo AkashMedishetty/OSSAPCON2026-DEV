@@ -273,6 +273,10 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/placeholder-logo.png" />
         
+        {/* Preload heavy static assets for smoother UX */}
+        <link rel="preload" href="/spine_model.glb" as="fetch" crossOrigin="anonymous" />
+        <link rel="preload" href="/video1.webm" as="video" type="video/webm" />
+        
         {/* Service Worker Registration with Force Update (prod only) */}
         <script
           dangerouslySetInnerHTML={{
