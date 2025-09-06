@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
       }, { status: 403 })
     }
 
-    // Fetch all payments with user details
+    // Fetch all payments with user details from Payment collection
     const payments = await Payment.aggregate([
       {
         $lookup: {
@@ -84,9 +84,37 @@ export async function GET(request: NextRequest) {
       }
     }))
 
+    // Additionally include bank-transfer payments stored on User.payment
+    const bankTransferUsers = await User.find({ 'payment.amount': { $exists: true } })
+      .select('email profile registration payment')
+      .lean()
+
+    const userPayments = bankTransferUsers.map(u => ({
+      _id: `userpay_${u._id.toString()}`,
+      userId: u._id,
+      registrationId: u.registration?.registrationId,
+      razorpayOrderId: undefined,
+      razorpayPaymentId: u.payment?.bankTransferUTR || u.payment?.transactionId,
+      amount: { total: u.payment?.amount || 0, currency: 'INR' },
+      breakdown: undefined,
+      status: u.payment?.status || 'pending',
+      transactionDate: u.payment?.paymentDate || u.registration?.paymentDate,
+      invoiceGenerated: false,
+      invoicePath: undefined,
+      userDetails: {
+        name: `${u.profile?.title || ''} ${u.profile?.firstName || ''} ${u.profile?.lastName || ''}`.replace(/\s+/g, ' ').trim(),
+        email: u.email,
+        phone: u.profile?.phone,
+        institution: u.profile?.institution,
+        registrationType: u.registration?.type
+      }
+    }))
+
+    const allPayments = [...cleanedPayments, ...userPayments]
+
     return NextResponse.json({
       success: true,
-      data: cleanedPayments
+      data: allPayments
     })
 
   } catch (error) {
