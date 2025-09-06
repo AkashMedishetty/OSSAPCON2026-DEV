@@ -580,7 +580,7 @@ export function PricingTiersManager() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {pricingData.specialOffers.map(offer => (
+            {(pricingData?.specialOffers || []).map(offer => (
               <Card key={offer.id} className={currentTier?.id === offer.id ? 'ring-2 ring-green-500' : ''}>
                 <CardHeader>
                   <div className="flex items-center justify-between">
@@ -648,7 +648,7 @@ export function PricingTiersManager() {
                       <div key={key} className="flex justify-between items-center">
                         <span className="text-sm">{categoryLabels[key as keyof typeof categoryLabels]}</span>
                         <span className="font-medium">
-                          {formatCurrency(offer.categories[key]?.amount || 0, offer.categories[key]?.currency || 'INR')}
+                          {formatCurrency(offer?.categories?.[key]?.amount || 0, offer?.categories?.[key]?.currency || 'INR')}
                         </span>
                       </div>
                     ))}
