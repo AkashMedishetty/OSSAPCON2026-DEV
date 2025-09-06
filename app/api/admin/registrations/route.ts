@@ -27,20 +27,43 @@ export async function GET(request: NextRequest) {
     // Get payment information for each user
     const usersWithPayments = await Promise.all(
       users.map(async (user) => {
-        const payment = await Payment.findOne({ 
-          userId: user._id 
-        }).sort({ createdAt: -1 })
+        const userObj = user.toObject()
+
+        // Prefer embedded user.payment (bank-transfer flow); fallback to Payment collection
+        let paymentInfo = null as null | {
+          amount: number
+          currency: string
+          transactionId?: string
+          paymentDate?: Date
+          status?: string
+          breakdown?: any
+        }
+
+        if (userObj.payment && typeof userObj.payment.amount === 'number') {
+          paymentInfo = {
+            amount: userObj.payment.amount,
+            currency: 'INR',
+            transactionId: userObj.payment.bankTransferUTR || userObj.payment.transactionId,
+            paymentDate: userObj.payment.paymentDate,
+            status: userObj.payment.status,
+          }
+        } else {
+          const payment = await Payment.findOne({ userId: user._id }).sort({ createdAt: -1 })
+          if (payment) {
+            paymentInfo = {
+              amount: payment.amount.total,
+              currency: payment.amount.currency,
+              transactionId: payment.razorpayPaymentId,
+              paymentDate: payment.transactionDate,
+              status: payment.status,
+              breakdown: payment.breakdown
+            }
+          }
+        }
 
         return {
-          ...user.toObject(),
-          paymentInfo: payment ? {
-            amount: payment.amount.total,
-            currency: payment.amount.currency,
-            transactionId: payment.razorpayPaymentId,
-            paymentDate: payment.transactionDate,
-            status: payment.status,
-            breakdown: payment.breakdown
-          } : null
+          ...userObj,
+          paymentInfo
         }
       })
     )
