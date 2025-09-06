@@ -44,27 +44,33 @@ export async function PUT(
     if (paymentType === 'sponsored') {
       updateData['registration.sponsorName'] = sponsorName
       updateData['registration.sponsorCategory'] = sponsorCategory
-      // Set amount to zero for sponsored registrations
-      updateData['paymentInfo'] = {
+      // Mirror into embedded payment (zero amount, verified)
+      updateData['payment'] = {
+        method: 'cash',
+        status: status === 'paid' ? 'verified' : 'pending',
         amount: 0,
-        currency: 'INR',
         transactionId: `ADMIN-SPONSORED-${Date.now()}`,
-        status: 'paid'
+        paymentDate: new Date().toISOString(),
+        remarks: paymentRemarks
       }
     } else if (paymentType === 'complementary') {
-      // Set amount to zero for complementary registrations
-      updateData['paymentInfo'] = {
+      // Complementary: zero amount, verified
+      updateData['payment'] = {
+        method: 'cash',
+        status: status === 'paid' ? 'verified' : 'pending',
         amount: 0,
-        currency: 'INR',
         transactionId: `ADMIN-COMPLEMENTARY-${Date.now()}`,
-        status: 'paid'
+        paymentDate: new Date().toISOString(),
+        remarks: paymentRemarks
       }
     } else if (amount > 0) {
-      updateData['paymentInfo'] = {
+      // Regular manual payment update: treat as bank transfer
+      updateData['payment'] = {
+        method: 'bank-transfer',
+        status: status === 'paid' ? 'verified' : 'pending',
         amount,
-        currency: 'INR',
-        transactionId: `ADMIN-${Date.now()}`,
-        status: 'paid'
+        paymentDate: new Date().toISOString(),
+        remarks: paymentRemarks
       }
     }
 
