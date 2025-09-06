@@ -75,7 +75,10 @@ export function LoginForm({ callbackUrl = "/dashboard" }: LoginFormProps) {
           
           const checkSession = async () => {
             try {
-              const response = await fetch('/api/auth/session');
+              const response = await fetch('/api/auth/session', {
+                cache: 'no-store',
+                credentials: 'same-origin'
+              });
               const session = await response.json();
               
               console.log('Session check attempt:', attempts, 'Session:', session);
@@ -111,8 +114,8 @@ export function LoginForm({ callbackUrl = "/dashboard" }: LoginFormProps) {
             }
           };
           
-          // Start polling after a short delay
-          setTimeout(pollSession, 200);
+          // Give the browser a brief moment to persist cookies on some mobile browsers
+          setTimeout(pollSession, 400);
         };
         
         checkSessionAndRedirect();

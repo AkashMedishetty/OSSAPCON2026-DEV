@@ -141,7 +141,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // For static assets only - serve from cache with network fallback
+  // For static assets only - serve from cache with network fallback (never HTML)
   if (STATIC_ASSETS.includes(url.pathname)) {
     event.respondWith(
       caches.match(request)

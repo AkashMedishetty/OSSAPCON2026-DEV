@@ -30,17 +30,15 @@ export async function middleware(request: NextRequest) {
     console.log(`🔍 Headers:`, Object.fromEntries(request.headers.entries()))
   }
 
-  // Bypass all auth/middleware logic for the public registration page to fix first-load issues
-  if (pathname === '/register' || pathname.startsWith('/register/')) {
+  // Bypass auth and disable caching for registration and auth pages (fix mobile redirect caching)
+  if (pathname === '/register' || pathname.startsWith('/register/') || pathname.startsWith('/auth')) {
     const res = NextResponse.next()
     res.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0')
     res.headers.set('Pragma', 'no-cache')
     res.headers.set('Expires', '0')
     res.headers.set('Vary', 'Cookie, Authorization')
     
-    if (isRSCRequest || isServerComponent) {
-      console.log(`✅ RSC Request allowed through for /register`)
-    }
+    // no-op
     
     return res
   }
