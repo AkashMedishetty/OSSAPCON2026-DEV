@@ -88,22 +88,65 @@ export class EmailService {
 
       const html = getPaymentConfirmationTemplate(paymentData)
 
-      // Build simple text-based PDF attachment as HTML-to-PDF is not available here; send HTML invoice file
-      const fileName = `${paymentData.registrationId}-INV-OSSAPCON2026.html`
-      const invoiceHtml = `<html><body><pre>${JSON.stringify(paymentData, null, 2)}</pre></body></html>`
+      // Generate PDF invoice for email attachment
+      const { generateInvoicePDF } = await import('@/lib/pdf/invoice-generator')
+      
+      const invoiceData = {
+        invoiceNumber: `OSSAP-${paymentData.registrationId}-INV-OSSAPCON2026`,
+        invoiceDate: new Date().toISOString(),
+        registrationId: paymentData.registrationId,
+        name: paymentData.name,
+        email: paymentData.email,
+        phone: '',
+        address: '',
+        mciNumber: '',
+        registrationType: 'OSSAP MEMBER',
+        tier: 'Standard',
+        amount: {
+          registration: paymentData.amount,
+          workshops: 0,
+          accompanyingPersons: 0,
+          discount: 0,
+          total: paymentData.amount,
+          currency: paymentData.currency || 'INR'
+        },
+        breakdown: {
+          registrationType: 'ossap-member',
+          baseAmount: paymentData.amount,
+          workshopFees: [],
+          accompanyingPersonFees: 0,
+          discountsApplied: []
+        },
+        status: 'completed',
+        paymentMethod: 'Bank Transfer',
+        transactionId: paymentData.transactionId,
+        bankTransferUTR: paymentData.transactionId,
+        paymentDate: paymentData.paymentDate || new Date().toISOString(),
+        workshopSelections: [],
+        accompanyingPersons: []
+      }
+
+      let pdfBuffer: Buffer | null = null
+      try {
+        pdfBuffer = await generateInvoicePDF(invoiceData)
+      } catch (pdfError) {
+        console.error('PDF generation failed for email:', pdfError)
+      }
+
+      const fileName = `OSSAP-${paymentData.registrationId}-INV-OSSAPCON2026.pdf`
       
       return await sendEmail({
         to: paymentData.email,
         subject: template.subject || 'Payment Confirmation & Invoice - OSSAPCON 2026',
         html,
         text: `Payment confirmation for ${paymentData.name}. Amount: ${paymentData.currency} ${paymentData.amount}`,
-        attachments: [
+        attachments: pdfBuffer ? [
           {
             filename: fileName,
-            content: invoiceHtml,
-            contentType: 'text/html'
+            content: pdfBuffer,
+            contentType: 'application/pdf'
           }
-        ]
+        ] : []
       })
     } catch (error) {
       console.error('Error sending payment confirmation:', error)
